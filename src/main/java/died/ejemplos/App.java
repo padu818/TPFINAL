@@ -32,7 +32,7 @@ public class App extends JFrame {
 	JMenuBar menuBar;
 	JMenu menuArchivo;
 	JMenu menuEntidades;
-	JMenu menuAyuda;
+	JMenu menuAyuda;///
 	JMenuItem menuItemAyuda;
 	JMenuItem menuItemCamion;
 	JMenuItem menuItemSalir;
