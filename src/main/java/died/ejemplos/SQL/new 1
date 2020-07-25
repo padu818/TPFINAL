@@ -1,0 +1,1 @@
+ROP SEQUENCE IF EXISTS camion;CREATE SEQUENCE IF NOT EXIST 	camion_seq AS integer;INSERT INTO camion (patente, marca, modelo, costoPorKM, costoPorHora, kmRecorridos, fechaCompra) VALUES(352800, 'R1124234', 'NO_VIGENTE','NO_VIGENTE','NO_VIGENTE',555555)

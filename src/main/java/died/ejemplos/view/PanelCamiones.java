@@ -42,6 +42,7 @@ public class PanelCamiones extends JPanel{
 	private JTextField txtKm;
 	private JButton btnGuardar;
 	private JButton btnCancelar;
+	private JButton btnActualizar;
 	private JTable tablaCamiones;
 	private CamionTableModel modeloTablaCamion; 
 	private CamionController controller;
@@ -124,6 +125,18 @@ public class PanelCamiones extends JPanel{
 				modeloTablaCamion.fireTableDataChanged();
 			}
 		);
+		this.btnActualizar = new JButton("Actualizar");
+		this.btnActualizar.addActionListener( e ->
+			{
+	//			try {
+					controller.listarTodos();
+//				} catch ( ControllerException e1) {
+//					this.mostrarError("Error al actualizar", e1.getMessage());
+//				}
+				
+				modeloTablaCamion.fireTableDataChanged();
+			}
+		);
 		this.add(btnGuardar,constraints);
 		constraints.gridx = 9;
 		constraints.gridy = 2;		
@@ -133,11 +146,14 @@ public class PanelCamiones extends JPanel{
 		constraints.insets = new Insets(0, 50, 0, 5);
 		this.btnCancelar = new JButton("Cancelar");
 		this.add(btnCancelar,constraints);
+		constraints.gridx = 10;
+		constraints.gridy = 2;		
+		this.add(btnActualizar,constraints);
 		constraints.weightx=0;
-		constraints.insets = new Insets(0, 0, 0, 0);
 		modeloTablaCamion = new CamionTableModel(controller.listarTodos());
 		tablaCamiones = new JTable();
 		tablaCamiones.setModel(modeloTablaCamion);
+
 		JScrollPane scrollPane = new JScrollPane(tablaCamiones);
 		tablaCamiones.setFillsViewportHeight(true);
 		constraints.gridx = 0;

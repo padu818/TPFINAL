@@ -6,23 +6,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DB {
-	private static final String url ="jdbc:mysql://localhost:3306/died?useSSL=false";
-	private static final String user="root";
-	private static final String pass="root";
+	private static final String url ="jdbc:postgresql://localhost:5432/TPDIED2020";
+	private static final String user="postgres";
+	private static final String pass="12345";
 	
 	private static boolean _TABLAS_CREADAS = false;
 	
 	private static final String TABLA_CREATE_CAMION = 
-			"CREATE TABLE  IF NOT EXISTS `died`.`camion` ( "+
-			"		  `ID` INT NOT NULL AUTO_INCREMENT, "+
-			"		  `PATENTE` VARCHAR(14) NULL, "+
-			"		  `MARCA` VARCHAR(45) NULL, "+
-			"		  `MODELO` VARCHAR(45) NULL, "+
-			"		  `KM` VARCHAR(45) NULL, "+
-			"		  `COSTO_KM` DECIMAL(12,2) NULL, "+
-			"		  `COSTO_HORA` DECIMAL(12,2) NULL, "+
-			"		  `FECHA_COMPRA` DATETIME NULL, "+
-			"		  PRIMARY KEY (`ID`)) ";
+			"CREATE TABLE  IF NOT EXISTS CAMION ( ID integer not NULL GENERATED ALWAYS AS IDENTITY, PATENTE VARCHAR(14) not NULL,"
+			+ " MARCA VARCHAR(45) not NULL,MODELO VARCHAR(45) not NULL, "
+			+ "KM VARCHAR(45) not NULL, COSTO_KM DECIMAL(12,2), "+
+			"COSTO_HORA DECIMAL(12,2), "+
+			"FECHA_COMPRA DATE not NULL,"
+			+ "PRIMARY KEY(ID));";
 
 
 	private DB(){
@@ -54,8 +50,9 @@ public class DB {
 	private static Connection crearConexion(){
 		Connection conn=null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("org.postgresql.Driver");
 			conn= DriverManager.getConnection(url,user,pass);
+			System.out.println("Probando bd");
 		} catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (SQLException ex) {
@@ -69,4 +66,7 @@ public class DB {
 		return crearConexion();
 	}
 	
+	public static void main(String[] args) {
+		DB.crearConexion();
+	}
 }

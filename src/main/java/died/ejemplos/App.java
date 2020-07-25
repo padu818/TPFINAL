@@ -33,7 +33,7 @@ public class App extends JFrame {
 	JMenu menuArchivo;
 	JMenu menuEntidades;
 	JMenu menuAyuda;///
-	JMenuItem menuItemAyuda;
+	JMenuItem menuItemAyuda;//
 	JMenuItem menuItemCamion;
 	JMenuItem menuItemSalir;
 
@@ -106,8 +106,8 @@ public class App extends JFrame {
 			}
 			
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
+			public void mouseExited(MouseEvent en) {
+				//
 				
 			}
 			
