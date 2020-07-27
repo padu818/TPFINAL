@@ -40,17 +40,18 @@ public class BuscarCamionController {
 	
 	
 	private void cargarTabla(List<Camion> camiones) {
-		if(camiones == null) {
+		if(camiones.isEmpty()) {
 			panel.addTablaCamiones(0);
 		}
 		else {
 			int cantCamiones = camiones.size();
 			if(cantCamiones > 0){
 				panel.addTablaCamiones(cantCamiones);
-				Camion c = null;
 				for(int fila=0; fila<cantCamiones; fila++) {
-					c = camiones.get(fila);
-					panel.setValoresTablaCamiones(fila, c.getPatente(), c.getMarca(), c.getModelo(), c.getKm().toString(), c.getCostoHora().toString(), c.getCostoKM().toString(),c.getFechaCompra().toString());
+					Camion ca = camiones.get(fila);
+					System.out.println(ca);
+
+					panel.setValoresTablaCamiones(fila, ca.getPatente(), ca.getMarca(), ca.getModelo(), ca.getKm(), ca.getCostoHora(), ca.getCostoKM(),ca.getFechaCompra());
 				}
 			}
 			else {
@@ -109,6 +110,14 @@ public class BuscarCamionController {
 				lista = camionService.busqueda(patente,marca,modelo,kmRec,cosths,costkm,fecha);
 				cargarTabla(lista);
 				System.out.println(lista);
+				
+//				panel.setPatente();
+//				panel.setMarca();
+//				panel.setModelo();
+//				panel.setKmRecorrido();
+//				panel.setCostoPorHora();
+//				panel.setCostoPorKm();
+//				panel.setFechaCompra();
 					
 			}catch(Exception ex) {
 				 JOptionPane.showMessageDialog(null, "No se pudo obtener el camion desde la base de datos",

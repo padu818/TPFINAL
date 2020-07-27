@@ -23,7 +23,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import died.ejemplos.gui.ayuda.PanelAyuda;
-import died.ejemplos.view.PanelCamiones;
+import died.ejemplos.view.ViewAltaCamion;
 import died.ejemplos.view.ViewBuscarCamion;
 
 
@@ -70,7 +70,7 @@ public class App extends JFrame {
 		this.menuItemAltaCamion = new JMenuItem("Registrar");
 		this.menuItemAltaCamion.addActionListener( e -> {
 			System.out.println("LISTENER 1");
-			this.setContentPane(new PanelCamiones());
+			this.setContentPane(new ViewAltaCamion());
 			//this.pack();
 			this.revalidate();
 			this.repaint();

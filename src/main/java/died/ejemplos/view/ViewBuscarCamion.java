@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.time.LocalDate;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -278,7 +279,11 @@ public class ViewBuscarCamion extends JPanel {
 	}
 
 	public String getKmRecorrido() {
-		return seleccionKmRecorrido.getItemAt(seleccionKmRecorrido.getSelectedIndex());
+		if( seleccionKmRecorrido.getItemAt(seleccionKmRecorrido.getSelectedIndex()) == "Selecionar kilometraje") {
+			return "-";
+		}
+		else
+			return seleccionKmRecorrido.getItemAt(seleccionKmRecorrido.getSelectedIndex());
 	}
 	
 	public void setPatente() {
@@ -305,8 +310,8 @@ public class ViewBuscarCamion extends JPanel {
 		 campoFechaCompra.setText("");
 	}
 
-	public String setKmRecorrido() {
-		return seleccionKmRecorrido.getItemAt(seleccionKmRecorrido.getComponentCount());
+	public void setKmRecorrido() {
+		seleccionKmRecorrido.getItemAt(0);
 	}
 	
 	public void addTablaCamiones(Integer tamanioTablaActual) {
@@ -361,14 +366,14 @@ public class ViewBuscarCamion extends JPanel {
 		}
 	}	
 	
-	public void setValoresTablaCamiones(Integer fila, String patente, String marca, String modelo, String kmRecorrido, String costoPorHora, String costoPorKm, String fechaCompra) {
+	public void setValoresTablaCamiones(Integer fila, String patente, String marca, String modelo, String km, Double costohs, Double costokm, LocalDate localDate) {
 		model.setValueAt(patente, fila, 0);
 		model.setValueAt(marca, fila, 1);
 		model.setValueAt(modelo, fila, 2);
-		model.setValueAt(kmRecorrido, fila, 3);
-		model.setValueAt(costoPorHora, fila, 4);
-		model.setValueAt(costoPorKm, fila, 5);
-		model.setValueAt(fechaCompra, fila, 6);
+		model.setValueAt(km, fila, 3);
+		model.setValueAt(costohs, fila, 4);
+		model.setValueAt(costokm, fila, 5);
+		model.setValueAt(localDate, fila, 6);
 	}
 	
 	public void addKmsAnio() {

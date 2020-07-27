@@ -23,10 +23,10 @@ public class Camion {
 	public void setCostoPorHora(Double costoPorHora) {
 		this.costoPorHora = costoPorHora;
 	}
-	public Integer getKmRecorridos() {
+	public String getKmRecorridos() {
 		return kmRecorridos;
 	}
-	public void setKmRecorridos(Integer kmRecorridos) {
+	public void setKmRecorridos(String kmRecorridos) {
 		this.kmRecorridos = kmRecorridos;
 	}
 	private String patente;
@@ -34,7 +34,7 @@ public class Camion {
 	private String modelo;
 	private Double costoPorKM;
 	private Double costoPorHora;
-	private Integer kmRecorridos;  //debe ser string si o si
+	private String kmRecorridos;  //debe ser string si o si
 	private LocalDate fechaCompra;
 	
 
@@ -62,11 +62,11 @@ public class Camion {
 	public void setCostoHora(Double costoHora) {
 		this.costoPorHora = costoHora;
 	}
-	public Integer getKm() {
+	public String getKm() {
 		return kmRecorridos;
 	}
-	public void setKm(Integer km) {
-		this.kmRecorridos = km;
+	public void setKm(String string) {
+		this.kmRecorridos = string;
 	}
 	public LocalDate getFechaCompra() {
 		return fechaCompra;

@@ -11,6 +11,5 @@ public interface CamionDao {
 	public Camion buscarPorId(Integer id);
 	public void borrar(Integer id);
 	public List<Camion> buscarTodos();
-	public List<Camion> busqueda(String consulta, String marca, String modelo, String kmr, String cosths, String costkm, String fecha);
 	public List<Camion> busqueda(String condicionesConsulta);
 }
