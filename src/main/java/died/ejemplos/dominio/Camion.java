@@ -34,7 +34,7 @@ public class Camion {
 	private String modelo;
 	private Double costoPorKM;
 	private Double costoPorHora;
-	private Integer kmRecorridos;
+	private Integer kmRecorridos;  //debe ser string si o si
 	private LocalDate fechaCompra;
 	
 

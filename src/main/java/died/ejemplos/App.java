@@ -24,17 +24,20 @@ import javax.swing.WindowConstants;
 
 import died.ejemplos.gui.ayuda.PanelAyuda;
 import died.ejemplos.view.PanelCamiones;
+import died.ejemplos.view.ViewBuscarCamion;
+
 
 // extiende de una ventana en el S.O
 public class App extends JFrame {
-
 	
 	JMenuBar menuBar;
 	JMenu menuArchivo;
 	JMenu menuEntidades;
 	JMenu menuAyuda;///
 	JMenuItem menuItemAyuda;//
-	JMenuItem menuItemCamion;
+	JMenu menuCamion;
+	JMenuItem menuItemBuscarCamion;
+	JMenuItem menuItemAltaCamion;
 	JMenuItem menuItemSalir;
 
 	private App() {
@@ -46,27 +49,35 @@ public class App extends JFrame {
 		this.menuArchivo = new JMenu("Archivo");
 		this.menuItemSalir = new JMenuItem("Salir");
 		this.menuItemSalir.addActionListener( e -> System.exit(0));
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				
+			}
+		});
 		this.menuArchivo.add(menuItemSalir);
 		
 		this.menuEntidades = new JMenu("Entidades");
-		this.menuItemCamion = new JMenuItem("Camion");
-		this.menuItemCamion.addActionListener( e -> {
+		this.menuCamion = new JMenu("Camion");
+		this.menuItemBuscarCamion = new JMenuItem("Buscar");
+		this.menuItemBuscarCamion.addActionListener( e -> {
+			System.out.println("LISTENER 2");
+			this.setContentPane(new ViewBuscarCamion());
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuItemAltaCamion = new JMenuItem("Registrar");
+		this.menuItemAltaCamion.addActionListener( e -> {
 			System.out.println("LISTENER 1");
 			this.setContentPane(new PanelCamiones());
 			//this.pack();
 			this.revalidate();
 			this.repaint();
 		});
-		this.menuItemCamion.addActionListener( e -> {
-			System.out.println("LISTENER 2");
-		});
-		/*
-		 * e -> {
-			this.setContentPane(new PanelCamiones());
-			this.pack();
-		}
-		 */
-		this.menuEntidades.add(menuItemCamion);
+		this.menuEntidades.add(menuCamion);
+		this.menuCamion.add(menuItemAltaCamion);
+		this.menuCamion.add(menuItemBuscarCamion);
 
 		this.menuAyuda = new JMenu("Ayuda");
 		this.menuItemAyuda = new JMenuItem("Manual");
@@ -125,26 +136,27 @@ public class App extends JFrame {
 //		JLabel etiquetaBievneido = new JLabel(" EJEMPLO DIED");
 //		etiquetaBievneido.setSize(200, 100);
 //		this.add(etiquetaBievneido);
-		JTextField texto = new JTextField(500);
-		texto.addFocusListener(new FocusListener() {
-			
-			@Override
-			public void focusLost(FocusEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("estoy perdiendo el foco");
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("estoy ganando el foco");
+//		JTextField texto = new JTextField(500);
+//		texto.addFocusListener(new FocusListener() {
+//			
+//			@Override
+//			public void focusLost(FocusEvent e) {
+//				// TODO Auto-generated method stub
+//				System.out.println("estoy perdiendo el foco");
+//			}
+//			
+//			@Override
+//			public void focusGained(FocusEvent e) {
+//				// TODO Auto-generated method stub
+//				System.out.println("estoy ganando el foco");
 				
-			}
-		});
-		this.add(texto);
+//			}
+//		});
+//		this.add(texto);
 	}
 
 	public static void main(String[] args) {
+		System.out.println("hola"+"%");
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				  try {
