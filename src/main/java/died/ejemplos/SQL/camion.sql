@@ -5,7 +5,7 @@
 -- Dumped from database version 11.5
 -- Dumped by pg_dump version 11.5
 
--- Started on 2020-07-25 00:02:42
+-- Started on 2020-07-28 19:59:21
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -62,9 +62,12 @@ ALTER TABLE public.camion OWNER TO postgres;
 -- Data for Name: camion; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.camion (id, patente, marca, modelo, km, costo_km, costo_hora, fecha_compra) VALUES (1, 'ovo666', 'hgjhgjh', 'fgfgf', '40', NULL, NULL, NULL);
-INSERT INTO public.camion (id, patente, marca, modelo, km, costo_km, costo_hora, fecha_compra) VALUES (2, 'hhh888', 'hjghjh', 'hgfghg', '400', NULL, NULL, NULL);
-INSERT INTO public.camion (id, patente, marca, modelo, km, costo_km, costo_hora, fecha_compra) VALUES (3, 'ovo898', 'ASTRAL', 'BM 21', '40000', NULL, NULL, NULL);
+COPY public.camion (id, patente, marca, modelo, km, costo_km, costo_hora, fecha_compra) FROM stdin;
+5	SSS555	dxbx	vcbvv	0 - 9.999	8800.00	80.00	2000-08-18
+7	OVO111	svcx	vcbvv	0 - 9.999	8000.00	80.00	2020-01-01
+6	OVO222	hola	como estas	10.000 - 19.999	8000.00	80.00	2019-08-18
+8	ABC123	dddd	xdvc	290.000 - 299.999	8000.00	80.00	2020-07-28
+\.
 
 
 --
@@ -73,7 +76,7 @@ INSERT INTO public.camion (id, patente, marca, modelo, km, costo_km, costo_hora,
 -- Name: camion_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.camion_seq', 3, true);
+SELECT pg_catalog.setval('public.camion_seq', 8, true);
 
 
 --
@@ -85,7 +88,7 @@ ALTER TABLE ONLY public.camion
     ADD CONSTRAINT camion_pkey PRIMARY KEY (id);
 
 
--- Completed on 2020-07-25 00:02:43
+-- Completed on 2020-07-28 19:59:21
 
 --
 -- PostgreSQL database dump complete
