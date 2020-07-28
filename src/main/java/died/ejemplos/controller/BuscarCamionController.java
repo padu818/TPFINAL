@@ -1,41 +1,52 @@
 package died.ejemplos.controller;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.gestor.GestorCamion;
-import died.ejemplos.gui.util.ControllerException;
-import died.ejemplos.gui.util.DatosObligatoriosException;
-import died.ejemplos.gui.util.FormatoNumeroException;
+import died.ejemplos.gui.ayuda.PanelAyuda;
 import died.ejemplos.view.ViewBuscarCamion;
+import died.ejemplos.view.ViewCamion;
 
 
 
-public class BuscarCamionController {
+
+public class BuscarCamionController{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	
 	private GestorCamion camionService;
 	private Camion c;
 	private List<Camion> lista;
 	private ViewBuscarCamion panel;
+//	private ViewCamion panel2;
+	private JFrame ventana;
 	private BuscarCamionController instancia;
 	
-	public BuscarCamionController(ViewBuscarCamion p) {
+	public BuscarCamionController(ViewBuscarCamion viewBuscarCamion, JFrame v){
+		this.instancia = this;
 		this.camionService = new GestorCamion();
 		this.lista = new ArrayList<Camion>();
-		this.panel = p;
+		this.ventana =v;
+		this.panel = viewBuscarCamion;
 		c = new Camion();
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnBuscar(new ListenerBtnBuscar());
-//		panel.addListenerTablaClientes(new ListenerTablaClientes());
-//		panel.addListenerCampoNumeroCliente(new ListenerCampoNumeroCliente());
-//		panel.addListenerCampoApellido(new ListenerCampoApellido());
-//		panel.addListenerCampoNombre(new ListenerCampoNombre());
-//		panel.addListenerCampoNumeroDocumento(new ListenerCampoNumeroDocumento());
+		panel.addListenerTablaCamiones(new ListenerTablaCamiones());
+		ventana.setContentPane(panel);
 	}
 	
 	
@@ -83,7 +94,7 @@ public class BuscarCamionController {
 	public List<Camion> listarTodos(){
 		this.lista.clear();
 		this.lista.addAll(camionService.buscarTodos()); 
-		System.out.println("Resultado res   "+lista);
+		//System.out.println("Resultado res   "+lista);
 		return this.lista;
 	}
 
@@ -109,7 +120,7 @@ public class BuscarCamionController {
 				
 				lista = camionService.busqueda(patente,marca,modelo,kmRec,cosths,costkm,fecha);
 				cargarTabla(lista);
-				System.out.println(lista);
+			//	System.out.println(lista);
 				
 //				panel.setPatente();
 //				panel.setMarca();
@@ -133,6 +144,28 @@ public class BuscarCamionController {
 			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+	
+	private class ListenerTablaCamiones implements MouseListener{			
+		@Override
+		public void mousePressed(MouseEvent e) {
+	        JTable table = (JTable) e.getSource();
+	        Point point = e.getPoint();
+	        int row = panel.getRowTablaCamiones(point);
+	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+	    		c = lista.get(row);
+	    		System.out.println(c);
+	    		ViewCamion ca = new ViewCamion(c,ventana);
+	    		ca.setVisible(true);
+	    		panel.setVisible(false);
+	    		ventana.setContentPane(ca);	
+	    		System.out.println("LISTENER 3");
+	        }
+		}
+		@Override public void mouseClicked(MouseEvent e) {} 
+		@Override public void mouseReleased(MouseEvent e) {}
+		@Override public void mouseEntered(MouseEvent e) {}
+		@Override public void mouseExited(MouseEvent e) {}
 	}
 
 }

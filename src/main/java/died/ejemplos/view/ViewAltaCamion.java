@@ -168,16 +168,16 @@ public class ViewAltaCamion extends JPanel{
 		return campoFechaCompra.getText();
 	}
 
-	public void setCampoFechaCompra(JFormattedTextField campoFechaCompra) {
-		this.campoFechaCompra = campoFechaCompra;
+	public void setCampoFechaCompra(String fecha) {
+		this.campoFechaCompra.setText(fecha);
 	}
 
 	public String getCampoModelo() {
 		return campoModelo.getText();
 	}
 
-	public void setCampoModelo(JTextField campoModelo) {
-		this.campoModelo = campoModelo;
+	public void setCampoModelo(String modelo) {
+		this.campoModelo.setText(modelo);
 	}
 
 
@@ -185,8 +185,8 @@ public class ViewAltaCamion extends JPanel{
 		return campoMarca.getText();
 	}
 
-	public void setCampoMarca(JTextField campoMarca) {
-		this.campoMarca = campoMarca;
+	public void setCampoMarca(String marca) {
+		this.campoMarca.setText(marca);
 	}
 
 	public String getCampoPatente() {
@@ -217,16 +217,16 @@ public class ViewAltaCamion extends JPanel{
 		return campoCostoHs.getText();
 	}
 
-	public void setCampoCostoHs(JTextField campoCostoHs) {
-		this.campoCostoHs = campoCostoHs;
+	public void setCampoCostoHs(String costohs) {
+		this.campoCostoHs.setText(costohs);
 	}
 
 	public String getCampoCostoKm() {
 		return campoCostoKm.getText();
 	}
 
-	public void setCampoCostoKm(JTextField campoCostoHs) {
-		this.campoCostoKm = campoCostoHs;
+	public void setCampoCostoKm(String costokm) {
+		this.campoCostoKm.setText(costokm);
 	}
 
 	public void noValido(Boolean patente, Boolean km, Boolean costokm, Boolean fecha, Boolean marca, Boolean modelo, Boolean costohs) {
@@ -292,6 +292,11 @@ public class ViewAltaCamion extends JPanel{
 		this.addKms();
 	}
 	
+	public void setSeleccionKm(String text) {
+		seleccionKm.removeAll();
+		seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {text}));
+	}
+	
 	public void addKms() {
 		seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
 				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
@@ -302,5 +307,9 @@ public class ViewAltaCamion extends JPanel{
 				"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
 				"Más de 300.000 km"
 		}));
+	}
+
+	public void setCampoPatente(String patente) {
+		campoPatente.setText(patente);
 	}
 }

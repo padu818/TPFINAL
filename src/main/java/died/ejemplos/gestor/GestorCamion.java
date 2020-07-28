@@ -22,6 +22,9 @@ public class GestorCamion {
 	public List<Camion> buscarTodos() {
 		return camionDao.buscarTodos();
 	}
+	
+	
+	
 
 	public List<Camion> busqueda(String patente, String marca, String modelo, String kmr, String cosths, String costkm, String fecha) {
 		String condicionesConsulta = "SELECT ID,PATENTE,MARCA,MODELO,KM,COSTO_KM,COSTO_HORA,FECHA_COMPRA FROM CAMION";
@@ -112,6 +115,10 @@ public class GestorCamion {
 			}
 		}
 		return false;
+	}
+
+	public void eliminar(Camion camion) {
+		camionDao.borrar(camion.getPatente());
 	}
 
 }

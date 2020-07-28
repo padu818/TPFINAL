@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -77,9 +78,9 @@ public class ViewBuscarCamion extends JPanel {
 	
 	
 	
-	public ViewBuscarCamion() {
+	public ViewBuscarCamion(JFrame v) {
 		super();
-		this.controller= new BuscarCamionController(this);
+		this.controller= new BuscarCamionController(this, v);
 		inicializarComponentes();
 		ubicarComponentes();
 		addTablaCamiones(0);	

@@ -62,7 +62,7 @@ public class App extends JFrame {
 		this.menuItemBuscarCamion = new JMenuItem("Buscar");
 		this.menuItemBuscarCamion.addActionListener( e -> {
 			System.out.println("LISTENER 2");
-			this.setContentPane(new ViewBuscarCamion());
+			this.setContentPane(new ViewBuscarCamion(this));
 			//this.pack();
 			this.revalidate();
 			this.repaint();
@@ -97,7 +97,7 @@ public class App extends JFrame {
 		this.setJMenuBar(menuBar);
 		this.addWindowListener( new WindowAdapter() {
 			public void windowIconified(WindowEvent e) {
-				System.out.println("AHORA SI");
+				//System.out.println("AHORA SI");
 			};
 		});
 		this.addMouseListener(new MouseListener() {
@@ -105,14 +105,14 @@ public class App extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("mouseReleased en "+e.getPoint());
+				//System.out.println("mouseReleased en "+e.getPoint());
 
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("mousePressed en "+e.getPoint());
+				//System.out.println("mousePressed en "+e.getPoint());
 
 			}
 			

@@ -17,11 +17,11 @@ public class CamionDaoMysql implements CamionDao{
 			"SELECT ID,PATENTE,MARCA,MODELO,KM,COSTO_KM,COSTO_HORA,FECHA_COMPRA FROM CAMION";
 	
 	private static final String INSERT_CAMION =
-			"INSERT INTO CAMION (PATENTE,MARCA,MODELO,KM) VALUES (?,?,?,?)";
+			"INSERT INTO CAMION (PATENTE,MARCA,MODELO,KM,COSTO_KM,COSTO_HORA,FECHA_COMPRA) VALUES (?,?,?,?,?,?,?)";
 	private static final String UPDATE_CAMION =
-			" UPDATE CAMION SET PATENTE = ?, MARCA =? ,MODELO = ? , KM =?"
-			+ " WHERE ID = ?";
-	
+			" UPDATE CAMION SET PATENTE = ?, MARCA =? ,MODELO = ? , KM =?, COSTO_KM = ?, COSTO_HORA =?, FECHA_COMPRA = ?"
+			+ " WHERE PATENTE = ?";
+	private static final String DELETE_CAMION = "DELETE FROM CAMION WHERE PATENTE = ?";
 	
 	/* prueba
 	 * 	private static final String INSERT_CAMION =
@@ -46,8 +46,8 @@ public class CamionDaoMysql implements CamionDao{
 				pstmt.setString(4, c.getKm());
 				pstmt.setInt(5, c.getId());
 //				pstmt.setString(6, c.getFechaCompra().toString());
-//				pstmt.setDouble(7, c.getCostoPorHora());
-//				pstmt.setDouble(8, c.getCostoPorHora());
+				pstmt.setDouble(7, c.getCostoPorHora());
+				pstmt.setDouble(8, c.getCostoPorHora());
 			}else {
 				System.out.println("EJECUTA INSERT");
 				pstmt= conn.prepareStatement(INSERT_CAMION);
@@ -56,8 +56,8 @@ public class CamionDaoMysql implements CamionDao{
 				pstmt.setString(3, c.getModelo());
 				pstmt.setString(4, c.getKm());
 //				pstmt.setString(6, c.getFechaCompra().toString());
-//				pstmt.setDouble(7, c.getCostoKM());
-//				pstmt.setDouble(8, c.getCostoPorHora());
+				pstmt.setDouble(7, c.getCostoKM());
+				pstmt.setDouble(8, c.getCostoPorHora());
 			}
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -84,9 +84,24 @@ public class CamionDaoMysql implements CamionDao{
 
 
 	@Override
-	public void borrar(Integer id) {
-		// TODO Auto-generated method stub
-		
+	public void borrar(String patente) {
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+			System.out.println("EJECUTA DELETE");
+			pstmt= conn.prepareStatement(DELETE_CAMION);
+			pstmt.setString(1, patente);
+			pstmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 

@@ -1,14 +1,11 @@
 package died.ejemplos.controller;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
 import javax.swing.JOptionPane;
-
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.gestor.GestorCamion;
 import died.ejemplos.gui.util.ControllerException;
@@ -53,9 +50,6 @@ public class AltaCamionController {
 			String textoCostokm = panel.getCampoCostoKm();
 			String textoFecha = panel.getCampoFechaCompra();
 			Integer errorNumero = 1;
-			
-			
-			
 			
 			
 			//---------- posible error en la introducción del número de patente
@@ -190,6 +184,7 @@ public class AltaCamionController {
 	
 	public Boolean guardar() throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
 		if(this.verificarDatos()) {
+			System.out.println(this.panel.getClass());
 			Camion c = new Camion();
 			c.setPatente(this.panel.getCampoPatente()); 
 			c.setModelo(this.panel.getCampoModelo());
@@ -202,6 +197,7 @@ public class AltaCamionController {
 		}
 		return false;
 	}
+	
 	
 	
 	

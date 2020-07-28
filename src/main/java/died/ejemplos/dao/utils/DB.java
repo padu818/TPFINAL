@@ -16,10 +16,18 @@ public class DB {
 			"CREATE TABLE  IF NOT EXISTS CAMION ( ID integer not NULL GENERATED ALWAYS AS IDENTITY, PATENTE VARCHAR(14) not NULL,"
 			+ " MARCA VARCHAR(45) not NULL,MODELO VARCHAR(45) not NULL, "
 			+ "KM VARCHAR(45) not NULL, COSTO_KM DECIMAL(12,2), "+
-			"COSTO_HORA DECIMAL(12,2), "+
-			"FECHA_COMPRA DATE not NULL,"
+			"COSTO_HORA DECIMAL(12,2),"
+			//+ " IDPLANTA integer REFERENCE PLANTA(IDPLANTA)"
+			+"FECHA_COMPRA DATE not NULL,"
 			+ "PRIMARY KEY(ID));";
-
+	private static final String TABLA_CREATE_INSUMO = 
+			"CREATE TABLE  IF NOT EXISTS INSUMO ( IDINSUMO integer not NULL GENERATED ALWAYS AS IDENTITY, NOMBRE VARCHAR(45) not NULL,"
+			+ " DESCRIPCION VARCHAR(50) not NULL,UNIDAD_MEDIDA VARCHAR(12) not NULL, "
+			+ "COSTO DECIMAL(12,2), "
+			+ "PRIMARY KEY(ID));";
+	private static final String TABLA_CREATE_PLANTA = 
+			"CREATE TABLE  IF NOT EXISTS PLANTA ( IDPLANTA integer not NULL GENERATED ALWAYS AS IDENTITY, NOMBRE VARCHAR(45) not NULL,"
+			+ "PRIMARY KEY(ID));";
 
 	private DB(){
 			// no se pueden crear instancias de esta clase
@@ -31,8 +39,10 @@ public class DB {
 			Statement stmt = null;
 			try {
 				stmt = conn.createStatement();
+		//		boolean tablaPlantaCreada = stmt.execute(TABLA_CREATE_PLANTA);
+		//		boolean tablaInsumoCreada = stmt.execute(TABLA_CREATE_INSUMO);	
 				boolean tablaCamionCreada = stmt.execute(TABLA_CREATE_CAMION);
-				_TABLAS_CREADAS = tablaCamionCreada;
+				_TABLAS_CREADAS = tablaCamionCreada; //VER
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
