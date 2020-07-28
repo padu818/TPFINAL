@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import died.ejemplos.dao.utils.DB;
@@ -20,7 +23,7 @@ public class CamionDaoMysql implements CamionDao{
 			"INSERT INTO CAMION (PATENTE,MARCA,MODELO,KM,COSTO_KM,COSTO_HORA,FECHA_COMPRA) VALUES (?,?,?,?,?,?,?)";
 	private static final String UPDATE_CAMION =
 			" UPDATE CAMION SET PATENTE = ?, MARCA =? ,MODELO = ? , KM =?, COSTO_KM = ?, COSTO_HORA =?, FECHA_COMPRA = ?"
-			+ " WHERE PATENTE = ?";
+			+ " WHERE ID = ?";
 	private static final String DELETE_CAMION = "DELETE FROM CAMION WHERE PATENTE = ?";
 	
 	/* prueba
@@ -44,10 +47,10 @@ public class CamionDaoMysql implements CamionDao{
 				pstmt.setString(2, c.getMarca());
 				pstmt.setString(3, c.getModelo());
 				pstmt.setString(4, c.getKm());
-				pstmt.setInt(5, c.getId());
-//				pstmt.setString(6, c.getFechaCompra().toString());
-				pstmt.setDouble(7, c.getCostoPorHora());
-				pstmt.setDouble(8, c.getCostoPorHora());
+				pstmt.setDouble(5, c.getCostoKM());
+				pstmt.setDouble(6, c.getCostoPorHora());
+				pstmt.setDate(7, java.sql.Date.valueOf(c.getFechaCompra()));
+				pstmt.setInt(8, c.getId());
 			}else {
 				System.out.println("EJECUTA INSERT");
 				pstmt= conn.prepareStatement(INSERT_CAMION);
@@ -55,9 +58,11 @@ public class CamionDaoMysql implements CamionDao{
 				pstmt.setString(2, c.getMarca());
 				pstmt.setString(3, c.getModelo());
 				pstmt.setString(4, c.getKm());
-//				pstmt.setString(6, c.getFechaCompra().toString());
-				pstmt.setDouble(7, c.getCostoKM());
-				pstmt.setDouble(8, c.getCostoPorHora());
+				pstmt.setDouble(5, c.getCostoPorHora());
+				pstmt.setDouble(6, c.getCostoKM());
+				System.out.println(java.sql.Date.valueOf(c.getFechaCompra()));
+				pstmt.setDate(7,java.sql.Date.valueOf(c.getFechaCompra()));
+				
 			}
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -91,7 +96,7 @@ public class CamionDaoMysql implements CamionDao{
 			System.out.println("EJECUTA DELETE");
 			pstmt= conn.prepareStatement(DELETE_CAMION);
 			pstmt.setString(1, patente);
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -125,7 +130,7 @@ public class CamionDaoMysql implements CamionDao{
 				c.setKm(rs.getString("KM"));
 				c.setCostoKM(rs.getDouble("COSTO_KM"));
 				c.setCostoHora(rs.getDouble("COSTO_HORA"));
-				//c.setFechaCompra(rs.getDate("FECHA_COMPRA").toLocalDate()); //revisar fechas cuando no sea null la compra
+				c.setFechaCompra(rs.getDate("FECHA_COMPRA").toLocalDate());
 				lista.add(c);
 			}			
 		} catch (SQLException e) {
@@ -163,7 +168,7 @@ public class CamionDaoMysql implements CamionDao{
 				c.setKm(rs.getString("KM"));
 				c.setCostoHora(rs.getDouble("COSTO_HORA"));
 				c.setCostoKM(rs.getDouble("COSTO_KM"));
-				//c.setFechaCompra(rs.getDate("FECHA_COMPRA").toLocalDate());
+				c.setFechaCompra(rs.getDate("FECHA_COMPRA").toLocalDate());
 				lista.add(c);
 			}			
 		} catch (SQLException e) {

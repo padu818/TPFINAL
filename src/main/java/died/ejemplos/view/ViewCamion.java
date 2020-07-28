@@ -178,7 +178,8 @@ public class ViewCamion extends JPanel{
 			this.setSeleccionKm();
 			this.campoFechaCompra.setText("");
 		}
-
+		
+		
 		
 		public void addListenerBtnEditar(ActionListener listener) {
 			btnEditar.addActionListener(listener);

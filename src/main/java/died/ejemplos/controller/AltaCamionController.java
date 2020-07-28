@@ -5,6 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JOptionPane;
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.gestor.GestorCamion;
@@ -192,6 +197,12 @@ public class AltaCamionController {
 			c.setCostoHora(Double.valueOf(this.panel.getCampoCostoHs()));
 			c.setCostoKM(Double.valueOf(this.panel.getCampoCostoKm()));
 			c.setKm(this.panel.getSeleccionKm());
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			System.out.println(this.panel.getCampoFechaCompra());
+			LocalDate aux = LocalDate.parse(this.panel.getCampoFechaCompra(),formatter);
+			System.out.println("hla"+aux);
+			c.setFechaCompra(aux);
+			System.out.println(c.getFechaCompra().toString());
 			camionService.crearCamion(c);
 			return true;
 		}

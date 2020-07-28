@@ -2,16 +2,16 @@ package died.ejemplos.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.gestor.GestorCamion;
-import died.ejemplos.gui.util.ControllerException;
-import died.ejemplos.gui.util.DatosObligatoriosException;
-import died.ejemplos.gui.util.FormatoNumeroException;
 import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewCamion;
 
@@ -46,6 +46,7 @@ public class BuscarCamionController2{
 		panel.addListenerBtnEditar(new ListenerEditar());
 		panel.addListenerBtnGuardar(new ListenerGuardar());
 		panel.addListenerBtnEliminar(new ListenerEliminar());
+		panel.addListenerCampoPatente(new ListenerCampoPatente());
 	//	ventana.setContentPane(panel);
 	}
 	
@@ -57,7 +58,7 @@ public class BuscarCamionController2{
 		panel.setCampoSeleccionKm(camion.getKm());
 		panel.setCampoCostoHs(camion.getCostoHora().toString());
 		panel.setCampoCostoKm(camion.getCostoKM().toString());
-	//	panel.setCampoFechaCompra(camion.getFechaCompra().toString());
+		panel.setCampoFechaCompra(camion.getFechaCompra().toString());
 		panel.setCampoID(camion.getId().toString());
 	}
 
@@ -120,7 +121,7 @@ public class BuscarCamionController2{
 	}
 
 	public boolean guardar(Camion camion2) {
-		if(!verificarDatos()) {
+		if(verificarDatos()) {
 			System.out.println("llegue aca?");
 			camion.setPatente(this.panel.getCampoPatente()); 
 			camion.setModelo(this.panel.getCampoModelo());
@@ -128,6 +129,11 @@ public class BuscarCamionController2{
 			camion.setCostoHora(Double.valueOf(this.panel.getCampoCostoHs()));
 			camion.setCostoKM(Double.valueOf(this.panel.getCampoCostoKm()));
 			camion.setKm(this.panel.getSeleccionKm());
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			System.out.println(this.panel.getCampoFechaCompra());
+			LocalDate aux = LocalDate.parse(this.panel.getCampoFechaCompra().toString());
+			camion.setFechaCompra(aux);
+			System.out.println(aux);
 			camionService.crearCamion(camion);
 			System.out.println("se guardo?");
 			return true;
@@ -143,6 +149,7 @@ public class BuscarCamionController2{
 		String textoErrorFecha = "";
 		String textoErrorPatente = "";
 		String textoErrorKm = "";
+		
 		Boolean errorEnPatente = false;
 		Boolean errorEnkm = false;
 		Boolean errorEnModelo = false;
@@ -157,10 +164,13 @@ public class BuscarCamionController2{
 		String textoCostokm = panel.getCampoCostoKm();
 		String textoFecha = panel.getCampoFechaCompra();
 		Integer errorNumero = 1;
+		Boolean igualPatente = false;
+		if(this.camion.getPatente().equals(textoPatente))
+			igualPatente = true;
 		
-		
+		System.out.println("aqui1");
 		//---------- posible error en la introducción del número de patente
-		if(!textoPatente.isEmpty()) {
+		if(!textoPatente.isEmpty() && !igualPatente) {
 			switch (textoPatente.length()) {
 		        case 6: //para patente longitud 6
 		        	for(int i = 0; i < 6; i++) {	        		
@@ -187,13 +197,13 @@ public class BuscarCamionController2{
 			        		break;
 			        	}
 		        	}
-//					if(!errorEnPatente) {
-//						if(camionService.validarPatente(textoPatente)) {
-//							errorEnPatente = true;
-//							textoErrorPatente = errorNumero+") El valor ingresado del número de patente, ya está registrado.\n";
-//							errorNumero++;
-//						}
-//					}
+					if(!errorEnPatente) {
+						if(camionService.validarPatente(textoPatente)) {
+							errorEnPatente = true;
+							textoErrorPatente = errorNumero+") El valor ingresado del número de patente, ya está registrado.\n";
+							errorNumero++;
+						}
+					}
 		        break;     
 		        
 		        case 7:  //para patente longitud 7
@@ -221,13 +231,13 @@ public class BuscarCamionController2{
 			        		break;
 			        	}
 		        	}
-//					if(!errorEnPatente) {
-//						if(camionService.validarPatente(textoPatente)) {
-//							errorEnPatente = true;
-//							textoErrorPatente = errorNumero+") El valor ingresado del número de patente, ya está registrado.\n";
-//							errorNumero++;
-//						}
-//					}
+					if(!errorEnPatente) {
+						if(camionService.validarPatente(textoPatente)) {
+							errorEnPatente = true;
+							textoErrorPatente = errorNumero+") El valor ingresado del número de patente, ya está registrado.\n";
+							errorNumero++;
+						}
+					}
 		        break;
 	
 		        default:
@@ -243,7 +253,7 @@ public class BuscarCamionController2{
 			errorNumero++;
 		}
 		
-		
+		System.out.println("aqui2");
 		if(textoMarca.isEmpty()) {
 			errorEnMarca = true;
 			textoErrorMarca = errorNumero+") Debe completar el campo marca\n";
@@ -256,7 +266,7 @@ public class BuscarCamionController2{
 		}
 		
 		//---------- posible error en la no selección de un kilometraje
-		if (panel.getSeleccionKm().equals("Selecionar kilometraje")) {
+		if (panel.getSeleccionKm().equals("Selecionar kilometraje") || panel.getSeleccionKm().equals("-")) {
 			errorEnkm = true;
 			textoErrorKm = errorNumero+") No se ha seleccionado un valor del campo km.\n";
 		}
@@ -277,7 +287,7 @@ public class BuscarCamionController2{
 			textoErrorFecha = errorNumero+") Debe completar el campo fecha\n";
 			errorNumero++;
 		}
-		
+		System.out.println("aqui3");
 		String mensajeError =  textoErrorPatente+textoErrorMarca+textoErrorModelo+textoErrorKm+textoErrorCostoHs+textoErrorCostoKm + textoErrorFecha;
 		
 		if( errorEnPatente || errorEnkm || errorEnCostohs || errorEnCostokm || errorEnFecha || errorEnMarca|| errorEnModelo ||errorEnCostohs) {
@@ -287,5 +297,24 @@ public class BuscarCamionController2{
 			return false;
 		}
 		return true;
-}
+	}
+		private class ListenerCampoPatente implements KeyListener{
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+						&& panel.getCampoPatente().length() < 7 ){
+					if(Character.isLowerCase(caracter)){
+				    	 caracter = Character.toUpperCase(caracter);
+					}
+					e.setKeyChar(caracter);
+				}
+				else{
+					e.consume();
+				}
+			}
+			public void keyPressed(KeyEvent e) { }
+			public void keyReleased(KeyEvent e) { }
+				
+			} 
+
 }
