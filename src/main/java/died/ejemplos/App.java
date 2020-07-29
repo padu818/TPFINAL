@@ -22,10 +22,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
+
 import died.ejemplos.gui.ayuda.PanelAyuda;
 import died.ejemplos.view.ViewAltaCamion;
 import died.ejemplos.view.ViewAltaInsumo;
 import died.ejemplos.view.ViewBuscarCamion;
+import died.ejemplos.view.ViewVisualizarInsumo;
 
 
 // extiende de una ventana en el S.O
@@ -42,7 +44,8 @@ public class App extends JFrame {
 	JMenuItem menuItemSalir;
 	JMenu menuInsumo;
 	JMenuItem menuItemAltaInsumo;
-
+	JMenuItem menuItemVisualizarInsumo;
+	
 	private App() {
 	}
 
@@ -90,8 +93,17 @@ public class App extends JFrame {
 			this.revalidate();
 			this.repaint();
 		});
+		this.menuItemVisualizarInsumo = new JMenuItem("Visualizar");
+		this.menuItemVisualizarInsumo.addActionListener(e -> {
+			this.setContentPane(new ViewVisualizarInsumo(this));
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		
 		this.menuEntidades.add(menuInsumo);
 		this.menuInsumo.add(menuItemAltaInsumo);
+		this.menuInsumo.add(menuItemVisualizarInsumo);
 
 		this.menuAyuda = new JMenu("Ayuda");
 		this.menuItemAyuda = new JMenuItem("Manual");
@@ -170,6 +182,7 @@ public class App extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		
 		System.out.println("hola"+"%");
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

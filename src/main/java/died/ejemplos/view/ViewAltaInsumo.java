@@ -67,8 +67,12 @@ public class ViewAltaInsumo extends JPanel {
 		campoNombre.setEnabled(true);
 		campoDescripcion.setEnabled(true);
 		campoCosto.setEnabled(true);
-		campoPeso.setEnabled(true);
-		campoDensidad.setEnabled(true);
+		campoPeso.setVisible(false);
+		campoPeso.setEnabled(false);
+		campoDensidad.setVisible(false);
+		campoDensidad.setEnabled(false);
+		lblDensidad.setVisible(false);
+		lblPeso.setVisible(false);
 		this.addUnidadMedida();
 		this.addTipo();
 		seleccionUnidadMedida.setEnabled(true);
@@ -120,14 +124,11 @@ public class ViewAltaInsumo extends JPanel {
 		constraints.gridy = 6;
 		constraints.insets.set(20, 0, 0, 0);
 		add(lblPeso, constraints);
-		constraints.insets.set(20, 120, 0, 0);
-		add(campoPeso, constraints);
-			
-		constraints.gridy = 7;
-		constraints.insets.set(20, 0, 0, 0);
 		add(lblDensidad, constraints);
 		constraints.insets.set(20, 120, 0, 0);
+		add(campoPeso, constraints);
 		add(campoDensidad, constraints);
+			
 			
 		constraints.gridy = 9;
 		constraints.gridwidth = 4;
@@ -157,6 +158,9 @@ public class ViewAltaInsumo extends JPanel {
 	
 	public void addListenerBtnGuardar(ActionListener listener) {
 		btnGuardar.addActionListener(listener);
+	}
+	public void addListenerSeleccionTipo(ActionListener listener) {
+		seleccionTipo.addActionListener(listener);
 	}
 
 	public void addListenerBtnCancelar(ActionListener listener) {
@@ -299,6 +303,26 @@ public class ViewAltaInsumo extends JPanel {
 	
 	public void setCampoDensidad(String densidad) {
 		campoDensidad.setText(densidad);
+	}
+
+	public void setTipo(String s) {
+		if(s.equals("GENERAL")) {
+			campoPeso.setVisible(true);
+			lblPeso.setVisible(true);
+			campoPeso.setEnabled(true);
+			campoDensidad.setVisible(false);
+			lblDensidad.setVisible(false);
+			campoDensidad.setEnabled(false);
+		}
+		else {
+			campoDensidad.setVisible(true);
+			lblDensidad.setVisible(true);
+			campoDensidad.setEnabled(true);
+			campoPeso.setVisible(false);
+			lblPeso.setVisible(false);
+			campoPeso.setEnabled(false);
+		}
+
 	}
 	
 }

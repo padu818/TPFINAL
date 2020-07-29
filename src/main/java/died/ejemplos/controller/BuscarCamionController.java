@@ -3,6 +3,8 @@ package died.ejemplos.controller;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+
 
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.gestor.GestorCamion;
@@ -46,6 +49,7 @@ public class BuscarCamionController{
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnBuscar(new ListenerBtnBuscar());
 		panel.addListenerTablaCamiones(new ListenerTablaCamiones());
+		panel.addListenerCampoPatente(new ListenerCampoPatente());
 		ventana.setContentPane(panel);
 	}
 	
@@ -120,16 +124,6 @@ public class BuscarCamionController{
 				
 				lista = camionService.busqueda(patente,marca,modelo,kmRec,cosths,costkm,fecha);
 				cargarTabla(lista);
-			//	System.out.println(lista);
-				
-//				panel.setPatente();
-//				panel.setMarca();
-//				panel.setModelo();
-//				panel.setKmRecorrido();
-//				panel.setCostoPorHora();
-//				panel.setCostoPorKm();
-//				panel.setFechaCompra();
-					
 			}catch(Exception ex) {
 				 JOptionPane.showMessageDialog(null, "No se pudo obtener el camion desde la base de datos",
                           "Error.", JOptionPane.ERROR_MESSAGE); 
@@ -167,5 +161,25 @@ public class BuscarCamionController{
 		@Override public void mouseEntered(MouseEvent e) {}
 		@Override public void mouseExited(MouseEvent e) {}
 	}
+	
+	private class ListenerCampoPatente implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+					&& panel.getPatente().length() < 7 ){
+				if(Character.isLowerCase(caracter)){
+			    	 caracter = Character.toUpperCase(caracter);
+				}
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		} 
+	
 
 }

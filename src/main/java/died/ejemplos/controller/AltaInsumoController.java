@@ -29,6 +29,7 @@ public class AltaInsumoController {
 		this.panel = p;
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnGuardar(new ListenerBtnGuardar());
+		panel.addListenerSeleccionTipo(new ListenerSeleccionTipo());
 	}
 	
 	public Boolean verificarDatos() {
@@ -92,12 +93,12 @@ public class AltaInsumoController {
 		}
 		
 		
-		if(textoPeso.isEmpty()) {
+		if(panel.getSeleccionTipo().equals("GENERAL") && textoPeso.isEmpty()) {
 			errorEnPeso = true;
 			textoErrorPeso = errorNumero+") Debe completar el campo peso.\n";
 			errorNumero++;
 		}
-		if(textoDensidad.isEmpty()) {
+		if(panel.getSeleccionTipo().equals("LIQUIDO") && textoDensidad.isEmpty()) {
 			errorEnDensidad = true;
 			textoErrorDensidad = errorNumero+") Debe completar el campo densidad.\n";
 			errorNumero++;
@@ -116,14 +117,16 @@ public class AltaInsumoController {
 	
 	public Boolean guardar() throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
 		if(this.verificarDatos()) {
-			System.out.println(this.panel.getClass());
+//			System.out.println(this.panel.getClass());
 			if (this.panel.getSeleccionTipo().equals("GENERAL")) {
-				General i = new General();
-				i.setPeso(Double.valueOf(this.panel.getCampoPeso()));
+				System.out.println("llego");
+				i = new General();
+				((General) i).setPeso(Double.valueOf(this.panel.getCampoPeso()));
 			} else {
-				Liquido i = new Liquido();
-				i.setDensidad(Double.valueOf(this.panel.getCampoDensidad()));
+				 i = new Liquido();
+				((Liquido) i).setDensidad(Double.valueOf(this.panel.getCampoDensidad()));
 			}
+			System.out.println(this.panel.getCampoNombre());
 			i.setNombre(this.panel.getCampoNombre()); 
 			i.setDescripcion(this.panel.getCampoDescripcion()); 
 			i.setCosto(Double.valueOf(this.panel.getCampoCosto()));
@@ -150,7 +153,8 @@ public class AltaInsumoController {
 				i.setUnidadMedida(Unidad.M2);
 				break;
 			}
-//			insumoService.crearInsumo(i);
+			
+			insumoService.crearInsumo(i);
 			return true;
 		}
 		return false;
@@ -162,6 +166,18 @@ public class AltaInsumoController {
 		public void actionPerformed(ActionEvent e) {
 			try {	
 				panel.setVisible(false);
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerSeleccionTipo implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {	
+				if(!panel.getSeleccionTipo().equals("Seleccionar tipo de insumo")) {
+						panel.setTipo(panel.getSeleccionTipo());
+				}
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

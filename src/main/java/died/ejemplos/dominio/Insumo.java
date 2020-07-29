@@ -13,40 +13,41 @@ public abstract class Insumo {
 	
 	public abstract Double pesoPorUnidad();
 	
+
+	public Insumo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+	public abstract String getUnidadMedida(); 
+
+	
+	public abstract void setUnidadMedida(Unidad medida);
+	
+	public abstract void setUnidadMedida(String medida) ;
+
+	
+	public abstract String getNombre();
+
+	
+	public abstract void setNombre(String nombre) ;
 	
 	
+	public abstract Integer getIdProduto() ;
+
 	
-	
-	public Unidad getUnidadMedida() {
-		return unidadMedida;
-	}
-	public void setUnidadMedida(Unidad medida) {
-		this.unidadMedida = medida;
-	}
-	public String getNombre() {
-		return nombre;
-	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public Integer getIdProduto() {
-		return idInsumo;
-	}
-	public void setIdProduto(Integer idProduto) {
-		this.idInsumo = idProduto;
-	}
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	public double getCosto() {
-		return costo;
-	}
-	public void setCosto(Double costo) {
-		this.costo = costo;
-	}
+	public abstract void setIdProduto(Integer idProduto) ;
+	public abstract String getDescripcion() ;
+	public abstract void setDescripcion(String descripcion);
+	public abstract Double getCosto();
+	public abstract void setCosto(Double costo) ;
+
+
+
+
+	public abstract String getTipoInsumo();
 	
 
 }
