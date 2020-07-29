@@ -68,6 +68,7 @@ public class DB {
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
+		System.out.println("CONEXION LOGRADA");
 		return conn;
 	}
 	

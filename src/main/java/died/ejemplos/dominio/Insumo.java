@@ -1,26 +1,26 @@
 package died.ejemplos.dominio;
 
-public class Insumo {
+public abstract class Insumo {
 
-	private Integer idInsumo;
-	private String nombre;
-	private String descripcion;
-	private double costo;
-	private Unidad unidadMedida;
+	protected Integer idInsumo;
+	protected String nombre;
+	protected String descripcion;
+	protected Double costo;
+	protected Unidad unidadMedida;
+	
+	
+	
+	
+	public abstract Double pesoPorUnidad();
 	
 	
 	
 	
 	
-	
-	
-	
-	
-	
-	public Unidad getMedida() {
+	public Unidad getUnidadMedida() {
 		return unidadMedida;
 	}
-	public void setMedida(Unidad medida) {
+	public void setUnidadMedida(Unidad medida) {
 		this.unidadMedida = medida;
 	}
 	public String getNombre() {
@@ -44,7 +44,7 @@ public class Insumo {
 	public double getCosto() {
 		return costo;
 	}
-	public void setCosto(double costo) {
+	public void setCosto(Double costo) {
 		this.costo = costo;
 	}
 	

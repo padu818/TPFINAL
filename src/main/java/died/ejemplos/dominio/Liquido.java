@@ -13,4 +13,10 @@ public class Liquido extends Insumo {
 	public void setDensidad(Double densidad) {
 		this.densidad = densidad;
 	}
+
+	@Override
+	public Double pesoPorUnidad() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

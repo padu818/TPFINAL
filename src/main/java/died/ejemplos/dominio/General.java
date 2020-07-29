@@ -1,6 +1,6 @@
 package died.ejemplos.dominio;
 
-public class Generales extends Insumo {
+public class General extends Insumo {
 	private Double peso;
 
 	
@@ -12,6 +12,12 @@ public class Generales extends Insumo {
 
 	public void setPeso(Double peso) {
 		this.peso = peso;
+	}
+
+	@Override
+	public Double pesoPorUnidad() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 
 import died.ejemplos.gui.ayuda.PanelAyuda;
 import died.ejemplos.view.ViewAltaCamion;
+import died.ejemplos.view.ViewAltaInsumo;
 import died.ejemplos.view.ViewBuscarCamion;
 
 
@@ -39,6 +40,8 @@ public class App extends JFrame {
 	JMenuItem menuItemBuscarCamion;
 	JMenuItem menuItemAltaCamion;
 	JMenuItem menuItemSalir;
+	JMenu menuInsumo;
+	JMenuItem menuItemAltaInsumo;
 
 	private App() {
 	}
@@ -78,6 +81,17 @@ public class App extends JFrame {
 		this.menuEntidades.add(menuCamion);
 		this.menuCamion.add(menuItemAltaCamion);
 		this.menuCamion.add(menuItemBuscarCamion);
+		
+		this.menuInsumo = new JMenu("Insumo");
+		this.menuItemAltaInsumo = new JMenuItem("Registrar");
+		this.menuItemAltaInsumo.addActionListener(e -> {
+			this.setContentPane(new ViewAltaInsumo());
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuEntidades.add(menuInsumo);
+		this.menuInsumo.add(menuItemAltaInsumo);
 
 		this.menuAyuda = new JMenu("Ayuda");
 		this.menuItemAyuda = new JMenuItem("Manual");
