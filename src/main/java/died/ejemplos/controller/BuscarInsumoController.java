@@ -12,12 +12,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
+
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.dominio.General;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Liquido;
 import died.ejemplos.gestor.GestorCamion;
 import died.ejemplos.gestor.GestorInsumo;
+import died.ejemplos.view.ViewAltaInsumo;
 import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewCamion;
 import died.ejemplos.view.ViewVisualizarInsumo;
@@ -48,7 +50,8 @@ private static final long serialVersionUID = 1L;
 		ventana.setContentPane(panel);
 		cargarTabla(lista);
 	}
-	
+
+
 	private void cargarTabla(List<Insumo> insumos) {
 		if(insumos.isEmpty()) {
 			panel.addTablaInsumos(0);

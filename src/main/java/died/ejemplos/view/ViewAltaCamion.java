@@ -72,6 +72,8 @@ public class ViewAltaCamion extends JPanel{
 		this.inicializarComponentes();
 	}
 	
+	
+	
 	private void inicializarComponentes() {		
 		btnGuardar.setPreferredSize(new Dimension(160, 25));
 		btnCancelar.setPreferredSize(new Dimension(160, 25));

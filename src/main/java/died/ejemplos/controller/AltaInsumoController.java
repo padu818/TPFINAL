@@ -4,13 +4,17 @@ package died.ejemplos.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 
 import died.ejemplos.dominio.General;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Liquido;
 import died.ejemplos.dominio.Unidad;
+import died.ejemplos.gestor.GestorCamion;
 import died.ejemplos.gestor.GestorInsumo;
 import died.ejemplos.gui.util.ControllerException;
 import died.ejemplos.gui.util.DatosObligatoriosException;
@@ -23,6 +27,8 @@ public class AltaInsumoController {
 	private Insumo i;
 	private ViewAltaInsumo panel;
 	private AltaInsumoController instancia;
+	private JPanel panelAnterior;
+	private JFrame ventana;
 	
 	public AltaInsumoController(ViewAltaInsumo p) {
 		this.insumoService = new GestorInsumo();
@@ -32,6 +38,47 @@ public class AltaInsumoController {
 		panel.addListenerSeleccionTipo(new ListenerSeleccionTipo());
 	}
 	
+	
+	
+	public AltaInsumoController(ViewAltaInsumo viewAltaInsumo, Insumo i2, JFrame v) {
+		this.insumoService = new GestorInsumo();
+		this.i = i2;
+		this.panel = viewAltaInsumo;
+		panel.setVisible(true);
+		this.ventana = v;
+		panelAnterior = (JPanel) v.getContentPane();
+		setView();
+	}
+	private void setView() {
+		
+		cargarInsumoSeleccionado(this.i);
+//		panel.addListenerBtnVolver(new ListenerVolver());
+//		panel.addListenerBtnEditar(new ListenerEditar());
+//		panel.addListenerBtnGuardar(new ListenerGuardar());
+//		panel.addListenerBtnEliminar(new ListenerEliminar());
+	//	ventana.setContentPane(panel);
+	}
+
+
+	private void cargarInsumoSeleccionado(Insumo i2) {
+		panel.setCampoId(i2.getIdProduto().toString());
+		panel.setCampoNombre(i2.getNombre());
+		panel.setCampoDescripcion(i2.getDescripcion());
+		panel.setCampoCosto(i2.getCosto().toString());
+
+		//panel.setCampoUnidadMedida(i2.getUnidadMedida());
+		
+		if (i2.getTipoInsumo().equals("GENERAL")) {
+		//	panel.setCampoTipoInsumo("GENERAL");
+			panel.setCampoPeso(((General)i2).getPeso().toString());
+		}else {
+		//	panel.setCampoTipoInsumo("LIQUIDO");
+			panel.setCampoDensidad(((Liquido)i2).getDensidad().toString());
+		}
+	}
+
+
+
 	public Boolean verificarDatos() {
 		String textoErrorNombre = "";
 		String textoErrorDescripcion = "";

@@ -22,6 +22,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import died.ejemplos.controller.AltaInsumoController;
+import died.ejemplos.controller.BuscarCamionController2;
+import died.ejemplos.controller.BuscarInsumoController;
+import died.ejemplos.dominio.Camion;
+import died.ejemplos.dominio.Insumo;
 
 public class ViewAltaInsumo extends JPanel {
 	
@@ -41,8 +45,11 @@ public class ViewAltaInsumo extends JPanel {
 	private JLabel lblTipo = new JLabel("Tipo:");
 	private JLabel lblPeso = new JLabel("Peso:");
 	private JLabel lblDensidad = new JLabel("Densidad:");
+	private JLabel lblID = new JLabel("ID:");
 	
-	
+	private JTextField campoID = new JTextField(16);
+	private JTextField campoUnidadMedida = new JTextField(16);
+	private JTextField campoTipoInsumo = new JTextField(16);
 	private JTextField campoNombre = new JTextField(16);
 	private JTextField campoDescripcion = new JTextField(16);
 	private JTextField campoCosto = new JTextField(16);
@@ -52,13 +59,56 @@ public class ViewAltaInsumo extends JPanel {
 	private JTextField campoDensidad = new JTextField(16);
 	private JButton btnGuardar = new JButton("GUARDAR");
 	private JButton btnCancelar = new JButton("CANCELAR");
-	private AltaInsumoController controller; 
+	private JButton btnEditar = new JButton("EDITAR");
+	private JButton btnEliminar = new JButton("ELIMINAR");
+	private JButton btnVolver = new JButton("VOLVER");
+	private AltaInsumoController controller;
+	private BuscarInsumoController controller1; 
 	
 	public ViewAltaInsumo(){
 		super();
 		this.controller= new AltaInsumoController(this);
 		this.ubicarComponentes();
 		this.inicializarComponentes();
+	}
+	
+	public ViewAltaInsumo(Insumo i,JFrame v){
+		super();
+		this.controller= new AltaInsumoController(this, i, v);
+		this.ubicarComponentes();
+		this.modificarComponentes();
+	}
+	
+	private void modificarComponentes() {		
+		btnEditar.setPreferredSize(new Dimension(160, 25));
+		btnEliminar.setPreferredSize(new Dimension(160, 25));
+		btnVolver.setPreferredSize(new Dimension(160, 25));
+		btnGuardar.setPreferredSize(new Dimension(160, 25));
+		campoID.setEnabled(false);
+		campoNombre.setEnabled(false);
+		campoDescripcion.setEnabled(false);
+		campoCosto.setEnabled(false);
+		campoPeso.setVisible(false);
+		campoPeso.setEnabled(false);
+		campoDensidad.setVisible(false);
+		campoDensidad.setEnabled(false);
+		campoUnidadMedida.setEnabled(false);
+		campoTipoInsumo.setEnabled(false);
+		seleccionTipo.setVisible(false);
+		seleccionUnidadMedida.setVisible(false);
+		seleccionTipo.setEnabled(false);
+		seleccionUnidadMedida.setEnabled(false);
+		lblDensidad.setVisible(false);
+		lblPeso.setVisible(false);
+		btnEditar.setEnabled(true);
+		btnEliminar.setEnabled(true);
+		btnVolver.setEnabled(true);
+		btnGuardar.setVisible(false);
+		btnVolver.setVisible(true);
+		btnEliminar.setVisible(true);
+		
+//		campoPatente.setToolTipText("LLL999 / LL999LL");
+//		campoFechaCompra.setToolTipText("dd/mm/YYYY");
 	}
 	
 	private void inicializarComponentes() {		
@@ -73,6 +123,10 @@ public class ViewAltaInsumo extends JPanel {
 		campoDensidad.setEnabled(false);
 		lblDensidad.setVisible(false);
 		lblPeso.setVisible(false);
+		campoUnidadMedida.setVisible(false);
+		campoTipoInsumo.setVisible(false);
+		seleccionTipo.setEnabled(false);
+		seleccionUnidadMedida.setEnabled(false);
 		this.addUnidadMedida();
 		this.addTipo();
 		seleccionUnidadMedida.setEnabled(true);
@@ -113,6 +167,7 @@ public class ViewAltaInsumo extends JPanel {
 		constraints.insets.set(20, 120, 0, 0);
 		seleccionUnidadMedida.setPreferredSize(new Dimension(180,20));
 		add(seleccionUnidadMedida, constraints);
+		add(campoUnidadMedida,constraints);
 		
 		constraints.gridy = 5;
 		constraints.insets.set(20, 0, 0, 0);
@@ -120,6 +175,7 @@ public class ViewAltaInsumo extends JPanel {
 		constraints.insets.set(20, 120, 0, 0);
 		seleccionTipo.setPreferredSize(new Dimension(180,20));
 		add(seleccionTipo, constraints);
+		add(campoTipoInsumo,constraints);
 			
 		constraints.gridy = 6;
 		constraints.insets.set(20, 0, 0, 0);
@@ -134,9 +190,14 @@ public class ViewAltaInsumo extends JPanel {
 		constraints.gridwidth = 4;
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(30, 0, 0, 200);
-		add(btnGuardar, constraints);
-		constraints.insets.set(30, 0, 0, 0);
-		add(btnCancelar, constraints);
+		add(btnEditar, constraints);
+		add(btnGuardar,constraints);
+		constraints.gridx = 3;
+		constraints.insets.set(30, 0, 0, 100);
+		add(btnEliminar, constraints);
+		constraints.gridy = 10;
+		constraints.insets.set(30, 0, 0, 100);
+		add(btnVolver,constraints);
 		}
 	
 	public void limpiarFormulario() {
@@ -324,5 +385,11 @@ public class ViewAltaInsumo extends JPanel {
 		}
 
 	}
-	
+
+	public void setCampoId(String idProduto) {
+		campoID.setText(idProduto);
+	}
+	public String getCampoId() {
+		return campoID.getText();
+	}
 }
