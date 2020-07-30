@@ -88,7 +88,7 @@ public class App extends JFrame {
 		this.menuInsumo = new JMenu("Insumo");
 		this.menuItemAltaInsumo = new JMenuItem("Registrar");
 		this.menuItemAltaInsumo.addActionListener(e -> {
-			this.setContentPane(new ViewAltaInsumo());
+			this.setContentPane(new ViewAltaInsumo(this));
 			//this.pack();
 			this.revalidate();
 			this.repaint();

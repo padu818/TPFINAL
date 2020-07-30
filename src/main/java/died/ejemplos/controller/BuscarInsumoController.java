@@ -107,8 +107,8 @@ private static final long serialVersionUID = 1L;
 	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
 	    		i = lista.get(row);
 	    		System.out.println(i);
-//	    		ViewCamion ca = new ViewCamion(i,ventana);
-//	    		ca.setVisible(true);
+	    		ViewAltaInsumo ca = new ViewAltaInsumo(i,ventana);
+	    		ca.setVisible(true);
 	    		panel.setVisible(false);
 //	    		ventana.setContentPane(ca);	
 	    		System.out.println("LISTENER 3");

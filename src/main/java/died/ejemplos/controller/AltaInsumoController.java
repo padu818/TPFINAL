@@ -30,8 +30,9 @@ public class AltaInsumoController {
 	private JPanel panelAnterior;
 	private JFrame ventana;
 	
-	public AltaInsumoController(ViewAltaInsumo p) {
+	public AltaInsumoController(ViewAltaInsumo p, JFrame v) {
 		this.insumoService = new GestorInsumo();
+		this.ventana =v;
 		this.panel = p;
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnGuardar(new ListenerBtnGuardar());
@@ -44,7 +45,6 @@ public class AltaInsumoController {
 		this.insumoService = new GestorInsumo();
 		this.i = i2;
 		this.panel = viewAltaInsumo;
-		panel.setVisible(true);
 		this.ventana = v;
 		panelAnterior = (JPanel) v.getContentPane();
 		setView();
@@ -56,7 +56,7 @@ public class AltaInsumoController {
 //		panel.addListenerBtnEditar(new ListenerEditar());
 //		panel.addListenerBtnGuardar(new ListenerGuardar());
 //		panel.addListenerBtnEliminar(new ListenerEliminar());
-	//	ventana.setContentPane(panel);
+		ventana.setContentPane(panel);
 	}
 
 

@@ -65,9 +65,9 @@ public class ViewAltaInsumo extends JPanel {
 	private AltaInsumoController controller;
 	private BuscarInsumoController controller1; 
 	
-	public ViewAltaInsumo(){
+	public ViewAltaInsumo(JFrame v){
 		super();
-		this.controller= new AltaInsumoController(this);
+		this.controller= new AltaInsumoController(this,v);
 		this.ubicarComponentes();
 		this.inicializarComponentes();
 	}
@@ -106,6 +106,8 @@ public class ViewAltaInsumo extends JPanel {
 		btnGuardar.setVisible(false);
 		btnVolver.setVisible(true);
 		btnEliminar.setVisible(true);
+		btnCancelar.setVisible(false);
+		btnCancelar.setEnabled(false);
 		
 //		campoPatente.setToolTipText("LLL999 / LL999LL");
 //		campoFechaCompra.setToolTipText("dd/mm/YYYY");
@@ -132,7 +134,14 @@ public class ViewAltaInsumo extends JPanel {
 		seleccionUnidadMedida.setEnabled(true);
 		seleccionTipo.setEnabled(true);
 		btnGuardar.setEnabled(true);
+		btnEditar.setVisible(false);
+		btnEditar.setEnabled(false);
+		btnEliminar.setVisible(false);
+		btnEliminar.setEnabled(false);
+		btnVolver.setEnabled(false);
+		btnVolver.setVisible(false);
 		btnCancelar.setEnabled(true);
+		btnCancelar.setVisible(true);
 	}
 	
 	private void ubicarComponentes() {
@@ -194,6 +203,7 @@ public class ViewAltaInsumo extends JPanel {
 		add(btnGuardar,constraints);
 		constraints.gridx = 3;
 		constraints.insets.set(30, 0, 0, 100);
+		add(btnCancelar,constraints);
 		add(btnEliminar, constraints);
 		constraints.gridy = 10;
 		constraints.insets.set(30, 0, 0, 100);
