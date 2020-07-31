@@ -50,6 +50,8 @@ public class BuscarCamionController{
 		panel.addListenerBtnBuscar(new ListenerBtnBuscar());
 		panel.addListenerTablaCamiones(new ListenerTablaCamiones());
 		panel.addListenerCampoPatente(new ListenerCampoPatente());
+		panel.addListenerCampoCostoPorHora(new ListenerCampoCostoKm());
+		panel.addListenerCampoCostoPorKm(new ListenerCampoCostoHs());
 		ventana.setContentPane(panel);
 	}
 	
@@ -170,6 +172,39 @@ public class BuscarCamionController{
 				if(Character.isLowerCase(caracter)){
 			    	 caracter = Character.toUpperCase(caracter);
 				}
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		} 
+	
+	private class ListenerCampoCostoHs implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter)  )
+					&& panel.getCostoPorHora().length() < 10 ){
+
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		} 
+	private class ListenerCampoCostoKm implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter)  )
+					&& panel.getCostoPorHora().length() < 10 ){
+
 				e.setKeyChar(caracter);
 			}
 			else{

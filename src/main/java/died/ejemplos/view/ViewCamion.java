@@ -246,6 +246,12 @@ public class ViewCamion extends JPanel{
 		public void addListenerCampoPatente(KeyListener listener) { 
 			   campoPatente.addKeyListener(listener);
 		}
+		public void addListenerCampoCostoKm(KeyListener listener) { 
+			   campoCostoKm.addKeyListener(listener);
+		}
+		public void addListenerCampoCostoHs(KeyListener listener) { 
+			   campoCostoHs.addKeyListener(listener);
+		}
 
 
 		public String getCampoCostoHs() {

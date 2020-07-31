@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.JOptionPane;
+
+
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.gestor.GestorCamion;
 import died.ejemplos.gui.util.ControllerException;
@@ -31,6 +33,9 @@ public class AltaCamionController {
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnGuardar(new ListenerBtnGuardar());
 		panel.addListenerCampoPatente(new ListenerCampoPatente());
+		panel.addListenerCampoCostoHs(new ListenerCampoCostoHs());
+		panel.addListenerCampoCostoKm(new ListenerCampoCostoKm());
+		
 	}
 	
 	public Boolean verificarDatos() {
@@ -215,6 +220,8 @@ public class AltaCamionController {
 	
 	//Listener
 	
+	
+	
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
@@ -256,7 +263,38 @@ public class AltaCamionController {
 			
 		} 
 	
+	private class ListenerCampoCostoHs implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter)  )
+					&& panel.getCampoCostoKm().length() < 10 ){
 
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		} 
+	private class ListenerCampoCostoKm implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter)  )
+					&& panel.getCampoCostoHs().length() < 10 ){
+
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		} 
 	
 
 }

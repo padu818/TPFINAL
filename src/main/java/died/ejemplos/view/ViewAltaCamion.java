@@ -214,6 +214,13 @@ public class ViewAltaCamion extends JPanel{
 	public void addListenerBtnCancelar(ActionListener listener) {
 		btnCancelar.addActionListener(listener);
 	}
+	
+	public void addListenerCampoCostoKm(KeyListener listener) { 
+		   campoCostoKm.addKeyListener(listener);
+	}
+	public void addListenerCampoCostoHs(KeyListener listener) { 
+		   campoCostoHs.addKeyListener(listener);
+	}
 
 	public String getCampoCostoHs() {
 		return campoCostoHs.getText();

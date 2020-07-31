@@ -27,13 +27,15 @@ public class BuscarCamionController2{
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
-	
+	private JPanel panelEditar;
+	private Boolean editando = false;
 	private Camion camion;
 		
 	public BuscarCamionController2(ViewCamion v , Camion c, JFrame k) {
 		this.camionService = new GestorCamion();
 		this.camion = c;
 		this.panel = v;
+		this.panelEditar = v;
 		this.ventana = k;
 		panelAnterior = (JPanel) k.getContentPane();
 		setView2();
@@ -47,6 +49,8 @@ public class BuscarCamionController2{
 		panel.addListenerBtnGuardar(new ListenerGuardar());
 		panel.addListenerBtnEliminar(new ListenerEliminar());
 		panel.addListenerCampoPatente(new ListenerCampoPatente());
+		panel.addListenerCampoCostoKm(new ListenerCampoCostoKm());
+		panel.addListenerCampoCostoHs(new ListenerCampoCostoHs());
 	//	ventana.setContentPane(panel);
 	}
 	
@@ -73,22 +77,32 @@ public class BuscarCamionController2{
 	//VER
 	private class ListenerVolver implements ActionListener{
 
-		private ViewBuscarCamion panel;
+
 
 		public void actionPerformed(ActionEvent e) {
-			try {		
-				ventana.setContentPane(panelAnterior);
+				if(editando == true ) {
+					panel.setVisible(false);
+					ventana.setContentPane(panelAnterior);
+					ViewCamion ca = new ViewCamion(camion,ventana);
+					ca.setVisible(true);
+			   		panel.setVisible(false);
+			   		ventana.setContentPane(ca);	
+				//	panel.setVisible(false);
+				}
+				else {	
+					panelAnterior.setVisible(true);
+					editando = false;
+					ventana.setContentPane(panelAnterior);
+				}
 				panel.setVisible(false);
-				panelAnterior.setVisible(true);
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
 		}
 	}
 	
 	private class ListenerEditar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {		
+			try {
+				editando = true;
+				panelEditar = panel;
 				panel.editar();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -98,10 +112,15 @@ public class BuscarCamionController2{
 	
 	private class ListenerEliminar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {		
+			try {
+				if(editando == true)
+					editando = false;
 				camionService.eliminar(camion);
 				panel.setVisible(false);
 				ventana.setContentPane(panelAnterior);
+				panelAnterior.setVisible(true);
+				ViewBuscarCamion h = new ViewBuscarCamion(ventana);
+				ventana.setContentPane(h);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR no se pudo borrar el camion", JOptionPane.ERROR_MESSAGE);
 			}
@@ -111,6 +130,10 @@ public class BuscarCamionController2{
 	private class ListenerGuardar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(guardar(camion)) {
+				if(editando == true)
+					editando = false;
+				ventana.setContentPane(panelAnterior);
+				panelAnterior.setVisible(true);
 				ViewCamion ca = new ViewCamion(camion,ventana);
 				ca.setVisible(true);
 		   		panel.setVisible(false);
@@ -306,6 +329,39 @@ public class BuscarCamionController2{
 					if(Character.isLowerCase(caracter)){
 				    	 caracter = Character.toUpperCase(caracter);
 					}
+					e.setKeyChar(caracter);
+				}
+				else{
+					e.consume();
+				}
+			}
+			public void keyPressed(KeyEvent e) { }
+			public void keyReleased(KeyEvent e) { }
+				
+			} 
+		
+		private class ListenerCampoCostoHs implements KeyListener{
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				if( ( Character.isDigit(caracter)  )
+						&& panel.getCampoCostoKm().length() < 10 ){
+
+					e.setKeyChar(caracter);
+				}
+				else{
+					e.consume();
+				}
+			}
+			public void keyPressed(KeyEvent e) { }
+			public void keyReleased(KeyEvent e) { }
+				
+			} 
+		private class ListenerCampoCostoKm implements KeyListener{
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				if( ( Character.isDigit(caracter)  )
+						&& panel.getCampoCostoHs().length() < 10 ){
+
 					e.setKeyChar(caracter);
 				}
 				else{
