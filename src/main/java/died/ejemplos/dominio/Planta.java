@@ -4,7 +4,7 @@ import java.util.List;
 
 import died.ejemplos.gui.ayuda.Grafo;
 
-public class Planta extends Grafo<Planta>{//ver
+public class Planta{//ver
 	private Integer idPlanta;
 	private String nombre;
 	private List<Insumo> productos;

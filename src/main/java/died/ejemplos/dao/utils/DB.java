@@ -12,6 +12,7 @@ public class DB {
 	
 	private static boolean _TABLAS_CREADAS_CAMION = false;
 	private static boolean _TABLAS_CREADAS_INSUMO = false;
+	private static boolean _TABLAS_CREADAS_PLANTA = false;
 	
 	private static final String TABLA_CREATE_CAMION = 
 			"CREATE TABLE  IF NOT EXISTS CAMION ( ID integer not NULL GENERATED ALWAYS AS IDENTITY, PATENTE VARCHAR(14) not NULL,"
@@ -35,17 +36,18 @@ public class DB {
 	}
 	
 	private static void verificarCrearTablas() {
-		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO) {
+		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO || !_TABLAS_CREADAS_PLANTA) {
 			Connection conn = DB.crearConexion();
 			Statement stmt = null;
 			System.out.println("llege");
 			try {
 				stmt = conn.createStatement();
-		//		boolean tablaPlantaCreada = stmt.execute(TABLA_CREATE_PLANTA);
+				boolean tablaPlantaCreada = stmt.execute(TABLA_CREATE_PLANTA);
 				boolean tablaInsumoCreada = stmt.execute(TABLA_CREATE_INSUMO);	
 				boolean tablaCamionCreada = stmt.execute(TABLA_CREATE_CAMION);
 				_TABLAS_CREADAS_CAMION = tablaCamionCreada; //VER
 				_TABLAS_CREADAS_INSUMO = tablaInsumoCreada;
+				_TABLAS_CREADAS_PLANTA= tablaPlantaCreada;
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}

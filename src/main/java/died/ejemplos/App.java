@@ -26,6 +26,7 @@ import javax.swing.WindowConstants;
 import died.ejemplos.gui.ayuda.PanelAyuda;
 import died.ejemplos.view.ViewAltaCamion;
 import died.ejemplos.view.ViewAltaInsumo;
+import died.ejemplos.view.ViewAltaPlanta;
 import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewVisualizarInsumo;
 
@@ -39,7 +40,10 @@ public class App extends JFrame {
 	JMenu menuAyuda;///
 	JMenuItem menuItemAyuda;//
 	JMenu menuCamion;
+	JMenu menuPlanta;
 	JMenuItem menuItemBuscarCamion;
+	JMenuItem menuItemAltaPlanta;
+	JMenuItem menuAgregarRuta;
 	JMenuItem menuItemAltaCamion;
 	JMenuItem menuItemSalir;
 	JMenu menuInsumo;
@@ -62,12 +66,11 @@ public class App extends JFrame {
 			}
 		});
 		this.menuArchivo.add(menuItemSalir);
-		
+		this.menuPlanta = new JMenu("Planta");
 		this.menuEntidades = new JMenu("Entidades");
 		this.menuCamion = new JMenu("Camion");
 		this.menuItemBuscarCamion = new JMenuItem("Buscar");
 		this.menuItemBuscarCamion.addActionListener( e -> {
-			System.out.println("LISTENER 2");
 			this.setContentPane(new ViewBuscarCamion(this));
 			//this.pack();
 			this.revalidate();
@@ -75,13 +78,22 @@ public class App extends JFrame {
 		});
 		this.menuItemAltaCamion = new JMenuItem("Registrar");
 		this.menuItemAltaCamion.addActionListener( e -> {
-			System.out.println("LISTENER 1");
+
 			this.setContentPane(new ViewAltaCamion());
 			//this.pack();
 			this.revalidate();
 			this.repaint();
 		});
+		this.menuItemAltaPlanta = new JMenuItem("Registrar");
+		this.menuItemAltaPlanta.addActionListener( e -> {
+			this.setContentPane(new ViewAltaPlanta());
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
 		this.menuEntidades.add(menuCamion);
+		this.menuEntidades.add(menuPlanta);
+		this.menuPlanta.add(menuItemAltaPlanta);
 		this.menuCamion.add(menuItemAltaCamion);
 		this.menuCamion.add(menuItemBuscarCamion);
 		
