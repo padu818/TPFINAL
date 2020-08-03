@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import javax.swing.SwingUtilities;
 import died.ejemplos.controller.AltaCamionController;
 import died.ejemplos.controller.BuscarCamionController2;
 import died.ejemplos.dominio.Camion;
+import died.ejemplos.dominio.Planta;
 
 public class ViewCamion extends JPanel{
 	
@@ -41,6 +43,7 @@ public class ViewCamion extends JPanel{
 		private JLabel lblKm = new JLabel("KMs:");
 		private JLabel lblCostoHs = new JLabel("Costo por Hora:");
 		private JLabel lblCostoKm = new JLabel("Costo por Km:");
+		private JLabel lblPlanta = new JLabel("Planta:");
 		
 		private JTextField campoID = new JTextField(16);
 		private JFormattedTextField campoFechaCompra = new JFormattedTextField(df);	
@@ -56,6 +59,7 @@ public class ViewCamion extends JPanel{
 		private JButton btnEliminar = new JButton("ELIMINAR");
 		private JButton btnVolver = new JButton("VOLVER");
 		private BuscarCamionController2 controller;
+		private JComboBox<String> seleccionPlanta = new JComboBox<String>();
 		
 		public ViewCamion(Camion c,JFrame v){
 			super();
@@ -86,6 +90,7 @@ public class ViewCamion extends JPanel{
 			btnGuardar.setVisible(false);
 			btnVolver.setVisible(true);
 			btnEliminar.setVisible(true);
+			seleccionPlanta.setEnabled(true);
 			
 //			campoPatente.setToolTipText("LLL999 / LL999LL");
 //			campoFechaCompra.setToolTipText("dd/mm/YYYY");
@@ -151,6 +156,12 @@ public class ViewCamion extends JPanel{
 			campoFechaCompra.setPreferredSize(new Dimension(180, 20));
 			add(campoFechaCompra, constraints);	
 			
+			constraints.gridy = 8;
+			constraints.insets.set(20, 0, 0, 0);
+			add(lblPlanta, constraints);
+			constraints.insets.set(20, 120, 0, 0);
+			seleccionPlanta.setPreferredSize(new Dimension(180, 20));
+			add(seleccionPlanta, constraints);	
 				
 			constraints.gridy = 9;
 			constraints.gridwidth = 4;
@@ -176,6 +187,7 @@ public class ViewCamion extends JPanel{
 			this.campoCostoHs.setText("");
 			this.campoCostoKm.setText("");
 			this.setSeleccionKm();
+			this.setSeleccionPlanta();
 			this.campoFechaCompra.setText("");
 		}
 		
@@ -297,6 +309,37 @@ public class ViewCamion extends JPanel{
 			}));
 		}
 		
+		public String getSeleccionPlanta() {
+			if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Selecionar Planta") {
+				return "-";
+			}
+			else
+				return seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex());
+		}
+		
+		public void setSeleccionPlanta() {
+			seleccionPlanta.removeAll();
+//			this.addSeleccionPlanta();
+		}
+		
+		public void setSeleccionPlanta(String text) {
+			seleccionPlanta.removeAll();
+			seleccionPlanta.setModel(new DefaultComboBoxModel<String>(new String[] {text}));
+		}
+		
+		public void addSeleccionPlanta(List<Planta> aux) {
+			String[] a = new String[aux.size()+1];
+			int i =1;
+			a[0]= "Selecionar planta";
+			for(Planta b : aux) {
+				a[i] = b.getNombre();
+				i++;
+			}
+			seleccionPlanta.setModel(new DefaultComboBoxModel<String>(a
+			));
+			
+		}
+		
 		public void editar() {
 			campoPatente.setEnabled(true);
 			campoMarca.setEnabled(true);
@@ -309,6 +352,8 @@ public class ViewCamion extends JPanel{
 			campoSeleccionKm.setVisible(false);
 			seleccionKm.setVisible(true);
 			seleccionKm.setEnabled(true);
+			seleccionPlanta.setVisible(true);
+			seleccionPlanta.setEnabled(true);
 			btnEditar.setEnabled(false);
 			btnEditar.setVisible(false);
 			btnEliminar.setEnabled(false);

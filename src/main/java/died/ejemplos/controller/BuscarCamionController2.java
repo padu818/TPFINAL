@@ -6,12 +6,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import died.ejemplos.dominio.Camion;
+import died.ejemplos.dominio.Planta;
 import died.ejemplos.gestor.GestorCamion;
+import died.ejemplos.gestor.GestorPlanta;
 import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewCamion;
 
@@ -24,6 +27,7 @@ public class BuscarCamionController2{
 	private ViewCamion panel;
 	private BuscarCamionController controller1;
 	private BuscarCamionController2 controller2;
+	private GestorPlanta plantaService;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
@@ -38,6 +42,9 @@ public class BuscarCamionController2{
 		this.panelEditar = v;
 		this.ventana = k;
 		panelAnterior = (JPanel) k.getContentPane();
+		this.plantaService = new GestorPlanta();
+		List<Planta> aux = plantaService.buscarTodos();
+		panel.addSeleccionPlanta(aux);
 		setView2();
 	}
 	
@@ -64,6 +71,7 @@ public class BuscarCamionController2{
 		panel.setCampoCostoKm(camion.getCostoKM().toString());
 		panel.setCampoFechaCompra(camion.getFechaCompra().toString());
 		panel.setCampoID(camion.getId().toString());
+//		panel.setSeleccionPlanta(camion.getSeleccionPlanta());
 	}
 
 
@@ -172,7 +180,7 @@ public class BuscarCamionController2{
 		String textoErrorFecha = "";
 		String textoErrorPatente = "";
 		String textoErrorKm = "";
-		
+		String textoErrorPlanta = "";
 		Boolean errorEnPatente = false;
 		Boolean errorEnkm = false;
 		Boolean errorEnModelo = false;
@@ -180,6 +188,7 @@ public class BuscarCamionController2{
 		Boolean errorEnFecha = false;
 		Boolean errorEnCostokm = false;
 		Boolean errorEnCostohs = false;
+		Boolean errorEnPlanta = false;
 		String textoPatente = panel.getCampoPatente();
 		String textoMarca = panel.getCampoMarca();
 		String textoModelo = panel.getCampoModelo();
@@ -310,11 +319,15 @@ public class BuscarCamionController2{
 			textoErrorFecha = errorNumero+") Debe completar el campo fecha\n";
 			errorNumero++;
 		}
+		if (panel.getSeleccionPlanta().equals("Selecionar Planta")) {
+			errorEnPlanta = true;
+			textoErrorPlanta = errorNumero+") No se ha seleccionado un valor del campo Planta.\n";
+		}
 		System.out.println("aqui3");
-		String mensajeError =  textoErrorPatente+textoErrorMarca+textoErrorModelo+textoErrorKm+textoErrorCostoHs+textoErrorCostoKm + textoErrorFecha;
+		String mensajeError =  textoErrorPatente+textoErrorMarca+textoErrorModelo+textoErrorKm+textoErrorCostoHs+textoErrorCostoKm + textoErrorFecha+textoErrorPlanta;
 		
-		if( errorEnPatente || errorEnkm || errorEnCostohs || errorEnCostokm || errorEnFecha || errorEnMarca|| errorEnModelo ||errorEnCostohs) {
-			//panel.noValido( errorEnPatente,errorEnCostohs,errorEnCostokm, errorEnFecha, errorEnMarca, errorEnModelo,errorEnCostohs);
+		if( errorEnPatente || errorEnkm || errorEnCostohs || errorEnCostokm || errorEnFecha || errorEnMarca|| errorEnModelo ||errorEnCostohs||errorEnPlanta) {
+			//panel.noValido( errorEnPatente,errorEnCostohs,errorEnCostokm, errorEnFecha, errorEnMarca, errorEnModelo,errorEnCostohs, errorEnPlanta);
 			JOptionPane.showConfirmDialog(panel, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 		//	panel.textnormal();
 			return false;

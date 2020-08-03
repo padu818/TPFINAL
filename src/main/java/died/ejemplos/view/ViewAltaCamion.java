@@ -15,6 +15,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -28,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import died.ejemplos.controller.AltaCamionController;
+import died.ejemplos.dominio.Planta;
 
 
 public class ViewAltaCamion extends JPanel{
@@ -52,6 +55,7 @@ public class ViewAltaCamion extends JPanel{
 	private JLabel lblKm = new JLabel("KMs:");
 	private JLabel lblCostoHs = new JLabel("Costo por Hora:");
 	private JLabel lblCostoKm = new JLabel("Costo por Km:");
+	private JLabel lblPlanta = new JLabel("Planta:");
 	
 	
 	private JFormattedTextField campoFechaCompra = new JFormattedTextField(df);	
@@ -64,6 +68,7 @@ public class ViewAltaCamion extends JPanel{
 	private JButton btnGuardar = new JButton("GUARDAR");
 	private JButton btnCancelar = new JButton("CANCELAR");
 	private AltaCamionController controller;
+	private JComboBox<String> seleccionPlanta = new JComboBox<String>();
 	
 	public ViewAltaCamion(){
 		super();
@@ -89,6 +94,7 @@ public class ViewAltaCamion extends JPanel{
 		btnCancelar.setEnabled(true);
 		campoPatente.setToolTipText("LLL999 / LL999LL");
 		campoFechaCompra.setToolTipText("dd/mm/YYYY");
+		seleccionPlanta.setEnabled(true);
 	}
 	
 	private void ubicarComponentes() {
@@ -144,6 +150,13 @@ public class ViewAltaCamion extends JPanel{
 		campoFechaCompra.setPreferredSize(new Dimension(180, 20));
 		add(campoFechaCompra, constraints);	
 		
+		constraints.gridy = 8;
+		constraints.insets.set(20, 0, 0, 0);
+		add(lblPlanta, constraints);
+		constraints.insets.set(20, 120, 0, 0);
+		seleccionPlanta.setPreferredSize(new Dimension(180, 20));
+		add(seleccionPlanta, constraints);	
+		
 			
 		constraints.gridy = 9;
 		constraints.gridwidth = 4;
@@ -162,6 +175,7 @@ public class ViewAltaCamion extends JPanel{
 		this.campoCostoHs.setText("");
 		this.campoCostoKm.setText("");
 		this.setSeleccionKm();
+		this.setSeleccionPlanta();
 		this.campoFechaCompra.setText("");
 	}
 
@@ -238,7 +252,7 @@ public class ViewAltaCamion extends JPanel{
 		this.campoCostoKm.setText(costokm);
 	}
 
-	public void noValido(Boolean patente, Boolean km, Boolean costokm, Boolean fecha, Boolean marca, Boolean modelo, Boolean costohs) {
+	public void noValido(Boolean patente, Boolean km, Boolean costokm, Boolean fecha, Boolean marca, Boolean modelo, Boolean costohs, Boolean planta) {
 
 		if(patente) {
 			this.erroneo(campoPatente);
@@ -260,6 +274,9 @@ public class ViewAltaCamion extends JPanel{
 		}
 		if(fecha) {
 			this.erroneo(campoFechaCompra);
+		}
+		if(planta) {
+			this.erroneo(seleccionPlanta);
 		}
 		
 	}
@@ -286,6 +303,7 @@ public class ViewAltaCamion extends JPanel{
 			this.normal(campoMarca);
 			this.normal(campoModelo);
 			this.normal(campoFechaCompra);
+			this.normal(seleccionPlanta);
 	}
 
 	public String getSeleccionKm() {
@@ -316,6 +334,37 @@ public class ViewAltaCamion extends JPanel{
 				"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
 				"Más de 300.000 km"
 		}));
+	}
+	
+	public String getSeleccionPlanta() {
+		if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Selecionar Planta") {
+			return "-";
+		}
+		else
+			return seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex());
+	}
+	
+	public void setSeleccionPlanta() {
+		seleccionPlanta.removeAll();
+//		this.addSeleccionPlanta();
+	}
+	
+	public void setSeleccionPlanta(String text) {
+		seleccionPlanta.removeAll();
+		seleccionPlanta.setModel(new DefaultComboBoxModel<String>(new String[] {text}));
+	}
+	
+	public void addSeleccionPlanta(List<Planta> aux) {
+		String[] a = new String[aux.size()+1];
+		int i =1;
+		a[0]= "Selecionar planta";
+		for(Planta b : aux) {
+			a[i] = b.getNombre();
+			i++;
+		}
+		seleccionPlanta.setModel(new DefaultComboBoxModel<String>(a
+		));
+		
 	}
 
 	public void setCampoPatente(String patente) {
