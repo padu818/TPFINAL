@@ -16,7 +16,7 @@ public class Ruta {
 	private Planta origen;
 	private Planta destino;
 	private Double distanciaKM;
-	private LocalDateTime duracionHs;
+	private Double duracionHs;
 	private Double cantMaxATransportar;
 	
 	
@@ -70,11 +70,11 @@ public class Ruta {
 	public void setDistanciaKM(Double distanciaKM) {
 		this.distanciaKM = distanciaKM;
 	}
-	public LocalDateTime getDuracionHs() {
+	public Double getDuracionHs() {
 		return duracionHs;
 	}
-	public void setDuracionHs(LocalDateTime duracionHs) {
-		this.duracionHs = duracionHs;
+	public void setDuracionHs(Double double1) {
+		this.duracionHs = double1;
 	}
 	
 	
