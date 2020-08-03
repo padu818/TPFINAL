@@ -19,7 +19,7 @@ public class DB {
 			+ " MARCA VARCHAR(45) not NULL,MODELO VARCHAR(45) not NULL, "
 			+ "KM VARCHAR(45) not NULL, COSTO_KM DECIMAL(12,2), "+
 			"COSTO_HORA DECIMAL(12,2),"
-			//+ " IDPLANTA integer REFERENCE PLANTA(IDPLANTA)"
+			+ " IDPLANTA integer REFERENCES PLANTA(IDPLANTA),"
 			+"FECHA_COMPRA DATE not NULL,"
 			+ "PRIMARY KEY(ID));";
 	private static final String TABLA_CREATE_INSUMO = 
