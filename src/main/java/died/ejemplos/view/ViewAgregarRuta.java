@@ -41,9 +41,7 @@ o Distancia en KM
 o Duración estimada en Horas
 o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo por día que soporta la ruta)
 	 */
-//	private JLabel lblNombre = new JLabel("Nombre Planta:");
-//	private JLabel lblRuta = new JLabel("Ruta:");
-//	private JLabel lblSeparacion = new JLabel("-------------------------------------------------------------------------------------");
+
 	private JLabel lblPlantaOrigen = new JLabel("Planta Origen:");
 
 	private JLabel lblPlantaDestino = new JLabel("Planta Destino:");
@@ -53,7 +51,6 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	private JLabel ltotalFilas = new JLabel("Total de filas:");
 	
 
-//	private JTextField campoNombrePlanta = new JTextField(16);
 	private JComboBox<String> seleccionPlantaOrigen = new JComboBox<String>();
 	private JComboBox<String> seleccionPlantaDestino = new JComboBox<String>();
 
@@ -64,7 +61,7 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 //	private JButton btnAceptar = new JButton("ACEPTAR");
 //	private JButton btnAgregarRuta = new JButton("AGREGAR RUTA");
 //	private JButton btnEditarRuta = new JButton("EDITAR RUTA");
-//	private JButton btnEliminarRuta = new JButton("ELIMINAR RUTA");
+	private JButton btnEliminarRuta = new JButton("ELIMINAR RUTA");
 //	private JButton btnGuardarRuta = new JButton("GUARDAR RUTA");
 	private JButton btnGuardar = new JButton("GUARDAR");
 	private JButton btnCancelar = new JButton("CANCELAR");
@@ -83,12 +80,8 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	}
 	
 	private void inicializarComponentes() {		
-//		btnAceptar.setPreferredSize(new Dimension(160, 25));
 		btnCancelar.setPreferredSize(new Dimension(160, 25));
-//		btnGuardarRuta.setPreferredSize(new Dimension(160, 25));
-//		btnAgregarRuta.setPreferredSize(new Dimension(160, 25));
-//		btnEditarRuta.setPreferredSize(new Dimension(160, 25));
-//		btnEliminarRuta.setPreferredSize(new Dimension(160, 25));
+		btnEliminarRuta.setPreferredSize(new Dimension(160, 25));
 		btnGuardar.setPreferredSize(new Dimension(160, 25));
 		campoDistanciaHs.setEnabled(true);
 		campoDistanciaKm.setEnabled(true);
@@ -97,15 +90,11 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		seleccionPlantaOrigen.setPreferredSize(new Dimension(180,20));
 		seleccionPlantaDestino.setEnabled(true);
 		seleccionPlantaOrigen.setEnabled(true);
-//		this.addPlantasOrigen();
-//		this.addPlantasDestino();
 		seleccionPlantaDestino.setEnabled(false);
 		tablaRuta.setEnabled(true);
 		btnCancelar.setEnabled(true);
 		btnGuardar.setEnabled(false);
-	//	btnEditarRuta.setEnabled(false);
-	//	btnEliminarRuta.setEnabled(false);
-	//	btnAgregarRuta.setEnabled(false);
+		btnEliminarRuta.setEnabled(false);
 		campoTotalFilas.setEnabled(false);
 		tablaRutaScroll.setPreferredSize(new Dimension(680, 500));	
 
@@ -156,8 +145,10 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(30, 0, 0, 200);
 		add(btnGuardar, constraints);
-		constraints.insets.set(30, 0, 0, 0);
+		constraints.insets.set(30, 0, 0, 200);
 		add(btnCancelar, constraints);
+		constraints.insets.set(30, 0, 0, 0);
+		add(btnEliminarRuta, constraints);
 		
 		
 		constraints.gridx = 7;
@@ -215,30 +206,11 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		return campoMaximo.getText();
 	}
 	
-	
-//	public void addListenerBtnAceptar(ActionListener listener) {
-//		btnAceptar.addActionListener(listener);
-//	}
 
 	public void addListenerBtnCancelar(ActionListener listener) {
 		btnCancelar.addActionListener(listener);
 	}
 	
-//	public void addListenerBtnEditarRuta(ActionListener listener) {
-//		btnEditarRuta.addActionListener(listener);
-//	}
-//
-//	public void addListenerBtnEliminarRuta(ActionListener listener) {
-//		btnEliminarRuta.addActionListener(listener);
-//	}
-//	
-//	public void addListenerBtnAgregarRuta(ActionListener listener) {
-//		btnAgregarRuta.addActionListener(listener);
-//	}
-//
-//	public void addListenerBtnGuardarRuta(ActionListener listener) {
-//		btnGuardarRuta.addActionListener(listener);
-//	}
 	
 	public void addListenerBtnGuardar(ActionListener listener) {
 		btnGuardar.addActionListener(listener);
@@ -299,8 +271,8 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		
 		
 		if(tamanioTablaActual > 0) {	
-//			tablaRuta.setToolTipText("Doble click para seleccionar una planta");
-//			tablaRuta.setEnabled(true);
+			tablaRuta.setToolTipText("Doble click para seleccionar una planta");
+			tablaRuta.setEnabled(true);
 			campoTotalFilas.setText(String.valueOf(tamanioTablaActual));
 		}
 		else {

@@ -13,6 +13,7 @@ public class DB {
 	private static boolean _TABLAS_CREADAS_CAMION = false;
 	private static boolean _TABLAS_CREADAS_INSUMO = false;
 	private static boolean _TABLAS_CREADAS_PLANTA = false;
+	private static boolean _TABLAS_CREADAS_RUTA = false;
 	
 	private static final String TABLA_CREATE_CAMION = 
 			"CREATE TABLE  IF NOT EXISTS CAMION ( ID integer not NULL GENERATED ALWAYS AS IDENTITY, PATENTE VARCHAR(14) not NULL,"
@@ -30,13 +31,18 @@ public class DB {
 	private static final String TABLA_CREATE_PLANTA = 
 			"CREATE TABLE  IF NOT EXISTS PLANTA ( IDPLANTA integer not NULL GENERATED ALWAYS AS IDENTITY, NOMBRE VARCHAR(45) not NULL,"
 			+ "PRIMARY KEY(IDPLANTA));";
+	private static final String TABLA_CREATE_RUTA = 
+			"CREATE TABLE  IF NOT EXISTS RUTA ( IDRUTA integer not NULL GENERATED ALWAYS AS IDENTITY, DURACIONHS DECIMAL(12,2),"
+			+ "DURACIONKM DECIMAL(12,2), CANTMAXATRANSPORTAR DECIMAL(12,2),IDPLANTAORIGEN integer REFERENCES PLANTA(IDPLANTA),"
+			+ "IDPLANTADESTINO integer REFERENCES PLANTA(IDPLANTA), "
+			+ "PRIMARY KEY(IDRUTA));";
 
 	private DB(){
 			// no se pueden crear instancias de esta clase
 	}
 	
 	private static void verificarCrearTablas() {
-		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO || !_TABLAS_CREADAS_PLANTA) {
+		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO || !_TABLAS_CREADAS_PLANTA || !_TABLAS_CREADAS_RUTA) {
 			Connection conn = DB.crearConexion();
 			Statement stmt = null;
 			System.out.println("llege");
@@ -45,9 +51,11 @@ public class DB {
 				boolean tablaPlantaCreada = stmt.execute(TABLA_CREATE_PLANTA);
 				boolean tablaInsumoCreada = stmt.execute(TABLA_CREATE_INSUMO);	
 				boolean tablaCamionCreada = stmt.execute(TABLA_CREATE_CAMION);
+				boolean tablaRutaCreada = stmt.execute(TABLA_CREATE_RUTA);
 				_TABLAS_CREADAS_CAMION = tablaCamionCreada; //VER
 				_TABLAS_CREADAS_INSUMO = tablaInsumoCreada;
 				_TABLAS_CREADAS_PLANTA= tablaPlantaCreada;
+				_TABLAS_CREADAS_RUTA = tablaRutaCreada;
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
