@@ -108,9 +108,6 @@ public class ViewAltaInsumo extends JPanel {
 		btnEliminar.setVisible(true);
 		btnCancelar.setVisible(false);
 		btnCancelar.setEnabled(false);
-		
-//		campoPatente.setToolTipText("LLL999 / LL999LL");
-//		campoFechaCompra.setToolTipText("dd/mm/YYYY");
 	}
 	
 	private void inicializarComponentes() {		
@@ -237,6 +234,30 @@ public class ViewAltaInsumo extends JPanel {
 	public void addListenerBtnCancelar(ActionListener listener) {
 		btnCancelar.addActionListener(listener);
 	}
+	
+	public void addListenerCampoCosto(KeyListener listener) { 
+		   campoCosto.addKeyListener(listener);
+	}
+	
+	public void addListenerCampoPeso(KeyListener listener) { 
+		   campoPeso.addKeyListener(listener);
+	}
+	
+	public void addListenerCampoDensidad(KeyListener listener) { 
+		   campoDensidad.addKeyListener(listener);
+	}
+	
+	public void addListenerBtnVolver(ActionListener listener) {
+		btnVolver.addActionListener(listener);
+	}
+	
+	public void addListenerBtnEditar(ActionListener listener) {
+		btnEditar.addActionListener(listener);
+	}
+	
+	public void addListenerBtnEliminar(ActionListener listener) {
+		btnEliminar.addActionListener(listener);
+	}
 
 	public void noValido(Boolean nombre, Boolean descripcion, Boolean costo, Boolean unidadMedida, Boolean tipo, Boolean peso, Boolean densidad) {
 
@@ -287,6 +308,32 @@ public class ViewAltaInsumo extends JPanel {
 		this.normal(campoPeso);
 		this.normal(campoDensidad);
 		}
+	
+	public void editar() {
+		campoNombre.setEnabled(true);
+		campoDescripcion.setEnabled(true);
+		campoCosto.setEnabled(true);
+		campoPeso.setEnabled(true);
+		campoDensidad.setEnabled(true);
+		this.addUnidadMedida();
+		this.addTipo();
+		campoUnidadMedida.setEnabled(false);
+		campoUnidadMedida.setVisible(false);
+		campoTipoInsumo.setEnabled(false);
+		campoTipoInsumo.setVisible(false);
+		seleccionUnidadMedida.setVisible(true);
+		seleccionTipo.setVisible(true);
+		seleccionUnidadMedida.setEnabled(true);
+		seleccionTipo.setEnabled(true);
+		
+		btnEditar.setEnabled(false);
+		btnEditar.setVisible(false);
+		btnEliminar.setEnabled(false);
+		btnEliminar.setVisible(false);
+		btnVolver.setEnabled(true);
+		btnGuardar.setVisible(true);
+		btnGuardar.setEnabled(true);
+	}
 	
 	public String getSeleccionUnidadMedida() {
 		if( seleccionUnidadMedida.getItemAt(seleccionUnidadMedida.getSelectedIndex()) == "Selecionar unidad de medida") {
@@ -401,5 +448,15 @@ public class ViewAltaInsumo extends JPanel {
 	}
 	public String getCampoId() {
 		return campoID.getText();
+	}
+
+	public void setCampoUnidadMedida(String unidadMedida) {
+		campoUnidadMedida.setText(unidadMedida);
+		
+	}
+	
+	public void setCampoTipoInsumo(String tipo) {
+		campoTipoInsumo.setText(tipo);
+		
 	}
 }

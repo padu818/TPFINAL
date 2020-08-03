@@ -30,7 +30,7 @@ public class InsumoDaosql implements InsumoDao {
 	private static final String UPDATE_INSUMO =
 			" UPDATE INSUMO SET NOMBRE = ?, DESCRIPCION =? ,UNIDAD_MEDIDA = ? , COSTO =?, TIPO = ?, DENSIDAD = ?, PESO =?"
 			+ " WHERE IDINSUMO = ?";
-	private static final String DELETE_INSUMO = "DELETE FROM INSUMO WHERE IDINSUMO = ?";
+	private static final String DELETE_INSUMO = "DELETE FROM INSUMO WHERE NOMBRE = ?";
 
 	@Override
 	public Insumo saveOrUpdate(Insumo i) {
@@ -45,7 +45,8 @@ public class InsumoDaosql implements InsumoDao {
 				pstmt.setString(3, i.getUnidadMedida());
 				pstmt.setDouble(4, i.getCosto());
 				pstmt.setString(5, i.getTipoInsumo());
-				if (i.getTipoInsumo().equals("Liquido")) {
+				System.out.println(i.getTipoInsumo());
+				if (i.getTipoInsumo().equals("LIQUIDO")) {
 					pstmt.setDouble(6, ((Liquido)i).getDensidad());
 					pstmt.setDouble(7, 0);
 				}else {
@@ -143,7 +144,23 @@ public class InsumoDaosql implements InsumoDao {
 
 	@Override
 	public void borrar(String nombre) {
-		// TODO Auto-generated method stub
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		try {
+			System.out.println("EJECUTA DELETE");
+			pstmt= conn.prepareStatement(DELETE_INSUMO);
+			pstmt.setString(1, nombre);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 	}
 

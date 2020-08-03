@@ -22,6 +22,8 @@ public class GestorInsumo {
 		return insumoDao.buscarTodos();
 	}
 	
-	
+	public void eliminar(Insumo insumo) {
+		insumoDao.borrar(insumo.getNombre());
+	}
 
 }

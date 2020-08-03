@@ -27,7 +27,7 @@ public class ViewVisualizarInsumo extends JPanel {
 	private JTextField campoTotalFilas = new JTextField(3);
 	private JTable tablaInsumos = new JTable();
 	private JScrollPane tablaInsumosScroll = new JScrollPane(tablaInsumos);
-	private Object[][] datosTabla = {{""},{""},{""},{""},{""},{""},{""}};
+	private Object[][] datosTabla = {{""},{""},{""},{""},{""},{""},{""},{""}};
 	private DefaultTableModel model;
 	private BuscarInsumoController controller;
 	private JLabel ltotalFilas = new JLabel("Total de filas:");
@@ -46,7 +46,7 @@ public class ViewVisualizarInsumo extends JPanel {
 		tablaInsumos.setVisible(true);
 		btnCancelar.setEnabled(true);
 		campoTotalFilas.setEnabled(false);
-		tablaInsumosScroll.setPreferredSize(new Dimension(680, 500));
+		tablaInsumosScroll.setPreferredSize(new Dimension(880, 500));
 		tablaInsumosScroll.setVisible(true);
 	}
 	
@@ -110,14 +110,16 @@ public class ViewVisualizarInsumo extends JPanel {
 		tablaInsumos.getColumnModel().getColumn(4).setCellRenderer(centrado);
 		tablaInsumos.getColumnModel().getColumn(5).setCellRenderer(centrado);
 		tablaInsumos.getColumnModel().getColumn(6).setCellRenderer(centrado);
+		tablaInsumos.getColumnModel().getColumn(7).setCellRenderer(centrado);
 		
 		tablaInsumos.getColumnModel().getColumn(0).setPreferredWidth(120);
 		tablaInsumos.getColumnModel().getColumn(1).setPreferredWidth(120);
 		tablaInsumos.getColumnModel().getColumn(2).setPreferredWidth(110);
-		tablaInsumos.getColumnModel().getColumn(3).setPreferredWidth(120);
+		tablaInsumos.getColumnModel().getColumn(3).setPreferredWidth(220);
 		tablaInsumos.getColumnModel().getColumn(4).setPreferredWidth(120);
 		tablaInsumos.getColumnModel().getColumn(5).setPreferredWidth(120);
 		tablaInsumos.getColumnModel().getColumn(6).setPreferredWidth(120);
+		tablaInsumos.getColumnModel().getColumn(7).setPreferredWidth(120);
 		
 		tablaInsumos.getColumnModel().getColumn(0).setHeaderValue("Nombre");
 		tablaInsumos.getColumnModel().getColumn(1).setHeaderValue("Descripcion");
@@ -126,6 +128,7 @@ public class ViewVisualizarInsumo extends JPanel {
 		tablaInsumos.getColumnModel().getColumn(4).setHeaderValue("Tipo");
 		tablaInsumos.getColumnModel().getColumn(5).setHeaderValue("Peso");
 		tablaInsumos.getColumnModel().getColumn(6).setHeaderValue("Densidad");
+		tablaInsumos.getColumnModel().getColumn(7).setHeaderValue("Stock total");
 		
 		if(tamanioTablaActual > 0) {	
 			tablaInsumos.setToolTipText("Doble click para seleccionar un insumo");

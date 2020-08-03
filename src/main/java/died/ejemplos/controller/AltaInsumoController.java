@@ -3,13 +3,17 @@ package died.ejemplos.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-
+import died.ejemplos.dominio.Camion;
 import died.ejemplos.dominio.General;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Liquido;
@@ -20,6 +24,9 @@ import died.ejemplos.gui.util.ControllerException;
 import died.ejemplos.gui.util.DatosObligatoriosException;
 import died.ejemplos.gui.util.FormatoNumeroException;
 import died.ejemplos.view.ViewAltaInsumo;
+import died.ejemplos.view.ViewBuscarCamion;
+import died.ejemplos.view.ViewCamion;
+import died.ejemplos.view.ViewVisualizarInsumo;
 
 public class AltaInsumoController {
 	
@@ -29,50 +36,58 @@ public class AltaInsumoController {
 	private AltaInsumoController instancia;
 	private JPanel panelAnterior;
 	private JFrame ventana;
+	private Boolean editando = false;
+	private JPanel panelEditar;
 	
 	public AltaInsumoController(ViewAltaInsumo p, JFrame v) {
 		this.insumoService = new GestorInsumo();
 		this.ventana =v;
 		this.panel = p;
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
-		panel.addListenerBtnGuardar(new ListenerBtnGuardar());
+		panel.addListenerBtnGuardar(new ListenerBtnGuardarAlta());
 		panel.addListenerSeleccionTipo(new ListenerSeleccionTipo());
+		panel.addListenerCampoCosto(new ListenerCampoCosto());
+		panel.addListenerCampoPeso(new ListenerCampoPeso());
+		panel.addListenerCampoDensidad(new ListenerCampoDensidad());
 	}
 	
 	
 	
-	public AltaInsumoController(ViewAltaInsumo viewAltaInsumo, Insumo i2, JFrame v) {
+	public AltaInsumoController(ViewAltaInsumo v, Insumo i2, JFrame f) {
 		this.insumoService = new GestorInsumo();
 		this.i = i2;
-		this.panel = viewAltaInsumo;
-		this.ventana = v;
-		panelAnterior = (JPanel) v.getContentPane();
+		this.panel = v;
+		this.ventana = f;
+		this.panelEditar = v;
+		panelAnterior = (JPanel) f.getContentPane();
 		setView();
 	}
 	private void setView() {
 		
 		cargarInsumoSeleccionado(this.i);
-//		panel.addListenerBtnVolver(new ListenerVolver());
-//		panel.addListenerBtnEditar(new ListenerEditar());
-//		panel.addListenerBtnGuardar(new ListenerGuardar());
-//		panel.addListenerBtnEliminar(new ListenerEliminar());
+		panel.addListenerBtnVolver(new ListenerBtnVolver());
+		panel.addListenerBtnEditar(new ListenerBtnEditar());
+		panel.addListenerBtnGuardar(new ListenerBtnGuardarModificacion());
+		panel.addListenerBtnEliminar(new ListenerBtnEliminar());
+		panel.addListenerSeleccionTipo(new ListenerSeleccionTipo());
+		panel.addListenerCampoCosto(new ListenerCampoCosto());
+		panel.addListenerCampoPeso(new ListenerCampoPeso());
+		panel.addListenerCampoDensidad(new ListenerCampoDensidad());
 		ventana.setContentPane(panel);
 	}
-
 
 	private void cargarInsumoSeleccionado(Insumo i2) {
 		panel.setCampoId(i2.getIdProduto().toString());
 		panel.setCampoNombre(i2.getNombre());
 		panel.setCampoDescripcion(i2.getDescripcion());
 		panel.setCampoCosto(i2.getCosto().toString());
-
-		//panel.setCampoUnidadMedida(i2.getUnidadMedida());
+		panel.setCampoUnidadMedida(i2.getUnidadMedida());
 		
 		if (i2.getTipoInsumo().equals("GENERAL")) {
-		//	panel.setCampoTipoInsumo("GENERAL");
+			panel.setCampoTipoInsumo("GENERAL");
 			panel.setCampoPeso(((General)i2).getPeso().toString());
 		}else {
-		//	panel.setCampoTipoInsumo("LIQUIDO");
+			panel.setCampoTipoInsumo("LIQUIDO");
 			panel.setCampoDensidad(((Liquido)i2).getDensidad().toString());
 		}
 	}
@@ -177,6 +192,7 @@ public class AltaInsumoController {
 			i.setNombre(this.panel.getCampoNombre()); 
 			i.setDescripcion(this.panel.getCampoDescripcion()); 
 			i.setCosto(Double.valueOf(this.panel.getCampoCosto()));
+			//mejorar?
 			switch (this.panel.getSeleccionUnidadMedida()) {
 			case "KILO":
 				i.setUnidadMedida(Unidad.KILO);
@@ -207,6 +223,49 @@ public class AltaInsumoController {
 		return false;
 	}
 	
+	public boolean guardar(Insumo i2) throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
+		if(verificarDatos()) {
+			System.out.println(this.panel.getClass());
+			if (this.panel.getSeleccionTipo().equals("GENERAL")) {
+				System.out.println("llego");
+				((General) i).setPeso(Double.valueOf(this.panel.getCampoPeso()));
+			} else {
+				((Liquido) i).setDensidad(Double.valueOf(this.panel.getCampoDensidad()));
+			}
+			System.out.println(this.panel.getCampoNombre());
+			i.setNombre(this.panel.getCampoNombre()); 
+			i.setDescripcion(this.panel.getCampoDescripcion()); 
+			i.setCosto(Double.valueOf(this.panel.getCampoCosto()));
+			//mejorar?
+			switch (this.panel.getSeleccionUnidadMedida()) {
+			case "KILO":
+				i.setUnidadMedida(Unidad.KILO);
+				break;
+			case "PIEZA":
+				i.setUnidadMedida(Unidad.PIEZA);
+				break;
+			case "GRAMO":
+				i.setUnidadMedida(Unidad.GRAMO);
+				break;
+			case "METRO":
+				i.setUnidadMedida(Unidad.METRO);
+				break;
+			case "LITRO":
+				i.setUnidadMedida(Unidad.LITRO);
+				break;
+			case "M3":
+				i.setUnidadMedida(Unidad.M3);
+				break;
+			case "M2":
+				i.setUnidadMedida(Unidad.M2);
+				break;
+			}
+			insumoService.crearInsumo(i);
+			return true;
+		}
+		return false;
+	}
+	
 	//Listener
 	
 	private class ListenerBtnCancelar implements ActionListener{
@@ -231,7 +290,7 @@ public class AltaInsumoController {
 		}
 	}
 	
-	private class ListenerBtnGuardar implements ActionListener{
+	private class ListenerBtnGuardarAlta implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(guardar())
@@ -240,6 +299,127 @@ public class AltaInsumoController {
 				panel.mostrarError("Error al guardar", e1.getMessage());
 			}
 			
+		}
+	}
+	
+	private class ListenerBtnGuardarModificacion implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if(guardar(i)) {
+					if(editando == true)
+						editando = false;
+					ventana.setContentPane(panelAnterior);
+					panelAnterior.setVisible(true);
+					ViewAltaInsumo ca = new ViewAltaInsumo(i,ventana);
+					ca.setVisible(true);
+					panel.setVisible(false);
+					ventana.setContentPane(ca);	
+					System.out.println("LISTENER 3");
+				}
+			}  catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
+				panel.mostrarError("Error al guardar", e1.getMessage());
+			}
+		}
+	}
+	
+	private class ListenerCampoCosto implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter)  )
+					&& panel.getCampoCosto().length() < 10 ){
+
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		}
+	
+	private class ListenerCampoPeso implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter)  )
+					&& panel.getCampoPeso().length() < 10 ){
+
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		}
+	
+	private class ListenerCampoDensidad implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter)  )
+					&& panel.getCampoDensidad().length() < 10 ){
+
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+			
+		}
+	
+	private class ListenerBtnVolver implements ActionListener{
+
+		public void actionPerformed(ActionEvent e) {
+				if(editando == true ) {
+					panel.setVisible(false);
+					ventana.setContentPane(panelAnterior);
+					ViewAltaInsumo ca = new ViewAltaInsumo(i,ventana);
+					ca.setVisible(true);
+			   		panel.setVisible(false);
+			   		ventana.setContentPane(ca);	
+				//	panel.setVisible(false);
+				}
+				else {	
+					panelAnterior.setVisible(true);
+					editando = false;
+					ventana.setContentPane(panelAnterior);
+				}
+				panel.setVisible(false);
+		}
+	}
+	
+	private class ListenerBtnEditar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				editando = true;
+				panelEditar = panel;
+				panel.editar();
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerBtnEliminar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if(editando == true)
+					editando = false;
+				insumoService.eliminar(i);
+				panel.setVisible(false);
+				ventana.setContentPane(panelAnterior);
+				panelAnterior.setVisible(true);
+				ViewVisualizarInsumo h = new ViewVisualizarInsumo(ventana);
+				ventana.setContentPane(h);
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR no se pudo borrar el insumo", JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 
