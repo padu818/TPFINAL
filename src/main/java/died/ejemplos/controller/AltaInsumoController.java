@@ -143,13 +143,13 @@ public class AltaInsumoController {
 		}
 		
 		//---------- posible error en la no selección de una unidad de medida
-		if (panel.getSeleccionUnidadMedida().equals("Selecionar unidad de medida")) {
+		if (panel.getSeleccionUnidadMedida().equals("Seleccionar unidad de medida")) {
 			errorEnUnidadMedida = true;
 			textoErrorUnidadMedida = errorNumero+") No se ha seleccionado un valor del campo unidad de medida.\n";
 		}
 		
 		//---------- posible error en la no selección de un tipo
-		if (panel.getSeleccionTipo().equals("Selecionar tipo de insumo")) {
+		if (panel.getSeleccionTipo().equals("Seleccionar tipo de insumo")) {
 			errorEnTipo = true;
 			textoErrorTipo = errorNumero+") No se ha seleccionado un valor del campo tipo.\n";
 		}
@@ -179,9 +179,7 @@ public class AltaInsumoController {
 	
 	public Boolean guardar() throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
 		if(this.verificarDatos()) {
-//			System.out.println(this.panel.getClass());
 			if (this.panel.getSeleccionTipo().equals("GENERAL")) {
-				System.out.println("llego");
 				i = new General();
 				((General) i).setPeso(Double.valueOf(this.panel.getCampoPeso()));
 			} else {
@@ -225,14 +223,11 @@ public class AltaInsumoController {
 	
 	public boolean guardar(Insumo i2) throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
 		if(verificarDatos()) {
-			System.out.println(this.panel.getClass());
 			if (this.panel.getSeleccionTipo().equals("GENERAL")) {
-				System.out.println("llego");
 				((General) i).setPeso(Double.valueOf(this.panel.getCampoPeso()));
 			} else {
 				((Liquido) i).setDensidad(Double.valueOf(this.panel.getCampoDensidad()));
 			}
-			System.out.println(this.panel.getCampoNombre());
 			i.setNombre(this.panel.getCampoNombre()); 
 			i.setDescripcion(this.panel.getCampoDescripcion()); 
 			i.setCosto(Double.valueOf(this.panel.getCampoCosto()));
@@ -266,7 +261,6 @@ public class AltaInsumoController {
 		return false;
 	}
 	
-	//Listener
 	
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
@@ -314,7 +308,6 @@ public class AltaInsumoController {
 					ca.setVisible(true);
 					panel.setVisible(false);
 					ventana.setContentPane(ca);	
-					System.out.println("LISTENER 3");
 				}
 			}  catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
 				panel.mostrarError("Error al guardar", e1.getMessage());

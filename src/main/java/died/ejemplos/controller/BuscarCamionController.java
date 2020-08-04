@@ -66,8 +66,6 @@ public class BuscarCamionController{
 				panel.addTablaCamiones(cantCamiones);
 				for(int fila=0; fila<cantCamiones; fila++) {
 					Camion ca = camiones.get(fila);
-					System.out.println(ca);
-
 					panel.setValoresTablaCamiones(fila, ca.getPatente(), ca.getMarca(), ca.getModelo(), ca.getKm(), ca.getCostoHora(), ca.getCostoKM(),ca.getFechaCompra());
 				}
 			}
@@ -78,29 +76,10 @@ public class BuscarCamionController{
 		}
 	}
 	
-//	public void actualizarModelo() throws DatosObligatoriosException,FormatoNumeroException,ControllerException {
-//		try {
-//			if(this.panel.getPatente()!=null) {
-//				c.setPatente(this.panel.getTxtPatente().getText()); 
-//			} else {
-//				throw new DatosObligatoriosException("Patente", "La patente es obligatoria");
-//			}
-//			if(this.panel.getTxtModelo()!=null) c.setModelo(this.panel.getTxtModelo().getText()); 
-//			if(this.panel.getTxtMarca()!=null) c.setMarca(this.panel.getTxtMarca().getText()); 
-//			if(this.panel.getTxtKm()!=null) c.setKm(Integer.valueOf(this.panel.getTxtKm().getText())); 
-//			//if(this.panel.getTxtFechaCompra()!=null) c.setPatente(this.panel.getFechaCompra.getText()); 
-//		} catch(NumberFormatException nfe) {
-//			nfe.printStackTrace();
-//			throw new FormatoNumeroException("Kilometros", "Debe ingresar un valor numerico");
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//			throw new ControllerException("Error:"+e.getLocalizedMessage());
-//		}
-//	}
+
 	public List<Camion> listarTodos(){
 		this.lista.clear();
 		this.lista.addAll(camionService.buscarTodos()); 
-		//System.out.println("Resultado res   "+lista);
 		return this.lista;
 	}
 
@@ -150,12 +129,10 @@ public class BuscarCamionController{
 	        int row = panel.getRowTablaCamiones(point);
 	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
 	    		c = lista.get(row);
-	    		System.out.println(c);
 	    		ViewCamion ca = new ViewCamion(c,ventana);
 	    		ca.setVisible(true);
 	    		panel.setVisible(false);
 	    		ventana.setContentPane(ca);	
-	    		System.out.println("LISTENER 3");
 	        }
 		}
 		@Override public void mouseClicked(MouseEvent e) {} 

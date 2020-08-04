@@ -30,6 +30,7 @@ public class AltaCamionController {
 	private ViewAltaCamion panel;
 	private AltaCamionController instancia;
 	private GestorPlanta plantaService;
+	private List<Planta> plantasAsociadas;
 	
 	public AltaCamionController(ViewAltaCamion p) {
 		this.camionService = new GestorCamion();
@@ -40,8 +41,8 @@ public class AltaCamionController {
 		panel.addListenerCampoCostoHs(new ListenerCampoCostoHs());
 		panel.addListenerCampoCostoKm(new ListenerCampoCostoKm());
 		this.plantaService = new GestorPlanta();
-		List<Planta> aux = plantaService.buscarTodos();
-		panel.addSeleccionPlanta(aux);		
+		plantasAsociadas = plantaService.buscarTodos();
+		panel.addSeleccionPlanta(plantasAsociadas);		
 	}
 	
 	public Boolean verificarDatos() {
@@ -167,7 +168,7 @@ public class AltaCamionController {
 			}
 			
 			//---------- posible error en la no selección de un kilometraje
-			if (panel.getSeleccionKm().equals("Selecionar kilometraje")) {
+			if (panel.getSeleccionKm().equals("Seleccionar kilometraje")) {
 				errorEnkm = true;
 				textoErrorKm = errorNumero+") No se ha seleccionado un valor del campo km.\n";
 			}
@@ -189,10 +190,10 @@ public class AltaCamionController {
 				errorNumero++;
 			}
 			
-			if (panel.getSeleccionPlanta().equals("Selecionar Planta")) {
-				errorEnPlanta = true;
-				textoErrorPlanta = errorNumero+") No se ha seleccionado un valor del campo Planta.\n";
-			}
+//			if (panel.getSeleccionPlanta().equals("Seleccionar Planta")) {
+//				errorEnPlanta = true;
+//				textoErrorPlanta = errorNumero+") No se ha seleccionado un valor del campo Planta.\n";
+//			}
 			
 			
 			String mensajeError =  textoErrorPatente+textoErrorMarca+textoErrorModelo+textoErrorKm+textoErrorCostoHs+textoErrorCostoKm + textoErrorFecha+textoErrorPlanta;
@@ -208,7 +209,6 @@ public class AltaCamionController {
 	
 	public Boolean guardar() throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
 		if(this.verificarDatos()) {
-			System.out.println(this.panel.getClass());
 			Camion c = new Camion();
 			c.setPatente(this.panel.getCampoPatente()); 
 			c.setModelo(this.panel.getCampoModelo());
@@ -217,11 +217,15 @@ public class AltaCamionController {
 			c.setCostoKM(Double.valueOf(this.panel.getCampoCostoKm()));
 			c.setKm(this.panel.getSeleccionKm());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			System.out.println(this.panel.getCampoFechaCompra());
 			LocalDate aux = LocalDate.parse(this.panel.getCampoFechaCompra(),formatter);
-			System.out.println("hla"+aux);
 			c.setFechaCompra(aux);
-			System.out.println(c.getFechaCompra().toString());
+			if(panel.getIndexSeleccionPlanta() == -1) {
+				Planta a = new Planta();
+				a.setIdPlanta(-1);
+				c.setPlanta(a);
+			}
+			else	
+				c.setPlanta(plantasAsociadas.get(panel.getIndexSeleccionPlanta()));
 			camionService.crearCamion(c);
 			return true;
 		}
@@ -249,8 +253,10 @@ public class AltaCamionController {
 	private class ListenerBtnGuardar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
-				if(guardar())
+				if(guardar()) {
 					panel.limpiarFormulario();
+					panel.addSeleccionPlanta(plantasAsociadas);		
+				}
 			} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
 				panel.mostrarError("Error al guardar", e1.getMessage());
 			}

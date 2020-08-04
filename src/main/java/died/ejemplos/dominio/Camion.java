@@ -36,6 +36,7 @@ public class Camion {
 	private Double costoPorHora;
 	private String kmRecorridos;  //debe ser string si o si
 	private LocalDate fechaCompra;
+	private Planta plantaPerteneciente;
 	
 
 	public String getMarca() {
@@ -83,6 +84,13 @@ public class Camion {
 	@Override
 	public String toString() {
 		return " patente=" + patente + "; marca=" + marca + "; modelo=" + modelo + "]";
+	}
+	public Planta getPlanta() {
+		return plantaPerteneciente;
+	}
+	
+	public void setPlanta(Planta p) {
+		plantaPerteneciente = p;
 	}
 	
 	

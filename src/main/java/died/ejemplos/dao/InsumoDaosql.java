@@ -38,14 +38,14 @@ public class InsumoDaosql implements InsumoDao {
 		PreparedStatement pstmt = null;
 		try {
 			if(i.getIdProduto()!=null && i.getIdProduto()>0) {
-				System.out.println("EJECUTA UPDATE");
+		//		System.out.println("EJECUTA UPDATE");
 				pstmt= conn.prepareStatement(UPDATE_INSUMO);
 				pstmt.setString(1, i.getNombre());
 				pstmt.setString(2, i.getDescripcion());
 				pstmt.setString(3, i.getUnidadMedida());
 				pstmt.setDouble(4, i.getCosto());
 				pstmt.setString(5, i.getTipoInsumo());
-				System.out.println(i.getTipoInsumo());
+
 				if (i.getTipoInsumo().equals("LIQUIDO")) {
 					pstmt.setDouble(6, ((Liquido)i).getDensidad());
 					pstmt.setDouble(7, 0);
@@ -55,7 +55,7 @@ public class InsumoDaosql implements InsumoDao {
 				}
 				pstmt.setInt(8, i.getIdProduto());
 			}else {
-				System.out.println("EJECUTA INSERT");
+		//		System.out.println("EJECUTA INSERT");
 				pstmt= conn.prepareStatement(INSERT_INSUMO);
 
 				pstmt.setString(1, i.getNombre());
@@ -132,7 +132,6 @@ public class InsumoDaosql implements InsumoDao {
 				e.printStackTrace();
 			}
 		}	
-		System.out.println("Resultado "+lista);
 		return lista;
 	}
 
@@ -147,7 +146,7 @@ public class InsumoDaosql implements InsumoDao {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
-			System.out.println("EJECUTA DELETE");
+		//	System.out.println("EJECUTA DELETE");
 			pstmt= conn.prepareStatement(DELETE_INSUMO);
 			pstmt.setString(1, nombre);
 			pstmt.executeUpdate();

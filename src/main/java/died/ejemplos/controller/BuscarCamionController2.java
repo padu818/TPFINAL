@@ -34,6 +34,7 @@ public class BuscarCamionController2{
 	private JPanel panelEditar;
 	private Boolean editando = false;
 	private Camion camion;
+	private List<Planta> plantasAsociada;
 		
 	public BuscarCamionController2(ViewCamion v , Camion c, JFrame k) {
 		this.camionService = new GestorCamion();
@@ -43,13 +44,12 @@ public class BuscarCamionController2{
 		this.ventana = k;
 		panelAnterior = (JPanel) k.getContentPane();
 		this.plantaService = new GestorPlanta();
-		List<Planta> aux = plantaService.buscarTodos();
-		panel.addSeleccionPlanta(aux);
+		plantasAsociada = plantaService.buscarTodos();
+		panel.addSeleccionPlanta(plantasAsociada);
 		setView2();
 	}
 	
 	private void setView2() {
-		//System.out.println(this.camion);
 		cargarCamionSeleccionado(this.camion);
 		panel.addListenerBtnVolver(new ListenerVolver());
 		panel.addListenerBtnEditar(new ListenerEditar());
@@ -71,7 +71,8 @@ public class BuscarCamionController2{
 		panel.setCampoCostoKm(camion.getCostoKM().toString());
 		panel.setCampoFechaCompra(camion.getFechaCompra().toString());
 		panel.setCampoID(camion.getId().toString());
-//		panel.setSeleccionPlanta(camion.getSeleccionPlanta());
+		if(camion.getPlanta().getIdPlanta() != -1)
+			panel.setCampoSeleccionPlanta(camion.getPlanta().getNombre());
 	}
 
 
@@ -84,9 +85,6 @@ public class BuscarCamionController2{
 	
 	//VER
 	private class ListenerVolver implements ActionListener{
-
-
-
 		public void actionPerformed(ActionEvent e) {
 				if(editando == true ) {
 					panel.setVisible(false);
@@ -100,7 +98,10 @@ public class BuscarCamionController2{
 				else {	
 					panelAnterior.setVisible(true);
 					editando = false;
-					ventana.setContentPane(panelAnterior);
+					panel.setVisible(false);
+				//	ventana.setContentPane(panelAnterior);
+					ViewBuscarCamion h = new ViewBuscarCamion(ventana);
+					ventana.setContentPane(h);
 				}
 				panel.setVisible(false);
 		}
@@ -146,14 +147,12 @@ public class BuscarCamionController2{
 				ca.setVisible(true);
 		   		panel.setVisible(false);
 		   		ventana.setContentPane(ca);	
-		   		System.out.println("LISTENER 3");
 			}
 		}
 	}
 
 	public boolean guardar(Camion camion2) {
 		if(verificarDatos()) {
-			System.out.println("llegue aca?");
 			camion.setPatente(this.panel.getCampoPatente()); 
 			camion.setModelo(this.panel.getCampoModelo());
 			camion.setMarca(this.panel.getCampoMarca()); 
@@ -161,12 +160,10 @@ public class BuscarCamionController2{
 			camion.setCostoKM(Double.valueOf(this.panel.getCampoCostoKm()));
 			camion.setKm(this.panel.getSeleccionKm());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			System.out.println(this.panel.getCampoFechaCompra());
 			LocalDate aux = LocalDate.parse(this.panel.getCampoFechaCompra().toString());
-			camion.setFechaCompra(aux);
-			System.out.println(aux);
+			camion.setFechaCompra(aux);	
+			camion.setPlanta(plantasAsociada.get(panel.getIndexSeleccionPlanta()));
 			camionService.crearCamion(camion);
-			System.out.println("se guardo?");
 			return true;
 		}
 		return false;
@@ -200,7 +197,6 @@ public class BuscarCamionController2{
 		if(this.camion.getPatente().equals(textoPatente))
 			igualPatente = true;
 		
-		System.out.println("aqui1");
 		//---------- posible error en la introducción del número de patente
 		if(!textoPatente.isEmpty() && !igualPatente) {
 			switch (textoPatente.length()) {
@@ -285,7 +281,6 @@ public class BuscarCamionController2{
 			errorNumero++;
 		}
 		
-		System.out.println("aqui2");
 		if(textoMarca.isEmpty()) {
 			errorEnMarca = true;
 			textoErrorMarca = errorNumero+") Debe completar el campo marca\n";
@@ -298,9 +293,10 @@ public class BuscarCamionController2{
 		}
 		
 		//---------- posible error en la no selección de un kilometraje
-		if (panel.getSeleccionKm().equals("Selecionar kilometraje") || panel.getSeleccionKm().equals("-")) {
+		if (panel.getSeleccionKm().equals("Seleccionar kilometraje") || panel.getSeleccionKm().equals("-")) {
 			errorEnkm = true;
 			textoErrorKm = errorNumero+") No se ha seleccionado un valor del campo km.\n";
+			errorNumero++;
 		}
 		
 		
@@ -319,14 +315,13 @@ public class BuscarCamionController2{
 			textoErrorFecha = errorNumero+") Debe completar el campo fecha\n";
 			errorNumero++;
 		}
-		if (panel.getSeleccionPlanta().equals("Selecionar Planta")) {
+		if (panel.getSeleccionPlanta().equals("Seleccionar planta") || panel.getSeleccionPlanta().equals("-")) {
 			errorEnPlanta = true;
 			textoErrorPlanta = errorNumero+") No se ha seleccionado un valor del campo Planta.\n";
 		}
-		System.out.println("aqui3");
 		String mensajeError =  textoErrorPatente+textoErrorMarca+textoErrorModelo+textoErrorKm+textoErrorCostoHs+textoErrorCostoKm + textoErrorFecha+textoErrorPlanta;
 		
-		if( errorEnPatente || errorEnkm || errorEnCostohs || errorEnCostokm || errorEnFecha || errorEnMarca|| errorEnModelo ||errorEnCostohs||errorEnPlanta) {
+		if(errorEnPlanta|| errorEnPatente || errorEnkm || errorEnCostohs || errorEnCostokm || errorEnFecha || errorEnMarca|| errorEnModelo ) {
 			//panel.noValido( errorEnPatente,errorEnCostohs,errorEnCostokm, errorEnFecha, errorEnMarca, errorEnModelo,errorEnCostohs, errorEnPlanta);
 			JOptionPane.showConfirmDialog(panel, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 		//	panel.textnormal();

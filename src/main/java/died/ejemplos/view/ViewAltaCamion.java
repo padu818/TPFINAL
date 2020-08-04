@@ -196,7 +196,16 @@ public class ViewAltaCamion extends JPanel{
 		this.campoModelo.setText(modelo);
 	}
 
-
+	public Integer getIndexSeleccionPlanta() {
+		if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Seleccionar Planta") {
+			return -1;
+		}
+		else
+			return seleccionPlanta.getSelectedIndex()-1;
+	}
+	
+	
+	
 	public String getCampoMarca() {
 		return campoMarca.getText();
 	}
@@ -307,7 +316,7 @@ public class ViewAltaCamion extends JPanel{
 	}
 
 	public String getSeleccionKm() {
-		if( seleccionKm.getItemAt(seleccionKm.getSelectedIndex()) == "Selecionar kilometraje") {
+		if( seleccionKm.getItemAt(seleccionKm.getSelectedIndex()) == "Seleccionar kilometraje") {
 			return "-";
 		}
 		else
@@ -325,7 +334,7 @@ public class ViewAltaCamion extends JPanel{
 	}
 	
 	public void addKms() {
-		seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
+		seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Seleccionar kilometraje",
 				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
 				"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
 				"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
@@ -337,7 +346,7 @@ public class ViewAltaCamion extends JPanel{
 	}
 	
 	public String getSeleccionPlanta() {
-		if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Selecionar Planta") {
+		if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Seleccionar Planta") {
 			return "-";
 		}
 		else
@@ -357,7 +366,7 @@ public class ViewAltaCamion extends JPanel{
 	public void addSeleccionPlanta(List<Planta> aux) {
 		String[] a = new String[aux.size()+1];
 		int i =1;
-		a[0]= "Selecionar planta";
+		a[0]= "Seleccionar Planta";
 		for(Planta b : aux) {
 			a[i] = b.getNombre();
 			i++;

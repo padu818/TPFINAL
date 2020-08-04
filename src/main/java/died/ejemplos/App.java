@@ -24,6 +24,7 @@ import javax.swing.WindowConstants;
 
 
 import died.ejemplos.gui.ayuda.PanelAyuda;
+import died.ejemplos.view.ViewActualizarStock;
 import died.ejemplos.view.ViewAgregarRuta;
 import died.ejemplos.view.ViewAltaCamion;
 import died.ejemplos.view.ViewAltaInsumo;
@@ -50,6 +51,7 @@ public class App extends JFrame {
 	JMenu menuInsumo;
 	JMenuItem menuItemAltaInsumo;
 	JMenuItem menuItemVisualizarInsumo;
+	JMenuItem menuItemActualizarStock;
 	
 	private App() {
 	}
@@ -125,6 +127,16 @@ public class App extends JFrame {
 		this.menuEntidades.add(menuInsumo);
 		this.menuInsumo.add(menuItemAltaInsumo);
 		this.menuInsumo.add(menuItemVisualizarInsumo);
+		
+		this.menuItemActualizarStock = new JMenuItem("Actualizar stock");
+		this.menuItemActualizarStock.addActionListener(e -> {
+			this.setContentPane(new ViewActualizarStock(this));
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuPlanta.add(menuItemActualizarStock);
+		
 
 		this.menuAyuda = new JMenu("Ayuda");
 		this.menuItemAyuda = new JMenuItem("Manual");
@@ -177,7 +189,7 @@ public class App extends JFrame {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("Click en "+e.getPoint());
+//				System.out.println("Click en "+e.getPoint());
 			}
 		});
 //		JLabel etiquetaBievneido = new JLabel(" EJEMPLO DIED");
@@ -204,7 +216,6 @@ public class App extends JFrame {
 
 	public static void main(String[] args) {
 		
-		System.out.println("hola"+"%");
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				  try {
@@ -229,14 +240,13 @@ public class App extends JFrame {
 				  App app = new App();
 				  app.setTitle("Sistema de gestion logística - TP DIED 2020 ");
 				  // no hacer nada cuando presiona la cruz para cerrar
-				  app.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+			//	  app.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 				  app.armarApp();
 				  // seteo el tamaño fijo
 				  // app.setSize(1020, 750);
 				  // para que aparezca maximizado
 				  app.setExtendedState(app.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 				  app.setVisible(true);
-				  System.out.println("app creada");
 			}
 		});
 	}

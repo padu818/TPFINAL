@@ -54,6 +54,7 @@ public class ViewCamion extends JPanel{
 		private JTextField campoMarca = new JTextField(16);
 		private JTextField campoPatente = new JTextField(16);
 		private JTextField campoSeleccionKm = new JTextField(16);
+		private JTextField campoSeleccionPlanta = new JTextField(16);
 		private JButton btnGuardar = new JButton("GUARDAR");
 		private JButton btnEditar = new JButton("EDITAR");
 		private JButton btnEliminar = new JButton("ELIMINAR");
@@ -81,6 +82,7 @@ public class ViewCamion extends JPanel{
 			campoCostoKm.setEnabled(false);
 			campoFechaCompra.setEnabled(false);
 			campoSeleccionKm.setEnabled(false);
+			campoSeleccionPlanta.setEnabled(false);
 			this.addKms();
 			seleccionKm.setEnabled(false);
 			seleccionKm.setVisible(false);
@@ -90,7 +92,8 @@ public class ViewCamion extends JPanel{
 			btnGuardar.setVisible(false);
 			btnVolver.setVisible(true);
 			btnEliminar.setVisible(true);
-			seleccionPlanta.setEnabled(true);
+			seleccionPlanta.setEnabled(false);
+			seleccionPlanta.setVisible(false);
 			
 //			campoPatente.setToolTipText("LLL999 / LL999LL");
 //			campoFechaCompra.setToolTipText("dd/mm/YYYY");
@@ -160,6 +163,7 @@ public class ViewCamion extends JPanel{
 			constraints.insets.set(20, 0, 0, 0);
 			add(lblPlanta, constraints);
 			constraints.insets.set(20, 120, 0, 0);
+			add(campoSeleccionPlanta,constraints);
 			seleccionPlanta.setPreferredSize(new Dimension(180, 20));
 			add(seleccionPlanta, constraints);	
 				
@@ -215,6 +219,22 @@ public class ViewCamion extends JPanel{
 
 		public void setCampoFechaCompra(String campoFechaCompra) {
 			this.campoFechaCompra.setText(campoFechaCompra);
+		}
+		
+		public String getCampoSeleccionPlanta() {
+			return campoSeleccionPlanta.getText();
+		}
+
+		public void setCampoSeleccionPlanta(String pl) {
+			this.campoSeleccionPlanta.setText(pl);
+		}
+		
+		public Integer getIndexSeleccionPlanta() {
+			if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Seleccionar Planta") {
+				return -1;
+			}
+			else
+				return seleccionPlanta.getSelectedIndex()-1;
 		}
 		
 		public String getID() {
@@ -285,7 +305,7 @@ public class ViewCamion extends JPanel{
 
 
 		public String getSeleccionKm() {
-			if( seleccionKm.getItemAt(seleccionKm.getSelectedIndex()) == "Selecionar kilometraje") {
+			if( seleccionKm.getItemAt(seleccionKm.getSelectedIndex()) == "Seleccionar kilometraje") {
 				return "-";
 			}
 			else
@@ -298,7 +318,7 @@ public class ViewCamion extends JPanel{
 		}
 		
 		public void addKms() {
-			seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
+			seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Seleccionar kilometraje",
 					"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
 					"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
 					"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
@@ -310,7 +330,7 @@ public class ViewCamion extends JPanel{
 		}
 		
 		public String getSeleccionPlanta() {
-			if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Selecionar Planta") {
+			if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Seleccionar planta") {
 				return "-";
 			}
 			else
@@ -330,7 +350,7 @@ public class ViewCamion extends JPanel{
 		public void addSeleccionPlanta(List<Planta> aux) {
 			String[] a = new String[aux.size()+1];
 			int i =1;
-			a[0]= "Selecionar planta";
+			a[0]= "Seleccionar planta";
 			for(Planta b : aux) {
 				a[i] = b.getNombre();
 				i++;
@@ -347,9 +367,12 @@ public class ViewCamion extends JPanel{
 			campoCostoHs.setEnabled(true);
 			campoCostoKm.setEnabled(true);
 			campoFechaCompra.setEnabled(true);
+			seleccionPlanta.setEnabled(true);
 			this.addKms();
 			campoSeleccionKm.setEnabled(false);
 			campoSeleccionKm.setVisible(false);
+			campoSeleccionPlanta.setEnabled(false);
+			campoSeleccionPlanta.setVisible(false);
 			seleccionKm.setVisible(true);
 			seleccionKm.setEnabled(true);
 			seleccionPlanta.setVisible(true);

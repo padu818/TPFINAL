@@ -336,7 +336,7 @@ public class ViewAltaInsumo extends JPanel {
 	}
 	
 	public String getSeleccionUnidadMedida() {
-		if( seleccionUnidadMedida.getItemAt(seleccionUnidadMedida.getSelectedIndex()) == "Selecionar unidad de medida") {
+		if( seleccionUnidadMedida.getItemAt(seleccionUnidadMedida.getSelectedIndex()) == "Seleccionar unidad de medida") {
 			return "-";
 		}
 		else
@@ -354,13 +354,13 @@ public class ViewAltaInsumo extends JPanel {
 	}
 	
 	public void addUnidadMedida() {
-		seleccionUnidadMedida.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar unidad de medida",
+		seleccionUnidadMedida.setModel(new DefaultComboBoxModel<String>(new String[] {"Seleccionar unidad de medida",
 				"KILO", "PIEZA", "GRAMO", "METRO", "LITRO", "M3", "M2"
 		}));
 	}
 	
 	public String getSeleccionTipo() {
-		if( seleccionTipo.getItemAt(seleccionTipo.getSelectedIndex()) == "Selecionar tipo de insumo") {
+		if( seleccionTipo.getItemAt(seleccionTipo.getSelectedIndex()) == "Seleccionar tipo de insumo") {
 			return "-";
 		}
 		else
@@ -378,7 +378,7 @@ public class ViewAltaInsumo extends JPanel {
 	}
 	
 	public void addTipo() {
-		seleccionTipo.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar tipo de insumo",
+		seleccionTipo.setModel(new DefaultComboBoxModel<String>(new String[] {"Seleccionar tipo de insumo",
 				"GENERAL", "LIQUIDO"
 		}));
 	}

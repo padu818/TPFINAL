@@ -280,7 +280,7 @@ public class ViewBuscarCamion extends JPanel {
 	}
 
 	public String getKmRecorrido() {
-		if( seleccionKmRecorrido.getItemAt(seleccionKmRecorrido.getSelectedIndex()) == "Selecionar kilometraje") {
+		if( seleccionKmRecorrido.getItemAt(seleccionKmRecorrido.getSelectedIndex()) == "Seleccionar kilometraje") {
 			return "-";
 		}
 		else
@@ -378,7 +378,7 @@ public class ViewBuscarCamion extends JPanel {
 	}
 	
 	public void addKmsAnio() {
-		seleccionKmRecorrido.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
+		seleccionKmRecorrido.setModel(new DefaultComboBoxModel<String>(new String[] {"Seleccionar kilometraje",
 				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
 				"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
 				"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",

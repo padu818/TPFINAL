@@ -41,7 +41,7 @@ public class PlantaDaoSql implements PlantaDao{
 //				pstmt.setString(1, i.getNombre());
 //
 //			}else {
-				System.out.println("EJECUTA INSERT");
+		//		System.out.println("EJECUTA INSERT");
 				pstmt= conn.prepareStatement(INSERT_PLANTA);
 				pstmt.setString(1, i.getNombre());
 				
@@ -138,7 +138,6 @@ public class PlantaDaoSql implements PlantaDao{
 				e.printStackTrace();
 			}
 		}	
-	//	System.out.println("Resultado "+lista);
 		return lista;
 	}
 
@@ -152,7 +151,7 @@ public class PlantaDaoSql implements PlantaDao{
 //				pstmt.setString(1, i.getNombre());
 //
 //			}else {
-				System.out.println("EJECUTA INSERT");
+//				System.out.println("EJECUTA INSERT");
 				pstmt= conn.prepareStatement(INSERT_RUTA);
 				pstmt.setInt(1, r.getOrigen().getIdPlanta());
 				pstmt.setInt(2, r.getDestino().getIdPlanta());
@@ -206,7 +205,6 @@ public class PlantaDaoSql implements PlantaDao{
 				e.printStackTrace();
 			}
 		}	
-	//	System.out.println("Resultado "+lista);
 		return lista;
 	}
 

@@ -5,10 +5,13 @@ import java.util.List;
 
 import died.ejemplos.dao.CamionDao;
 import died.ejemplos.dao.CamionDaoMysql;
+import died.ejemplos.dao.PlantaDaoSql;
 import died.ejemplos.dominio.Camion;
+import died.ejemplos.dominio.Planta;
 
 public class GestorCamion {
 	
+	private GestorPlanta plantaService = new GestorPlanta();
 	private CamionDao camionDao = new CamionDaoMysql();
 
 	public Camion crearCamion(Camion c) {
@@ -20,14 +23,22 @@ public class GestorCamion {
 	}
 	
 	public List<Camion> buscarTodos() {
-		return camionDao.buscarTodos();
+		List<Camion>  camiones = camionDao.buscarTodos();
+		List<Planta>  plantas = plantaService.buscarTodos();
+		for(Planta p :plantas) {
+			for(Camion c :camiones) {
+				if(c.getPlanta().getIdPlanta() == p.getIdPlanta() )
+					c.setPlanta(p);
+			}
+		}
+		return camiones;
 	}
 	
 	
 	
 
 	public List<Camion> busqueda(String patente, String marca, String modelo, String kmr, String cosths, String costkm, String fecha) {
-		String condicionesConsulta = "SELECT ID,PATENTE,MARCA,MODELO,KM,COSTO_KM,COSTO_HORA,FECHA_COMPRA FROM CAMION";
+		String condicionesConsulta = "SELECT ID,PATENTE,MARCA,MODELO,KM,COSTO_KM,COSTO_HORA,FECHA_COMPRA,IDPLANTA FROM CAMION";
 		Boolean primerConsulta = true;
     
     	
@@ -103,7 +114,16 @@ public class GestorCamion {
     		condicionesConsulta += " FECHA_COMPRA = '"+fecha+"' ";
     	}
     	condicionesConsulta += " order by ID asc";
-		return camionDao.busqueda(condicionesConsulta);
+		List<Camion> camiones = camionDao.busqueda(condicionesConsulta);
+		
+		List<Planta>  plantas = plantaService.buscarTodos();
+		for(Planta p :plantas) {
+			for(Camion c :camiones) {
+				if(c.getPlanta().getIdPlanta() == p.getIdPlanta() )
+					c.setPlanta(p);
+			}
+		}
+		return camiones;
 
 	}
 

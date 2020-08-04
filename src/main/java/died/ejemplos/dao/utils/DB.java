@@ -14,6 +14,7 @@ public class DB {
 	private static boolean _TABLAS_CREADAS_INSUMO = false;
 	private static boolean _TABLAS_CREADAS_PLANTA = false;
 	private static boolean _TABLAS_CREADAS_RUTA = false;
+	private static boolean _TABLA_CREATE_STOCKINSUMO = false;
 	
 	private static final String TABLA_CREATE_CAMION = 
 			"CREATE TABLE  IF NOT EXISTS CAMION ( ID integer not NULL GENERATED ALWAYS AS IDENTITY, PATENTE VARCHAR(14) not NULL,"
@@ -36,26 +37,32 @@ public class DB {
 			+ "DURACIONKM DECIMAL(12,2), CANTMAXATRANSPORTAR DECIMAL(12,2),IDPLANTAORIGEN integer REFERENCES PLANTA(IDPLANTA),"
 			+ "IDPLANTADESTINO integer REFERENCES PLANTA(IDPLANTA), "
 			+ "PRIMARY KEY(IDRUTA));";
+	
+	private static final String TABLA_CREATE_STOCKINSUMO = 
+			"CREATE TABLE  IF NOT EXISTS STOCKINSUMO ( STOCK DECIMAL(12,2),PUNTOREPOSICION DECIMAL(12,2),"
+			+ "IDPLANTA integer REFERENCES PLANTA(IDPLANTA),IDINSUMO integer REFERENCES INSUMO(IDINSUMO), "
+			+ "PRIMARY KEY(IDPLANTA, IDINSUMO));";
 
 	private DB(){
 			// no se pueden crear instancias de esta clase
 	}
 	
 	private static void verificarCrearTablas() {
-		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO || !_TABLAS_CREADAS_PLANTA || !_TABLAS_CREADAS_RUTA) {
+		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO || !_TABLAS_CREADAS_PLANTA || !_TABLAS_CREADAS_RUTA|| !_TABLA_CREATE_STOCKINSUMO) {
 			Connection conn = DB.crearConexion();
 			Statement stmt = null;
-			System.out.println("llege");
 			try {
 				stmt = conn.createStatement();
 				boolean tablaPlantaCreada = stmt.execute(TABLA_CREATE_PLANTA);
 				boolean tablaInsumoCreada = stmt.execute(TABLA_CREATE_INSUMO);	
 				boolean tablaCamionCreada = stmt.execute(TABLA_CREATE_CAMION);
 				boolean tablaRutaCreada = stmt.execute(TABLA_CREATE_RUTA);
+				boolean tablaStockCreada = stmt.execute(TABLA_CREATE_STOCKINSUMO);
 				_TABLAS_CREADAS_CAMION = tablaCamionCreada; //VER
 				_TABLAS_CREADAS_INSUMO = tablaInsumoCreada;
 				_TABLAS_CREADAS_PLANTA= tablaPlantaCreada;
 				_TABLAS_CREADAS_RUTA = tablaRutaCreada;
+				_TABLA_CREATE_STOCKINSUMO = tablaStockCreada;
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -75,13 +82,11 @@ public class DB {
 		try {
 			Class.forName("org.postgresql.Driver");
 			conn= DriverManager.getConnection(url,user,pass);
-	//		System.out.println("Probando bd");
 		} catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-//		System.out.println("CONEXION LOGRADA");
 		return conn;
 	}
 	
