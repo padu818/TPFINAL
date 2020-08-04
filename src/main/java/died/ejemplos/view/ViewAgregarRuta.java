@@ -3,6 +3,7 @@ package died.ejemplos.view;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
@@ -13,11 +14,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -76,7 +80,7 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		this.controller= new AltaRutaController(this);
 		this.inicializarComponentes();
 		this.ubicarComponentes();
-		addTablaRuta(0);
+		//addTablaRuta(0);
 	}
 	
 	private void inicializarComponentes() {		
@@ -90,10 +94,10 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		seleccionPlantaOrigen.setPreferredSize(new Dimension(180,20));
 		seleccionPlantaDestino.setEnabled(true);
 		seleccionPlantaOrigen.setEnabled(true);
-		seleccionPlantaDestino.setEnabled(false);
+		seleccionPlantaDestino.setEnabled(true);
 		tablaRuta.setEnabled(true);
 		btnCancelar.setEnabled(true);
-		btnGuardar.setEnabled(false);
+		btnGuardar.setEnabled(true);
 		btnEliminarRuta.setEnabled(false);
 		campoTotalFilas.setEnabled(false);
 		tablaRutaScroll.setPreferredSize(new Dimension(680, 500));	
@@ -111,42 +115,42 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(0, 0, 0, 0);
 		add(lblPlantaOrigen, constraints);
-		constraints.insets.set(0, 120, 0, 0);
+		constraints.insets.set(0, 200, 0, 0);
 		add(seleccionPlantaOrigen, constraints);	
 			
 		constraints.gridy = 2;
 		constraints.insets.set(20, 0, 0, 0);
 		add(lblPlantaDestino, constraints);
-		constraints.insets.set(20, 120, 0, 0);
+		constraints.insets.set(20, 200, 0, 0);
 		add(seleccionPlantaDestino, constraints);
 			
 		constraints.gridy = 3;
 		constraints.insets.set(20, 0, 0, 0);
 		add(lblDistanciaHs, constraints);
-		constraints.insets.set(20, 120, 0, 0);
+		constraints.insets.set(20, 200, 0, 0);
 		add(campoDistanciaHs, constraints);
 			
 		constraints.gridy = 4;
 		constraints.insets.set(20, 0, 0, 0);
 		add(lblDistanciaKm, constraints);
-		constraints.insets.set(20, 120, 0, 0);
-		
-		add(campoDistanciaKm, constraints);;
+		constraints.insets.set(20, 200, 0, 0);
+		add(campoDistanciaKm, constraints);
 			
 		constraints.gridy = 5;
 		constraints.insets.set(20, 0, 0, 0);
 		add(lblMaximo, constraints);
-		constraints.insets.set(20, 120, 0, 0);
+		constraints.insets.set(20, 200, 0, 0);
 		add(campoMaximo, constraints);
 		
 			
 		constraints.gridy = 9;
 		constraints.gridwidth = 4;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(30, 0, 0, 200);
+		constraints.insets.set(30, 0, 0, 0);
 		add(btnGuardar, constraints);
 		constraints.insets.set(30, 0, 0, 200);
 		add(btnCancelar, constraints);
+		constraints.gridx = 7;
 		constraints.insets.set(30, 0, 0, 0);
 		add(btnEliminarRuta, constraints);
 		
@@ -158,14 +162,14 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		constraints.insets.set(5, 30, 5, 5);
 		add(tablaRutaScroll, constraints);	
 		
-		constraints.gridx = 2;
-		constraints.gridy = 9;
-		constraints.gridheight = 1;
-		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(5, 5, 5, 5);
-		add(campoTotalFilas, constraints);	
-		constraints.insets.set(5, 5, 5, 44);
-		add(ltotalFilas, constraints);
+	//	constraints.gridx = 2;
+	//	constraints.gridy = 9;
+	//	constraints.gridheight = 1;
+	//	constraints.anchor = GridBagConstraints.EAST;
+	//	constraints.insets.set(5, 5, 5, 5);
+	//	add(ltotalFilas, constraints);
+	//	constraints.insets.set(5, 5, 5, 44);
+	//	add(campoTotalFilas, constraints);	
 	}
 
 	
@@ -173,24 +177,24 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	
 	
 	public String getPlantaOrigen() {
-		if( seleccionPlantaOrigen.getItemAt(seleccionPlantaOrigen.getSelectedIndex()) == "Selecionar Planta") {
-			return "-";
+		if( seleccionPlantaOrigen.getItemAt(seleccionPlantaOrigen.getSelectedIndex()) == "Seleccionar Planta") {
+			return "Seleccionar Planta";
 		}
 		else
 			return seleccionPlantaOrigen.getItemAt(seleccionPlantaOrigen.getSelectedIndex());
 	}
 	
 	public Integer getIndexOrigen() {
-		if( seleccionPlantaOrigen.getItemAt(seleccionPlantaOrigen.getSelectedIndex()) == "Selecionar Planta") {
+		if( seleccionPlantaOrigen.getItemAt(seleccionPlantaOrigen.getSelectedIndex()) == "Seleccionar Planta") {
 			return -1;
 		}
 		else
-			return seleccionPlantaOrigen.getSelectedIndex();
+			return seleccionPlantaOrigen.getSelectedIndex()-1;
 	}
 	
 	public String getPlantaDestino() {
-		if( seleccionPlantaDestino.getItemAt(seleccionPlantaDestino.getSelectedIndex()) == "Selecionar Planta") {
-			return "-";
+		if( seleccionPlantaDestino.getItemAt(seleccionPlantaDestino.getSelectedIndex()) == "Seleccionar Planta") {
+			return "Seleccionar Planta";
 		}
 		else
 			return seleccionPlantaDestino.getItemAt(seleccionPlantaDestino.getSelectedIndex());
@@ -214,6 +218,10 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	
 	public void addListenerBtnGuardar(ActionListener listener) {
 		btnGuardar.addActionListener(listener);
+	}
+	
+	public void addListenerBtnEliminarRuta(ActionListener listener) {
+		btnEliminarRuta.addActionListener(listener);
 	}
 	
 	public void addListenerTablaCamiones(MouseListener listener) {
@@ -271,7 +279,7 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		
 		
 		if(tamanioTablaActual > 0) {	
-			tablaRuta.setToolTipText("Doble click para seleccionar una planta");
+			tablaRuta.setToolTipText("Doble click para seleccionar una ruta");
 			tablaRuta.setEnabled(true);
 			campoTotalFilas.setText(String.valueOf(tamanioTablaActual));
 		}
@@ -282,7 +290,7 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		}
 	}	
 	
-	public void setValoresTablaPlanta(Integer fila, String origen, String destino, String costohs, Double costokm, Double maximo) {
+	public void setValoresTablaRuta(Integer fila, String origen, String destino, Double costohs, Double costokm, Double maximo) {
 		model.setValueAt(origen, fila, 0);
 		model.setValueAt(destino, fila, 1);
 		model.setValueAt(costokm, fila, 2);
@@ -292,8 +300,9 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	}
 
 	public void addOrigen(List<Planta> aux) {
-		String[] a = new String[aux.size()];
-		int i =0;
+		String[] a = new String[aux.size()+1];
+		a[0] = "Seleccionar Planta";
+		int i =1;
 		for(Planta b : aux) {
 			a[i] = b.getNombre();
 			i++;
@@ -304,8 +313,9 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	}
 
 	public void addDestino(List<Planta> aux) {
-		String[] a = new String[aux.size()];
-		int i =0;
+		String[] a = new String[aux.size()+1];
+		a[0] = "Seleccionar Planta";
+		int i =1;
 		for(Planta b : aux) {
 			a[i] = b.getNombre();
 			i++;
@@ -314,6 +324,40 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		));
 		
 	}
+
+	public int getIndexDestino() {
+		if( seleccionPlantaDestino.getItemAt(seleccionPlantaDestino.getSelectedIndex()) == "Selecionar Planta") {
+			return -1;
+		}
+		else
+			return seleccionPlantaDestino.getSelectedIndex()-1;
+	}
 	
+	public void limpiarFormulario() {
+		
+		this.campoDistanciaHs.setText("");
+		this.campoDistanciaKm.setText("");
+		this.campoMaximo.setText("");
+		this.campoTotalFilas.setText("");
 	
+	}
+	
+	public void mostrarError(String titulo,String detalle) {
+		JFrame padre= (JFrame) SwingUtilities.getWindowAncestor(this);
+		JOptionPane.showMessageDialog(padre,
+			    detalle,titulo,
+			    JOptionPane.ERROR_MESSAGE);
+	}
+
+	public void habilitarEliminar(Boolean t) {
+		btnEliminarRuta.setEnabled(t);
+	}
+	
+	public Integer getRowTablaRuta(Point point) {
+		return tablaRuta.rowAtPoint(point);
+	}
+	
+	public void addListenerTablaRuta(MouseListener listener) {
+		tablaRuta.addMouseListener(listener);
+	}
 }

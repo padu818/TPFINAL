@@ -75,13 +75,13 @@ public class DB {
 		try {
 			Class.forName("org.postgresql.Driver");
 			conn= DriverManager.getConnection(url,user,pass);
-			System.out.println("Probando bd");
+	//		System.out.println("Probando bd");
 		} catch (ClassNotFoundException ex) {
 			ex.printStackTrace();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
-		System.out.println("CONEXION LOGRADA");
+//		System.out.println("CONEXION LOGRADA");
 		return conn;
 	}
 	

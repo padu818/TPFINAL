@@ -3,21 +3,49 @@ package died.ejemplos.gui.ayuda;
 public class Arista<T> {
 	private Vertice<T> inicio;
 	private Vertice<T> fin;
-	private Number valor;
+//	private Number valor;
+	private Double hs;
+	private Double km;
+	private Double max;
 
 	public Arista(){
-		valor=0.0;
 	} 
 	
+	public Double getHs() {
+		return hs;
+	}
+
+	public void setHs(Double hs) {
+		this.hs = hs;
+	}
+
+	public Double getKm() {
+		return km;
+	}
+
+	public void setKm(Double km) {
+		this.km = km;
+	}
+
+	public Double getMax() {
+		return max;
+	}
+
+	public void setMax(Double max) {
+		this.max = max;
+	}
+
 	public Arista(Vertice<T> ini,Vertice<T> fin){
 		this();
 		this.inicio = ini;
 		this.fin = fin;
 	}
 
-	public Arista(Vertice<T> ini,Vertice<T> fin,Number val){
+	public Arista(Vertice<T> ini,Vertice<T> fin,Double hss,Double kmt, Double maxx){
 		this(ini,fin);
-		this.valor= val;
+		this.km = kmt;
+		this.hs = hss;
+		this.max = maxx;
 	}
 	
 	public Vertice<T> getInicio() {
@@ -36,15 +64,8 @@ public class Arista<T> {
 		this.fin = fin;
 	}
 
-	public Number getValor() {
-		return valor;
-	}
-
-	public void setValor(Number valor) {
-		this.valor = valor;
-	}
 	
-	
+	//ver
 	@Override
 	public String toString() {
 		return "( "+this.inicio.getValor()+" --> "+this.fin.getValor()+" )";
@@ -52,6 +73,6 @@ public class Arista<T> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		return (obj instanceof Arista<?>) && ((Arista<?>)obj).getValor().equals(this.valor); 
+		return (obj instanceof Arista<?>) && ((Arista<?>)obj).getHs().equals(this.hs) && ((Arista<?>)obj).getKm().equals(this.km) && ((Arista<?>)obj).getMax().equals(this.max); 
 	}
 }

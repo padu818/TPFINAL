@@ -17,8 +17,30 @@ import java.util.stream.Collectors;
 
 
 public class Grafo<T> {
+	
+	
 	private List<Arista<T>> aristas;
 	private List<Vertice<T>> vertices;
+
+	
+	
+	
+	public List<Arista<T>> getAristas() {
+		return aristas;
+	}
+
+	public void setAristas(List<Arista<T>> aristas) {
+		this.aristas = aristas;
+	}
+
+	public List<Vertice<T>> getVertices() {
+		return vertices;
+	}
+
+	public void setVertices(List<Vertice<T>> vertices) {
+		this.vertices = vertices;
+	}
+
 
 	public Grafo(){
 		this.aristas = new ArrayList<Arista<T>>();
@@ -34,15 +56,19 @@ public class Grafo<T> {
 	}
 	
 	public void conectar(T n1,T n2){
-		this.conectar(getNodo(n1), getNodo(n2), 0.0);
+		this.conectar(getNodo(n1), getNodo(n2), 0.0,0.0,0.0);
 	}
 
-	public void conectar(T n1,T n2,Number valor){
-		this.conectar(getNodo(n1), getNodo(n2), valor);
+//	public void conectar(T n1,T n2,Double hs, Double km, Double maximo){
+//		this.conectar(getNodo(n1), getNodo(n2), hs,km,maximo);
+//	}
+	
+	public void conectar(T n1,T n2,Double hs, Double km, Double maximo){
+		this.conectar(new Vertice<T>(n1), new Vertice<T>(n2), hs,km,maximo);
 	}
 
-	private void conectar(Vertice<T> nodo1,Vertice<T> nodo2,Number valor){
-		this.aristas.add(new Arista<T>(nodo1,nodo2,valor));
+	private void conectar(Vertice<T> nodo1,Vertice<T> nodo2,Double hs, Double km, Double maximo){
+		this.aristas.add(new Arista<T>(nodo1,nodo2,hs,km,maximo));
 	}
 	
 	public Vertice<T> getNodo(T valor){
