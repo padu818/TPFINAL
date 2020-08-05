@@ -156,6 +156,7 @@ public class InsumoDaosql implements InsumoDao {
 				i.setDescripcion(rs.getString("DESCRIPCION"));
 				i.setUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
 				i.setCosto(rs.getDouble("COSTO"));
+				
 //				((General)i).setPeso(rs.getDouble("PESO"));
 //				((Liquido)i).setDensidad(rs.getDouble("DENSIDAD"));
 				lista.add(i);
@@ -224,8 +225,7 @@ public class InsumoDaosql implements InsumoDao {
 					else
 						i++;
 				}
-				i = 0;
-				Boolean sverd = false;
+
 				System.out.println(plantas.size());
 				System.out.println(idPlanta);
 				for(Planta pl : plantas) {

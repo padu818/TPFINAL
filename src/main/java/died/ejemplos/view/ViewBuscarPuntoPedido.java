@@ -174,7 +174,7 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	public Integer getIndexSeleccionPlanta() {
-		if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Seleccionar Planta") {
+		if( seleccionPlanta.getItemAt(seleccionPlanta.getSelectedIndex()) == "Seleccionar planta") {
 			return -1;
 		}
 		else
@@ -252,7 +252,7 @@ private static final long serialVersionUID = 1L;
 	
 	public void addPlantas(List<Planta> aux) {
 		String[] a = new String[aux.size()+1];
-		a[0] = "Seleccionar Planta";
+		a[0] = "Seleccionar planta";
 		int i =1;
 		for(Planta b : aux) {
 			a[i] = b.getNombre();
@@ -263,7 +263,7 @@ private static final long serialVersionUID = 1L;
 
 	public void addInsumos(List<Insumo> aux) {
 		String[] a = new String[aux.size()+1];
-		a[0] = "Seleccionar Insumo";
+		a[0] = "Seleccionar insumo";
 		int i =1;
 		for(Insumo b : aux) {
 			a[i] = b.getNombre();

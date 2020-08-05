@@ -82,13 +82,13 @@ public class BuscarPuntoPedidoController {
 	
 
 	public List<Planta> listarTodaPlanta(){
-	//	this.plantas.clear();
+		this.plantas.clear();
 		this.plantas.addAll(plantaService.buscarTodos()); 
 		return this.plantas;
 	}
 	
 	public List<Insumo> listarTodoInsumo(){
-	//	this.insumos.clear();
+		this.insumos.clear();
 		this.insumos.addAll(insumoService.buscarTodos()); 
 		return this.insumos;
 	}
@@ -108,8 +108,10 @@ public class BuscarPuntoPedidoController {
 					plant = plantas.get(panel.getIndexSeleccionPlanta()).getIdPlanta().toString();
 				if(panel.getIndexSeleccionInsumo() != -1)
 					insum = insumos.get(panel.getIndexSeleccionInsumo()).getIdProduto().toString();
-			
-				
+				System.out.println("hola");
+				System.out.println(plant);
+				System.out.println(insum);
+				System.out.println("chau");
 				stocks = insumoService.busqueda(plant,insum);
 				cargarTabla(stocks);
 			}catch(Exception ex) {

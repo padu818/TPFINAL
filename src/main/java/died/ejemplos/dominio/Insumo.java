@@ -22,6 +22,8 @@ public abstract class Insumo {
 
 
 	public abstract String getUnidadMedida(); 
+	
+	
 
 	
 	public abstract void setUnidadMedida(Unidad medida);
@@ -48,6 +50,7 @@ public abstract class Insumo {
 
 
 	public abstract String getTipoInsumo();
+	
 	
 
 }

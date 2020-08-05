@@ -39,12 +39,11 @@ public class GestorInsumo {
 		
 		
 		if(!text1.isEmpty())
-			insumos = buscarPorId(busqueda+" where IDINSUMO = '"+text1+"'");
+			insumos = buscarPorId("SELECT IDINSUMO,NOMBRE,DESCRIPCION,UNIDAD_MEDIDA,COSTO,TIPO,PESO,DENSIDAD FROM INSUMO where IDINSUMO = '"+text1+"'");
 		else
 			insumos = buscarTodos();
-		
 		if(!text2.isEmpty())
-			plantas = plantaService.buscarPorId("'"+text2+"'");
+			plantas = plantaService.buscarPorId("SELECT IDPLANTA,NOMBRE FROM PLANTA where IDPLANTA = '"+text2+"'");
 		else
 			plantas = plantaService.buscarTodos();
 		
@@ -75,8 +74,8 @@ public class GestorInsumo {
 			busqueda += " and ";
 		}
        	busqueda+= "STOCK < PUNTOREPOSICION";
-//       	for(Planta p : plantas)
-//       		System.out.println(p.getNombre());
+       	for(Planta p : plantas)
+       		System.out.println(p.getNombre());
 		stockins = insumoDao.busquedaStock(busqueda,insumos,plantas);
 		return stockins;
 	}
