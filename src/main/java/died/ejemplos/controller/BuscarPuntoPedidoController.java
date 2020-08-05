@@ -61,17 +61,16 @@ public class BuscarPuntoPedidoController {
 	private void cargarTabla(List<StockInsumo> ins) {
 		if(stocks.isEmpty()) {
 			panel.addTablaStock(0);
-			System.out.println("1");
 		}
 		else {
-			System.out.println("2");
+
 			int cantStock = ins.size();
 			if(cantStock > 0){
 				panel.addTablaStock(cantStock);
-				System.out.println("3");
+
 				for(int fila=0; fila<cantStock; fila++) {
 					StockInsumo s = ins.get(fila);
-					panel.setValoresTablaStock(fila,/*s.getPlanta().getNombre()*/"Hola",/*s.getInsumo().getNombre()*/ "hola", s.getStock(),s.getPuntoReposicion());
+					panel.setValoresTablaStock(fila,s.getPlanta().getNombre(),s.getInsumo().getNombre(), s.getStock(),s.getPuntoReposicion());
 				}
 			}
 			else {

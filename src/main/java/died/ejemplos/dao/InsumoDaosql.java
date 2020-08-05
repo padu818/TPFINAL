@@ -215,19 +215,26 @@ public class InsumoDaosql implements InsumoDao {
 				Integer idPlanta =rs.getInt("IDPLANTA");
 				StockInsumo s = new StockInsumo();
 				Integer i = 0;
-				do {
-					if(idInsumo == insumos.get(i).getIdProduto())
+				Boolean verd = false;
+				while(!verd && i < insumos.size()) {
+					if(idInsumo == insumos.get(i).getIdProduto()) {
 						s.setInsumo(insumos.get(i));
+						verd = true;
+					}
 					else
 						i++;
-				}while(insumos.get(i).getIdProduto() != idInsumo && i < insumos.size());
+				}
 				i = 0;
-				do {
-					if(idPlanta == plantas.get(i).getIdPlanta())
-						s.setPlanta(plantas.get(i));
-					else
-						i++;
-				}while(plantas.get(i).getIdPlanta() != idPlanta && i < plantas.size());
+				Boolean sverd = false;
+				System.out.println(plantas.size());
+				System.out.println(idPlanta);
+				for(Planta pl : plantas) {
+					if(idPlanta == pl.getIdPlanta()) {
+						s.setPlanta(pl);
+						System.out.println("8");
+						break;
+					}
+				}
 				s.setStock(rs.getInt("STOCK"));
 				s.setPuntoReposicion(rs.getInt("PUNTOREPOSICION"));
 				lista.add(s);
