@@ -4,16 +4,19 @@ import java.util.List;
 
 
 import died.ejemplos.dominio.Insumo;
+import died.ejemplos.dominio.Planta;
+import died.ejemplos.dominio.StockInsumo;
 
 
 public interface InsumoDao {
 	
 	
 	public Insumo saveOrUpdate(Insumo i);
-	public Insumo buscarPorId(Integer id);
+	public List<Insumo> buscarPorId(String texto);
 	//public void borrar(Integer id);
 	public List<Insumo> buscarTodos();
 	public List<Insumo> busqueda(String condicionesConsulta);
 	void borrar(String nombre);
+	public List<StockInsumo> busquedaStock(String busqueda, List<Insumo> insumos, List<Planta> plantas);
 
 }

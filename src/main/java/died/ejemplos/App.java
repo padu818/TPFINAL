@@ -30,6 +30,7 @@ import died.ejemplos.view.ViewAltaCamion;
 import died.ejemplos.view.ViewAltaInsumo;
 import died.ejemplos.view.ViewAltaPlanta;
 import died.ejemplos.view.ViewBuscarCamion;
+import died.ejemplos.view.ViewBuscarPuntoPedido;
 import died.ejemplos.view.ViewVisualizarInsumo;
 
 
@@ -52,6 +53,7 @@ public class App extends JFrame {
 	JMenuItem menuItemAltaInsumo;
 	JMenuItem menuItemVisualizarInsumo;
 	JMenuItem menuItemActualizarStock;
+	JMenuItem menuItemBuscarPuntoPedido;
 	
 	private App() {
 	}
@@ -136,6 +138,15 @@ public class App extends JFrame {
 			this.repaint();
 		});
 		this.menuPlanta.add(menuItemActualizarStock);
+		
+		this.menuItemBuscarPuntoPedido = new JMenuItem("Buscar punto de pedido");
+		this.menuItemBuscarPuntoPedido.addActionListener(e -> {
+			this.setContentPane(new ViewBuscarPuntoPedido());
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuPlanta.add(menuItemBuscarPuntoPedido);
 		
 
 		this.menuAyuda = new JMenu("Ayuda");

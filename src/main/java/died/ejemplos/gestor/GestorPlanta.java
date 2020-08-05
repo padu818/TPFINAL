@@ -1,6 +1,7 @@
 package died.ejemplos.gestor;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import died.ejemplos.dao.PlantaDao;
@@ -46,6 +47,13 @@ public class GestorPlanta {
 	public void borrar(Integer origen, Integer destino) {
 		plantaDao.borrar(origen,destino);
 		
+	}
+
+	public List<Planta> buscarPorId(String string) {
+		Planta p = plantaDao.buscarPorId(Integer.valueOf(string));
+		List<Planta> planta = new ArrayList<Planta>();
+		planta.add(p);
+		return planta;
 	}
 	
 }

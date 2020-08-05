@@ -5,7 +5,7 @@ public class StockInsumo{
 	private Insumo insumo;
 	private Integer stock;
 	private Integer puntoReposicion; // lo utilizo?
-	private Integer cantidadMax; // 
+	//private Integer cantidadMax; // 
 
 	private Planta planta;
 	/*
@@ -24,12 +24,12 @@ public class StockInsumo{
 	public void setStock(Integer stock) {
 		this.stock = stock;
 	}
-	public Integer getCantidadMax() {
-		return cantidadMax;
-	}
-	public void setCantidadMax(Integer cantidadMax) {
-		this.cantidadMax = cantidadMax;
-	}
+//	public Integer getCantidadMax() {
+//		return cantidadMax;
+//	}
+//	public void setCantidadMax(Integer cantidadMax) {
+//		this.cantidadMax = cantidadMax;
+//	}
 	public void setIDRegistro(Integer iDRegistro) {
 		IDRegistro = iDRegistro;
 	}

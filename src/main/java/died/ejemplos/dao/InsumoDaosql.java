@@ -12,6 +12,9 @@ import died.ejemplos.dominio.Camion;
 import died.ejemplos.dominio.General;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Liquido;
+import died.ejemplos.dominio.Planta;
+import died.ejemplos.dominio.StockInsumo;
+import died.ejemplos.dominio.Unidad;
 
 public class InsumoDaosql implements InsumoDao {
 	
@@ -20,6 +23,7 @@ public class InsumoDaosql implements InsumoDao {
 //	+ " DESCRIPCION VARCHAR(50) not NULL,UNIDAD_MEDIDA VARCHAR(12) not NULL, "
 //	+ "COSTO DECIMAL(12,2), TIPO VARCHAR(10) not NULL, PESO DECIMAL(12,2), DENSIDAD DECIMAL(12,2),  "
 //	+ "PRIMARY KEY(IDINSUMO));";
+	
 	
 	
 	private static final String SELECT_ALL_INSUMO =
@@ -85,10 +89,45 @@ public class InsumoDaosql implements InsumoDao {
 		return i;
 	}
 
-	@Override
-	public Insumo buscarPorId(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Insumo> buscarPorId(String id) {
+		List<Insumo> lista = new ArrayList<Insumo>();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt= conn.prepareStatement(id);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Insumo i;
+				if (rs.getString("TIPO").equals("GENERAL")) {
+					i = new General();
+					((General)i).setPeso(rs.getDouble("PESO"));
+					
+				}else {
+					i = new Liquido();
+					((Liquido)i).setDensidad(rs.getDouble("DENSIDAD"));
+				}
+				
+				i.setIdProduto((rs.getInt("IDINSUMO")));
+				i.setNombre(rs.getString("NOMBRE"));
+				i.setDescripcion(rs.getString("DESCRIPCION"));
+				i.setUnidadMedida(rs.getString("UNIDAD_MEDIDA"));
+				i.setCosto(rs.getDouble("COSTO"));
+				lista.add(i);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return lista;
 	}
 
 	@Override
@@ -161,6 +200,50 @@ public class InsumoDaosql implements InsumoDao {
 			}
 		}
 
+	}
+
+	public List<StockInsumo> busquedaStock(String condicionesConsulta, List<Insumo> insumos, List<Planta> plantas) {
+		List<StockInsumo> lista = new ArrayList<StockInsumo>();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {		
+			pstmt= conn.prepareStatement(condicionesConsulta);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Integer idInsumo = rs.getInt("IDINSUMO");
+				Integer idPlanta =rs.getInt("IDPLANTA");
+				StockInsumo s = new StockInsumo();
+				Integer i = 0;
+				do {
+					if(idInsumo == insumos.get(i).getIdProduto())
+						s.setInsumo(insumos.get(i));
+					else
+						i++;
+				}while(insumos.get(i).getIdProduto() != idInsumo && i < insumos.size());
+				i = 0;
+				do {
+					if(idPlanta == plantas.get(i).getIdPlanta())
+						s.setPlanta(plantas.get(i));
+					else
+						i++;
+				}while(plantas.get(i).getIdPlanta() != idPlanta && i < plantas.size());
+				s.setStock(rs.getInt("STOCK"));
+				s.setPuntoReposicion(rs.getInt("PUNTOREPOSICION"));
+				lista.add(s);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return lista;
 	}
 
 }
