@@ -229,9 +229,7 @@ public class InsumoDaosql implements InsumoDao {
 
 				for(Insumo ins: insumos) {
 					if(idInsumo == ins.getIdProduto()) {
-						System.out.println(ins);
 						s.setInsumo(ins);
-
 						break;
 						}
 	
@@ -241,7 +239,6 @@ public class InsumoDaosql implements InsumoDao {
 				for(Planta pl : plantas) {
 					if(idPlanta == pl.getIdPlanta()) {
 						s.setPlanta(pl);
-	
 						break;
 					}
 				}
@@ -262,6 +259,56 @@ public class InsumoDaosql implements InsumoDao {
 		}	
 		return lista;
 	}
+	
+	
+	public List<StockInsumo> busquedaStock( List<Insumo> insumos/*, List<Planta> plantas*/) {
+		List<StockInsumo> lista = new ArrayList<StockInsumo>();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {		
+			pstmt= conn.prepareStatement("SELECT IDPLANTA,IDINSUMO,STOCK,PUNTOREPOSICION FROM STOCKINSUMO");
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Integer idInsumo = rs.getInt("IDINSUMO");
+				Integer idPlanta =rs.getInt("IDPLANTA");
+				StockInsumo s = new StockInsumo();
+				Planta p = new Planta();
+				p.setIdPlanta(idPlanta);
+				s.setPlanta(p);
+				for(Insumo ins: insumos) {
+					if(idInsumo == ins.getIdProduto()) {
+						s.setInsumo(ins);
+
+						break;
+						}
+				}
+//				for(Planta pl : plantas) {
+//					if(idPlanta == pl.getIdPlanta()) {
+//						s.setPlanta(pl);
+//	
+//						break;
+//					}
+//				}
+				s.setStock(rs.getInt("STOCK"));
+				s.setPuntoReposicion(rs.getInt("PUNTOREPOSICION"));
+				lista.add(s);
+			}			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return lista;
+	}
+
 
 	@Override
 	public StockInsumo saveOrUpdate(StockInsumo s) {

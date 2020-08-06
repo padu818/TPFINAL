@@ -34,8 +34,8 @@ public class GestorInsumo {
 	public List<StockInsumo> busqueda(String plant,String ins){
 		String busqueda = "SELECT IDPLANTA,IDINSUMO,STOCK,PUNTOREPOSICION FROM STOCKINSUMO";
 		Boolean primerConsulta = true;
-		List<Insumo> insumos = new ArrayList<Insumo>();
 		List<StockInsumo> stockins = new ArrayList<StockInsumo>();
+		List<Insumo> insumos = new ArrayList<Insumo>();
 		List<Planta> plantas = new ArrayList<Planta>();
 		
 
@@ -89,10 +89,13 @@ public class GestorInsumo {
 	
 	public Integer[] stockInsumos(Integer cantInsumos, List<Insumo> insumos) {
 		Integer[] aux = new Integer[cantInsumos];
+	//	List<Planta> plantas = new ArrayList<Planta>();
+//		plantas = plantaService.buscarTodos();
+		
 		for(int i = 0;i < cantInsumos; i++) {
 			aux[i] = 0;
 		}
-		List<StockInsumo> st = busqueda("","");
+		List<StockInsumo> st = insumoDao.busquedaStock(insumos);
 		for(int i = 0; i < insumos.size(); i++) {
 			for(StockInsumo s :st) {
 				if(insumos.get(i).getIdProduto() == s.getInsumo().getIdProduto())
@@ -114,5 +117,8 @@ public class GestorInsumo {
 		insumoDao.borrar(idPlanta,idInsumo);
 		
 	}
+	
+	
+	
 	
 }
