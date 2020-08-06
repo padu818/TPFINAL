@@ -31,24 +31,26 @@ public class GestorInsumo {
 		insumoDao.borrar(insumo.getNombre());
 	}
 	
-	public List<StockInsumo> busqueda(String text1,String text2){
+	public List<StockInsumo> busqueda(String plant,String ins){
 		String busqueda = "SELECT IDPLANTA,IDINSUMO,STOCK,PUNTOREPOSICION FROM STOCKINSUMO";
 		Boolean primerConsulta = true;
 		List<Insumo> insumos = new ArrayList<Insumo>();
 		List<StockInsumo> stockins = new ArrayList<StockInsumo>();
 		List<Planta> plantas = new ArrayList<Planta>();
 		
-		
-		if(!text1.isEmpty())
-			insumos = buscarPorId("SELECT IDINSUMO,NOMBRE,DESCRIPCION,UNIDAD_MEDIDA,COSTO,TIPO,PESO,DENSIDAD FROM INSUMO where IDINSUMO = '"+text1+"'");
+		System.out.println("aver");
+		if(!ins.isEmpty())
+			insumos = buscarPorId("SELECT IDINSUMO,NOMBRE,DESCRIPCION,UNIDAD_MEDIDA,COSTO,TIPO,PESO,DENSIDAD FROM INSUMO where IDINSUMO = '"+ins+"'");
 		else
 			insumos = buscarTodos();
-		if(!text2.isEmpty())
-			plantas = plantaService.buscarPorId("SELECT IDPLANTA,NOMBRE FROM PLANTA where IDPLANTA = '"+text2+"'");
+		System.out.println("paso 2");
+		if(!plant.isEmpty())
+			plantas = plantaService.buscarPorId(plant);
 		else
 			plantas = plantaService.buscarTodos();
-		
-    	if(!text1.isEmpty()) {
+		System.out.println("cantidad de plantas "+plantas.size());
+		System.out.println("cantidad de insumo "+insumos.size());
+    	if(!plant.isEmpty()) {
     		if(primerConsulta) {
     			busqueda+= " where ";
     			primerConsulta = false;
@@ -56,9 +58,9 @@ public class GestorInsumo {
     		else {
     			busqueda += " and ";
     		}
-    		busqueda += " IDPLANTA = '"+text1+"' ";
+    		busqueda += " IDPLANTA = '"+plant+"' ";
     	}
-       	if(!text2.isEmpty()) {
+       	if(!ins.isEmpty()) {
     		if(primerConsulta) {
     			busqueda+= " where ";
     			primerConsulta = false;
@@ -66,7 +68,7 @@ public class GestorInsumo {
     		else {
     			busqueda += " and ";
     		}
-    		busqueda += " IDINSUMO = '"+text1+"' ";
+    		busqueda += " IDINSUMO = '"+ins+"' ";
     	}
     	if(primerConsulta) {
 			busqueda+= " where ";
@@ -75,8 +77,8 @@ public class GestorInsumo {
 			busqueda += " and ";
 		}
        	busqueda+= "STOCK < PUNTOREPOSICION";
-       	for(Planta p : plantas)
-       		System.out.println(p.getNombre());
+       	System.out.println(busqueda);
+       	System.out.println("cantidad de letras "+busqueda.length());
 		stockins = insumoDao.busquedaStock(busqueda,insumos,plantas);
 		return stockins;
 	}
@@ -84,7 +86,7 @@ public class GestorInsumo {
 	public List<Insumo> buscarPorId(String texto) {
 		return insumoDao.buscarPorId(texto);
 	}
-	
+
 	public StockInsumo crearSockInsumo(StockInsumo s) {
 		return this.insumoDao.saveOrUpdate(s);
 	}

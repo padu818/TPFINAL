@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -102,16 +103,17 @@ public class BuscarPuntoPedidoController {
 	private class ListenerBtnBuscar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
+				if(!stocks.isEmpty()) {
+					stocks.removeAll(stocks);
+					cargarTabla(stocks);
+				}
 				String plant = "";
 				String insum = "";
 				if(panel.getIndexSeleccionPlanta() != -1)
 					plant = plantas.get(panel.getIndexSeleccionPlanta()).getIdPlanta().toString();
+				System.out.println(panel.getIndexSeleccionPlanta());
 				if(panel.getIndexSeleccionInsumo() != -1)
 					insum = insumos.get(panel.getIndexSeleccionInsumo()).getIdProduto().toString();
-				System.out.println("hola");
-				System.out.println(plant);
-				System.out.println(insum);
-				System.out.println("chau");
 				stocks = insumoService.busqueda(plant,insum);
 				cargarTabla(stocks);
 			}catch(Exception ex) {

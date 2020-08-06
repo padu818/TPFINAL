@@ -218,6 +218,7 @@ public class InsumoDaosql implements InsumoDao {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+
 		try {		
 			pstmt= conn.prepareStatement(condicionesConsulta);
 			rs = pstmt.executeQuery();
@@ -225,23 +226,22 @@ public class InsumoDaosql implements InsumoDao {
 				Integer idInsumo = rs.getInt("IDINSUMO");
 				Integer idPlanta =rs.getInt("IDPLANTA");
 				StockInsumo s = new StockInsumo();
-				Integer i = 0;
-				Boolean verd = false;
-				while(!verd && i < insumos.size()) {
-					if(idInsumo == insumos.get(i).getIdProduto()) {
-						s.setInsumo(insumos.get(i));
-						verd = true;
-					}
-					else
-						i++;
+
+				for(Insumo ins: insumos) {
+					if(idInsumo == ins.getIdProduto()) {
+						System.out.println(ins);
+						s.setInsumo(ins);
+
+						break;
+						}
+	
 				}
 
-				System.out.println(plantas.size());
-				System.out.println(idPlanta);
+
 				for(Planta pl : plantas) {
 					if(idPlanta == pl.getIdPlanta()) {
 						s.setPlanta(pl);
-						System.out.println("8");
+	
 						break;
 					}
 				}
