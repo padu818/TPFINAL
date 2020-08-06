@@ -84,6 +84,9 @@ public class ViewAltaInsumo extends JPanel {
 		btnEliminar.setPreferredSize(new Dimension(160, 25));
 		btnVolver.setPreferredSize(new Dimension(160, 25));
 		btnGuardar.setPreferredSize(new Dimension(160, 25));
+		campoID.setVisible(true);
+		campoID.setEnabled(false);
+		lblID.setVisible(true);
 		campoID.setEnabled(false);
 		campoNombre.setEnabled(false);
 		campoDescripcion.setEnabled(false);
@@ -113,6 +116,8 @@ public class ViewAltaInsumo extends JPanel {
 	private void inicializarComponentes() {		
 		btnGuardar.setPreferredSize(new Dimension(160, 25));
 		btnCancelar.setPreferredSize(new Dimension(160, 25));
+		campoID.setVisible(false);
+		lblID.setVisible(false);
 		campoNombre.setEnabled(true);
 		campoDescripcion.setEnabled(true);
 		campoCosto.setEnabled(true);
@@ -151,8 +156,18 @@ public class ViewAltaInsumo extends JPanel {
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(0, 0, 0, 0);
-		add(lblNombre, constraints);
+		add(lblID,constraints);
 		constraints.insets.set(0, 120, 0, 0);
+		add(campoID,constraints);
+		
+//		constraints.gridx = 0;
+		constraints.gridy = 1;
+//		constraints.gridwidth = 3;
+//		constraints.gridheight = 1;
+//		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(20, 0, 0, 0);
+		add(lblNombre, constraints);
+		constraints.insets.set(20, 120, 0, 0);
 		add(campoNombre, constraints);	
 			
 		constraints.gridy = 2;

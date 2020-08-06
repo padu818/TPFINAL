@@ -143,15 +143,17 @@ public class AltaInsumoController {
 		}
 		
 		//---------- posible error en la no selección de una unidad de medida
-		if (panel.getSeleccionUnidadMedida().equals("Seleccionar unidad de medida")) {
+		if (panel.getSeleccionUnidadMedida().equals("-")) {
 			errorEnUnidadMedida = true;
 			textoErrorUnidadMedida = errorNumero+") No se ha seleccionado un valor del campo unidad de medida.\n";
+			errorNumero++;
 		}
 		
 		//---------- posible error en la no selección de un tipo
-		if (panel.getSeleccionTipo().equals("Seleccionar tipo de insumo")) {
+		if (panel.getSeleccionTipo().equals("-")) {
 			errorEnTipo = true;
 			textoErrorTipo = errorNumero+") No se ha seleccionado un valor del campo tipo.\n";
+			errorNumero++;
 		}
 		
 		
@@ -186,7 +188,7 @@ public class AltaInsumoController {
 				 i = new Liquido();
 				((Liquido) i).setDensidad(Double.valueOf(this.panel.getCampoDensidad()));
 			}
-			System.out.println(this.panel.getCampoNombre());
+//			System.out.println(this.panel.getCampoNombre());
 			i.setNombre(this.panel.getCampoNombre()); 
 			i.setDescripcion(this.panel.getCampoDescripcion()); 
 			i.setCosto(Double.valueOf(this.panel.getCampoCosto()));
@@ -381,7 +383,9 @@ public class AltaInsumoController {
 				else {	
 					panelAnterior.setVisible(true);
 					editando = false;
-					ventana.setContentPane(panelAnterior);
+					panel.setVisible(false);
+					ViewVisualizarInsumo vi = new ViewVisualizarInsumo(ventana);
+					ventana.setContentPane(vi);
 				}
 				panel.setVisible(false);
 		}

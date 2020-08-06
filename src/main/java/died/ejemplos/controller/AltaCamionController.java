@@ -189,6 +189,27 @@ public class AltaCamionController {
 				textoErrorFecha = errorNumero+") Debe completar el campo fecha\n";
 				errorNumero++;
 			}
+			if (!textoFecha.isEmpty()) {
+				try {
+					LocalDate localDate1 = LocalDate.parse(textoFecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+					LocalDate hoy = LocalDate.now();
+					if (localDate1.isAfter(hoy)) {
+						errorEnFecha = true;
+						textoErrorFecha = errorNumero+") La fecha no puede ser futura. \n";
+						errorNumero++;
+					}else if (localDate1.getYear() < 1900) {
+						errorEnFecha = true;
+						textoErrorFecha = errorNumero+") La fecha no puede ser antes del año 1900. \n";
+						errorNumero++;
+					}
+				} catch (Exception localDate1) {
+//					System.out.println(localDate1.getMessage());
+					errorEnFecha = true;
+					textoErrorFecha = errorNumero+") Compruebe los datos de la fecha ingresados. \n";
+					errorNumero++;
+				}
+
+			}
 			
 //			if (panel.getSeleccionPlanta().equals("Seleccionar Planta")) {
 //				errorEnPlanta = true;

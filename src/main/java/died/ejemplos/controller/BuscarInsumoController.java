@@ -83,7 +83,7 @@ private static final long serialVersionUID = 1L;
 	public List<Insumo> listarTodos(){
 		this.lista.clear();
 		this.lista.addAll(insumoService.buscarTodos()); 
-		System.out.println("Resultado res   "+lista);
+//		System.out.println("Resultado res   "+lista);
 		return this.lista;
 	}
 	
@@ -105,12 +105,12 @@ private static final long serialVersionUID = 1L;
 	        int row = panel.getRowTablaInsumos(point);
 	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
 	    		i = lista.get(row);
-	    		System.out.println(i);
+//	    		System.out.println(i);
 	    		ViewAltaInsumo ca = new ViewAltaInsumo(i,ventana);
 	    		ca.setVisible(true);
 	    		panel.setVisible(false);
 //	    		ventana.setContentPane(ca);	
-	    		System.out.println("LISTENER 3");
+//	    		System.out.println("LISTENER 3");
 	        }
 		}
 		@Override public void mouseClicked(MouseEvent e) {} 
