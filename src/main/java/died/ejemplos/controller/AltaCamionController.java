@@ -205,7 +205,7 @@ public class AltaCamionController {
 				} catch (Exception localDate1) {
 //					System.out.println(localDate1.getMessage());
 					errorEnFecha = true;
-					textoErrorFecha = errorNumero+") Compruebe los datos de la fecha ingresados. \n";
+					textoErrorFecha = errorNumero+") Compruebe la fecha ingresada. \n";
 					errorNumero++;
 				}
 
