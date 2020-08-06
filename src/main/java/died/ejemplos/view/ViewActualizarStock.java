@@ -5,21 +5,27 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import died.ejemplos.controller.ActualizarStockController;
 import died.ejemplos.controller.BuscarInsumoController;
+import died.ejemplos.dominio.Insumo;
 
 public class ViewActualizarStock extends JPanel {
 	
@@ -75,6 +81,7 @@ public class ViewActualizarStock extends JPanel {
 		btnEliminar.setEnabled(false);
 		btnGuardar.setEnabled(true);
 		campoTotalFilas.setEnabled(false);
+		seleccionInsumo.setEnabled(false);
 		campoIdPlanta.setEnabled(false);
 		campoCantidadInsumo.setEnabled(false);
 		campoNombrePlanta.setEnabled(false);
@@ -168,6 +175,24 @@ public class ViewActualizarStock extends JPanel {
 		constraints.insets.set(5, 30, 5, 5);
 		add(tablaInsumosScroll, constraints);
 		
+	}
+	
+	public void limpiarFormulario() {
+		
+		this.campoCantidadInsumo.setText("");
+		this.campoPuntoPedido.setText("");
+//		this.setSeleccionInsumo();
+//		this.seleccionInsumo.setEnabled(true);
+//		this.seleccionInsumo
+//		this.campoTotalFilas.setText("");
+	
+	}
+	
+	public void mostrarError(String titulo,String detalle) {
+		JFrame padre= (JFrame) SwingUtilities.getWindowAncestor(this);
+		JOptionPane.showMessageDialog(padre,
+			    detalle,titulo,
+			    JOptionPane.ERROR_MESSAGE);
 	}
 	
 	public void addListenerTablaPlantas(MouseListener listener) {
@@ -283,8 +308,82 @@ public class ViewActualizarStock extends JPanel {
 		btnGuardar.addActionListener(listener);
 	}
 	
-	public void addListenerBtnEliminarRuta(ActionListener listener) {
+	public void addListenerBtnEliminar(ActionListener listener) {
 		btnEliminar.addActionListener(listener);
+	}
+	
+	public void addListenerCampoCantidadInsumo(KeyListener listener) {
+		campoCantidadInsumo.addKeyListener(listener); 
+	}
+	
+	public void addListenerCampoPuntoPedido(KeyListener listener) {
+		campoPuntoPedido.addKeyListener(listener); 
+	}
+	
+	public void habilitarCampos(Boolean t) {
+//		campoIdPlanta.setEnabled(t);
+//		campoNombrePlanta.setEnabled(t);
+		campoCantidadInsumo.setEnabled(t);
+		campoPuntoPedido.setEnabled(t);
+		seleccionInsumo.setEnabled(t);
+	}
+	
+	public void setCampos(Integer id, String nombre) {
+		setCampoIdPlanta(id.toString());
+		setCampoNombrePlanta(nombre);
+	}
+
+	public void setCampoNombrePlanta(String nombre) {
+		this.campoNombrePlanta.setText(nombre);
+	}
+
+	public void setCampoIdPlanta(String id) {
+		this.campoIdPlanta.setText(id);
+	}
+	
+	public String getCantidadInsumo() {
+		return campoCantidadInsumo.getText();
+	}
+	
+	public String getPuntoPedido() {
+		return campoPuntoPedido.getText();
+	}
+	
+	public String getSeleccionInsumo() {
+		if( seleccionInsumo.getItemAt(seleccionInsumo.getSelectedIndex()) == "Seleccionar insumo") {
+			return "Seleccionar insumo";
+		}
+		else
+			return seleccionInsumo.getItemAt(seleccionInsumo.getSelectedIndex());
+	}
+	
+	public Integer getIndexInsumo() {
+		if( seleccionInsumo.getItemAt(seleccionInsumo.getSelectedIndex()) == "Seleccionar insumo") {
+			return -1;
+		}
+		else
+			return seleccionInsumo.getSelectedIndex()-1;
+	}
+	
+	public void setSeleccionInsumo() {
+		seleccionInsumo.removeAll();
+		this.addInsumos(controller.listarTodoInsumo());
+	}
+	
+	public void addInsumos(List<Insumo> aux) {
+		String[] a = new String[aux.size()+1];
+		a[0] = "Seleccionar Insumo";
+		int i =1;
+		for(Insumo b : aux) {
+			a[i] = b.getNombre();
+			i++;
+		}
+		seleccionInsumo.setModel(new DefaultComboBoxModel<String>(a));
+	}
+
+	public void habilitarEliminar(boolean b) {
+		btnEliminar.setEnabled(b);
+		
 	}
 
 }

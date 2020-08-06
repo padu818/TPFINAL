@@ -3,6 +3,7 @@ package died.ejemplos.gestor;
 
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Planta;
+import died.ejemplos.dominio.Ruta;
 import died.ejemplos.dominio.StockInsumo;
 
 import java.util.ArrayList;
@@ -82,6 +83,19 @@ public class GestorInsumo {
 	
 	public List<Insumo> buscarPorId(String texto) {
 		return insumoDao.buscarPorId(texto);
+	}
+	
+	public StockInsumo crearSockInsumo(StockInsumo s) {
+		return this.insumoDao.saveOrUpdate(s);
+	}
+	
+	public List<StockInsumo> busquedaStockInsumos(Planta p) {
+		return insumoDao.busquedaStockInsumos(p);
+	}
+
+	public void borrar(Integer idPlanta, Integer idInsumo) {
+		insumoDao.borrar(idPlanta,idInsumo);
+		
 	}
 	
 }

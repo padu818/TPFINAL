@@ -45,12 +45,12 @@ public class StockInsumo{
 	public void setCantidad(Integer cantidad) {
 		this.stock = cantidad;
 	}
-	public Integer getCantidadMaximaDeAlmacenamiento() {
-		return puntoReposicion;
-	}
-	public void setCantidadMaximaDeAlmacenamiento(Integer cantidadMaximaDeAlmacenamiento) {
-		this.puntoReposicion = cantidadMaximaDeAlmacenamiento;
-	}
+//	public Integer getCantidadMaximaDeAlmacenamiento() {
+//		return puntoReposicion;
+//	}
+//	public void setCantidadMaximaDeAlmacenamiento(Integer cantidadMaximaDeAlmacenamiento) {
+//		this.puntoReposicion = cantidadMaximaDeAlmacenamiento;
+//	}
 	public Integer getPuntoReposicion() {
 		return puntoReposicion;
 	}
