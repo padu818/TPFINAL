@@ -17,6 +17,7 @@ import died.ejemplos.dominio.Camion;
 import died.ejemplos.dominio.General;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Liquido;
+import died.ejemplos.dominio.StockInsumo;
 import died.ejemplos.gestor.GestorCamion;
 import died.ejemplos.gestor.GestorInsumo;
 import died.ejemplos.view.ViewAltaInsumo;
@@ -55,21 +56,19 @@ private static final long serialVersionUID = 1L;
 	private void cargarTabla(List<Insumo> insumos) {
 		if(insumos.isEmpty()) {
 			panel.addTablaInsumos(0);
-			System.out.println("111111");
 		}
 		else {
-			System.out.println("2222");
 			int cantInsumos = insumos.size();
 			if(cantInsumos > 0){
-				System.out.println(cantInsumos);
+				Integer[] stock = new Integer[cantInsumos];
+				stock = insumoService.stockInsumos(cantInsumos,insumos);
 				panel.addTablaInsumos(cantInsumos);
 				for(int fila=0; fila<cantInsumos; fila++) {
 					Insumo in = insumos.get(fila);
-					System.out.println(in.getNombre());
 					if (insumos.get(fila).getTipoInsumo().equals("GENERAL")) {
-						panel.setValoresTablaInsumos(fila, insumos.get(fila).getNombre(), insumos.get(fila).getDescripcion(), insumos.get(fila).getCosto(), insumos.get(fila).getUnidadMedida(), insumos.get(fila).getTipoInsumo(), ((General)insumos.get(fila)).getPeso(), 0.0);
+						panel.setValoresTablaInsumos(fila, insumos.get(fila).getNombre(), insumos.get(fila).getDescripcion(), insumos.get(fila).getCosto(), insumos.get(fila).getUnidadMedida(), insumos.get(fila).getTipoInsumo(), ((General)insumos.get(fila)).getPeso(), 0.0, stock[fila]);
 					}else {
-						panel.setValoresTablaInsumos(fila, insumos.get(fila).getNombre(), insumos.get(fila).getDescripcion(), insumos.get(fila).getCosto(), insumos.get(fila).getUnidadMedida(), insumos.get(fila).getTipoInsumo(), 0.0,((Liquido)insumos.get(fila)).getDensidad());
+						panel.setValoresTablaInsumos(fila, insumos.get(fila).getNombre(), insumos.get(fila).getDescripcion(), insumos.get(fila).getCosto(), insumos.get(fila).getUnidadMedida(), insumos.get(fila).getTipoInsumo(), 0.0,((Liquido)insumos.get(fila)).getDensidad(),stock[fila]);
 					}
 					
 				}

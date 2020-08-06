@@ -142,7 +142,7 @@ public class ViewVisualizarInsumo extends JPanel {
 		}
 	}
 	
-	public void setValoresTablaInsumos(Integer fila, String nombre, String descripcion, Double costo, String unidadMedida, String tipo, Double peso, Double densidad) {
+	public void setValoresTablaInsumos(Integer fila, String nombre, String descripcion, Double costo, String unidadMedida, String tipo, Double peso, Double densidad, Integer stock) {
 		model.setValueAt(nombre, fila, 0);
 		model.setValueAt(descripcion, fila, 1);
 		model.setValueAt(costo, fila, 2);
@@ -150,6 +150,7 @@ public class ViewVisualizarInsumo extends JPanel {
 		model.setValueAt(tipo, fila, 4);
 		model.setValueAt(peso, fila, 5);
 		model.setValueAt(densidad, fila, 6);
+		model.setValueAt(stock, fila, 7);
 	}
 	
 

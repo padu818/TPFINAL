@@ -38,12 +38,12 @@ public class GestorInsumo {
 		List<StockInsumo> stockins = new ArrayList<StockInsumo>();
 		List<Planta> plantas = new ArrayList<Planta>();
 		
-		System.out.println("aver");
+
 		if(!ins.isEmpty())
 			insumos = buscarPorId("SELECT IDINSUMO,NOMBRE,DESCRIPCION,UNIDAD_MEDIDA,COSTO,TIPO,PESO,DENSIDAD FROM INSUMO where IDINSUMO = '"+ins+"'");
 		else
 			insumos = buscarTodos();
-		System.out.println("paso 2");
+
 		if(!plant.isEmpty())
 			plantas = plantaService.buscarPorId(plant);
 		else
@@ -85,6 +85,21 @@ public class GestorInsumo {
 	
 	public List<Insumo> buscarPorId(String texto) {
 		return insumoDao.buscarPorId(texto);
+	}
+	
+	public Integer[] stockInsumos(Integer cantInsumos, List<Insumo> insumos) {
+		Integer[] aux = new Integer[cantInsumos];
+		for(int i = 0;i < cantInsumos; i++) {
+			aux[i] = 0;
+		}
+		List<StockInsumo> st = busqueda("","");
+		for(int i = 0; i < insumos.size(); i++) {
+			for(StockInsumo s :st) {
+				if(insumos.get(i).getIdProduto() == s.getInsumo().getIdProduto())
+					aux[i] += s.getStock();
+			}
+		}
+		return aux;
 	}
 
 	public StockInsumo crearSockInsumo(StockInsumo s) {
