@@ -28,6 +28,7 @@ import died.ejemplos.view.ViewActualizarStock;
 import died.ejemplos.view.ViewAgregarRuta;
 import died.ejemplos.view.ViewAltaCamion;
 import died.ejemplos.view.ViewAltaInsumo;
+import died.ejemplos.view.ViewAltaOrdenPedido;
 import died.ejemplos.view.ViewAltaPlanta;
 import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewBuscarPuntoPedido;
@@ -54,6 +55,8 @@ public class App extends JFrame {
 	JMenuItem menuItemVisualizarInsumo;
 	JMenuItem menuItemActualizarStock;
 	JMenuItem menuItemBuscarPuntoPedido;
+	JMenu menuOrdenPedio;
+	JMenuItem menuItemAltaOrdenPedido;
 	
 	private App() {
 	}
@@ -148,6 +151,16 @@ public class App extends JFrame {
 		});
 		this.menuPlanta.add(menuItemBuscarPuntoPedido);
 		
+		this.menuOrdenPedio = new JMenu("Orden Pedido");
+		this.menuItemAltaOrdenPedido = new JMenuItem("Registrar");
+		this.menuItemAltaOrdenPedido.addActionListener(e -> {
+			this.setContentPane(new ViewAltaOrdenPedido(this));
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuEntidades.add(menuOrdenPedio);
+		this.menuOrdenPedio.add(menuItemAltaOrdenPedido);
 
 		this.menuAyuda = new JMenu("Ayuda");
 		this.menuItemAyuda = new JMenuItem("Manual");
