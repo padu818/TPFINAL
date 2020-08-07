@@ -148,8 +148,14 @@ public class ViewVisualizarInsumo extends JPanel {
 		model.setValueAt(costo, fila, 2);
 		model.setValueAt(unidadMedida, fila, 3);
 		model.setValueAt(tipo, fila, 4);
-		model.setValueAt(peso, fila, 5);
-		model.setValueAt(densidad, fila, 6);
+		if(tipo.equals("GENERAL")) {
+			model.setValueAt(peso, fila, 5);
+			model.setValueAt("-", fila, 6);
+		}
+		else {
+			model.setValueAt("-", fila, 5);
+			model.setValueAt(densidad, fila, 6);
+		}
 		model.setValueAt(stock, fila, 7);
 	}
 	

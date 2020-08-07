@@ -273,8 +273,8 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 		
 		tablaRuta.getColumnModel().getColumn(0).setHeaderValue("Planta origen");
 		tablaRuta.getColumnModel().getColumn(1).setHeaderValue("Planta destino");
-		tablaRuta.getColumnModel().getColumn(2).setHeaderValue("Distancia Hs");
-		tablaRuta.getColumnModel().getColumn(3).setHeaderValue("Distancia Km");
+		tablaRuta.getColumnModel().getColumn(2).setHeaderValue("Distancia Km");
+		tablaRuta.getColumnModel().getColumn(3).setHeaderValue("Duracion en hs");
 		tablaRuta.getColumnModel().getColumn(4).setHeaderValue("Maximo transporte");
 		
 		
