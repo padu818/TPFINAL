@@ -15,6 +15,8 @@ public class DB {
 	private static boolean _TABLAS_CREADAS_PLANTA = false;
 	private static boolean _TABLAS_CREADAS_RUTA = false;
 	private static boolean _TABLA_CREATE_STOCKINSUMO = false;
+	private static boolean _TABLA_CREATE_PEDIDO = false;
+	private static boolean _TABLA_CREATE_DETALLEINSUMOSOLICITADO = false;
 	
 	private static final String TABLA_CREATE_CAMION = 
 			"CREATE TABLE  IF NOT EXISTS CAMION ( ID integer not NULL GENERATED ALWAYS AS IDENTITY, PATENTE VARCHAR(14) not NULL,"
@@ -42,13 +44,28 @@ public class DB {
 			"CREATE TABLE  IF NOT EXISTS STOCKINSUMO ( STOCK DECIMAL(12,2),PUNTOREPOSICION DECIMAL(12,2),"
 			+ "IDPLANTA integer REFERENCES PLANTA(IDPLANTA) on delete cascade on update cascade,IDINSUMO integer REFERENCES INSUMO(IDINSUMO) on delete cascade on update cascade, "
 			+ "PRIMARY KEY(IDPLANTA, IDINSUMO));";
+	
+	private static final String TABLA_CREATE_PEDIDO = 
+			"CREATE TABLE  IF NOT EXISTS PEDIDO (IDPEDIDO integer not NULL GENERATED ALWAYS AS IDENTITY,"
+			+ "IDPLANTAORIGEN integer REFERENCES PLANTA(IDPLANTA) on delete cascade on update cascade,"
+			+ "IDPLANTADESTINO integer REFERENCES PLANTA(IDPLANTA) on delete cascade on update cascade,"
+			+ "IDCAMIONASIGNADO integer REFERENCES CAMION(ID) on delete cascade on update cascade, FECHA_SOLICITUD DATE not NULL,FECHA_ENTREGA DATE not NULL,"
+			+ "IDRUTA integer REFERENCES RUTA(IDRUTA), "
+			+ "PRIMARY KEY(IDPEDIDO));";
+	
+	private static final String TABLA_CREATE_DETALLEINSUMOSOLICITADO = 
+			"CREATE TABLE  IF NOT EXISTS DETALLEINSUMOSOLICITADO ("
+			+ "IDINSUMO INTEGER REFERENCES INSUMO(IDINSUMO) on delete cascade on update cascade,"
+			+ "IDPEDIDO INTEGER REFERENCES PEDIDO(IDPEDIDO) on delete cascade on update cascade,"
+			+ "CANTIDAD INTEGER NOT NULL, PRECIO INTEGER NOT NULL,"
+			+ "PRIMARY KEY(IDINSUMO,IDPEDIDO));";
 
 	private DB(){
 			// no se pueden crear instancias de esta clase
 	}
 	
 	private static void verificarCrearTablas() {
-		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO || !_TABLAS_CREADAS_PLANTA || !_TABLAS_CREADAS_RUTA|| !_TABLA_CREATE_STOCKINSUMO) {
+		if(!_TABLAS_CREADAS_CAMION || !_TABLAS_CREADAS_INSUMO || !_TABLAS_CREADAS_PLANTA || !_TABLAS_CREADAS_RUTA|| !_TABLA_CREATE_STOCKINSUMO || !_TABLA_CREATE_PEDIDO || !_TABLA_CREATE_DETALLEINSUMOSOLICITADO  ) {
 			Connection conn = DB.crearConexion();
 			Statement stmt = null;
 			try {
@@ -58,11 +75,15 @@ public class DB {
 				boolean tablaCamionCreada = stmt.execute(TABLA_CREATE_CAMION);
 				boolean tablaRutaCreada = stmt.execute(TABLA_CREATE_RUTA);
 				boolean tablaStockCreada = stmt.execute(TABLA_CREATE_STOCKINSUMO);
+				boolean tablaPedido = stmt.execute(TABLA_CREATE_PEDIDO);
+				boolean tablaDetalleInsumoSolicitado = stmt.execute(TABLA_CREATE_DETALLEINSUMOSOLICITADO);
 				_TABLAS_CREADAS_CAMION = tablaCamionCreada; //VER
 				_TABLAS_CREADAS_INSUMO = tablaInsumoCreada;
 				_TABLAS_CREADAS_PLANTA= tablaPlantaCreada;
 				_TABLAS_CREADAS_RUTA = tablaRutaCreada;
 				_TABLA_CREATE_STOCKINSUMO = tablaStockCreada;
+				_TABLA_CREATE_PEDIDO = tablaPedido;
+				_TABLA_CREATE_DETALLEINSUMOSOLICITADO = tablaDetalleInsumoSolicitado;
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
