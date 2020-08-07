@@ -160,7 +160,7 @@ public class BuscarCamionController2{
 			camion.setCostoKM(Double.valueOf(this.panel.getCampoCostoKm()));
 			camion.setKm(this.panel.getSeleccionKm());
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-			LocalDate aux = LocalDate.parse(this.panel.getCampoFechaCompra().toString());
+			LocalDate aux = LocalDate.parse(this.panel.getCampoFechaCompra().toString(),formatter);
 			camion.setFechaCompra(aux);	
 			camion.setPlanta(plantasAsociada.get(panel.getIndexSeleccionPlanta()));
 			camionService.crearCamion(camion);
