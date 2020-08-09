@@ -15,6 +15,8 @@ import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import died.ejemplos.dominio.Planta;
+
 
 public class Grafo<T> {
 	
@@ -74,6 +76,7 @@ public class Grafo<T> {
 	public Vertice<T> getNodo(T valor){
 		return this.vertices.get(this.vertices.indexOf(new Vertice<T>(valor)));
 	}
+	
 
 	public List<T> getAdyacentes(T valor){ 
 		Vertice<T> unNodo = this.getNodo(valor);
@@ -87,7 +90,7 @@ public class Grafo<T> {
 	}
 	
 
-	private List<Vertice<T>> getAdyacentes(Vertice<T> unNodo){ 
+	public List<Vertice<T>> getAdyacentes(Vertice<T> unNodo){ 
 		List<Vertice<T>> salida = new ArrayList<Vertice<T>>();
 		for(Arista<T> enlace : this.aristas){
 			if( enlace.getInicio().equals(unNodo)){

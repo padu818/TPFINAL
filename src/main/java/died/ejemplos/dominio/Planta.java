@@ -29,9 +29,7 @@ public class Planta{//ver
 		this.nombre = nombre;
 	}
 	
-	public Boolean equals(Planta other) {
-		return idPlanta == other.idPlanta;
-	}
+
 	@Override
 	public String toString() {
 		return nombre;
@@ -45,6 +43,7 @@ public class Planta{//ver
 		result = prime * result + ((idPlanta == null) ? 0 : idPlanta.hashCode());
 		return result;
 	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -57,7 +56,7 @@ public class Planta{//ver
 		if (idPlanta == null) {
 			if (other.idPlanta != null)
 				return false;
-		} else if (!idPlanta.equals(other.idPlanta))
+		} else if (idPlanta != other.idPlanta)
 			return false;
 		return true;
 	}

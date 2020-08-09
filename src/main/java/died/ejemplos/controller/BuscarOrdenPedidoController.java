@@ -205,7 +205,7 @@ public class BuscarOrdenPedidoController {
 	        	insumosAgregados = pedidos.get(row).getItems();
 	    		pt = tieneStock(stock);
 	//    		System.out.println(grafo.hayCamino(pt.get(0), pt.get(1)));
-	    		System.out.println(grafo.getVertices().indexOf(pt.get(0)));
+	    		System.out.println(grafo.getVertices().indexOf(grafo.getVertices().get(1)));
 	    		p = pedidos.get(row).getDestino();
 	    		if(pt.isEmpty()) {
 	    			pedidos.get(row).setEstado(EstadoPedido.CANCELADA);
@@ -220,23 +220,42 @@ public class BuscarOrdenPedidoController {
 	    			insumosAgregados.removeAll(insumosAgregados);
 	    			cargarTablaInsumo(insumosAgregados);
 	    		}
-	    		List<Planta> auxiliar = pt;
-//	    		grafo.imprimirAristas();
-//	    		if(!pt.isEmpty()) {
-//		    		for(Planta ps:pt) {
-//		    			if(!grafo.hayCamino(ps, pedidos.get(row).getDestino())) {
-//		    				auxiliar.remove(p);
-//		    			}
-//		    		}
-//	    		}
-//	    		pt.removeAll(pt);
-//	    		pt.addAll(auxiliar);
-//	    		for(Planta x : auxiliar)
-//	    			System.out.println(x.getNombre());
-	    		panel.addPlantasDisponibles(pt);
-//	        	System.out.println(pedidos.get(seleccion).getItems());
-//	        	listaStock = insumoService.busquedaStockInsumos(p);
-//	        	cargarTablaStock(listaStock);
+	    		List<Planta> auxiliar = new ArrayList<Planta>();
+	    	//	auxiliar.addAll(pt);
+	    		Integer index2 = -1;
+	    		for(Vertice<Planta> r :grafo.getVertices()) {
+    				if(pedidos.get(row).getDestino().getIdPlanta() == r.getValor().getIdPlanta()) {
+    					index2 = grafo.getVertices().indexOf(r);
+    					break;
+    				}
+    			}
+	    		
+
+	    		if(!pt.isEmpty()) {
+		    		for(Planta ps:pt) {
+		    			Integer index = 0;
+		    			for(Vertice<Planta> r :grafo.getVertices()) {
+		    				if(ps.getIdPlanta() == r.getValor().getIdPlanta()) {
+		    					index = grafo.getVertices().indexOf(r);
+		    					System.out.println(index+"    "+index2);
+		    					break;
+		    				}
+		    			}
+		    			System.out.println(grafo.hayCamino(grafo.getVertices().get(index), grafo.getVertices().get(index2)));
+		    			if(grafo.hayCamino(grafo.getVertices().get(index), grafo.getVertices().get(index2))) {
+		    				auxiliar.add(ps);
+		    			//	auxiliar.remove(ps);
+		    			}
+
+		    				
+		    		}
+	    		}
+	    		
+	    		if(auxiliar.isEmpty()) {
+	    			JOptionPane.showMessageDialog(panel, "No se han encontrado rutas que permitan transportar el stock hacia la planta destino.", "Planta no encontrada", JOptionPane.INFORMATION_MESSAGE);	
+	    		}
+	    		panel.addPlantasDisponibles(auxiliar);
+
 	        }
 		}
 		@Override public void mouseClicked(MouseEvent e) {} 

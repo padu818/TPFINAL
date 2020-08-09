@@ -354,7 +354,7 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		String[] a = new String[2];
 		a[0] = "Ruta mas corta en Km";
 		a[1] = "Ruta mas rapida en Hs";
-		plantaDisponible.setModel(new DefaultComboBoxModel<String>(a));
+		SeleccionHsKm.setModel(new DefaultComboBoxModel<String>(a));
 	}
 
 	public void habilitarCampos(boolean b) {
