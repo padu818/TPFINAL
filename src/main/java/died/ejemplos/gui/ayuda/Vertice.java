@@ -37,7 +37,7 @@ public class Vertice<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Vertice other = (Vertice) obj;
+		Vertice<T> other = (Vertice) obj;
 		if (valor == null) {
 			if (other.valor != null)
 				return false;

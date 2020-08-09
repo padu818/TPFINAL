@@ -25,8 +25,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import died.ejemplos.controller.AltaCamionController;
-import died.ejemplos.controller.AltaRutaController;
 import died.ejemplos.dominio.Planta;
 import died.ejemplos.gui.ayuda.GrafoPlanta;
 
@@ -361,4 +359,10 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	public void addListenerTablaRuta(MouseListener listener) {
 		tablaRuta.addMouseListener(listener);
 	}
+	
+	public void setSeleccion(String text) {
+		Selecc.removeAll();
+		seleccionPlanta.setModel(new DefaultComboBoxModel<String>(new String[] {text}));
+	}
+	
 }

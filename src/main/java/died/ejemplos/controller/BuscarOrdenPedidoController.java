@@ -1,6 +1,8 @@
 package died.ejemplos.controller;
 
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -19,6 +22,7 @@ import died.ejemplos.dominio.EstadoPedido;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Pedido;
 import died.ejemplos.dominio.Planta;
+import died.ejemplos.dominio.Ruta;
 import died.ejemplos.dominio.StockInsumo;
 import died.ejemplos.gestor.GestorInsumo;
 import died.ejemplos.gestor.GestorPedido;
@@ -50,6 +54,7 @@ public class BuscarOrdenPedidoController {
 	private JFrame ventana;
 	private Point click;
 	private Planta p;
+	private Planta p2;
 	private Integer seleccion;
 	
 	public BuscarOrdenPedidoController(ViewBuscarOrdenPedido view, JFrame v, GrafoPlanta p2) {
@@ -68,10 +73,10 @@ public class BuscarOrdenPedidoController {
 //		this.listaStock = new ArrayList<StockInsumo>();
 		this.ventana =v;
 		this.panel = view;
-//		panel.addListenerBtnGuardar(new ListenerBtnGuardar());
-//		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
-//		panel.addListenerBtnEliminar(new ListenerBtnEliminar());
-//		panel.addListenerBtnAgregar(new ListenerBtnAgregar());
+		panel.addListenerBtnGuardar(new ListenerBtnGuardar());
+		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
+		panel.addListenerSeleccionKmhs(new ListenerSeleccion());
+
 		panel.addListenerTablaPedidos(new ListenerTablaPedidos());
 //		panel.addListenerTablaInsumos(new ListenerTablaInsumo());
 		plantas = listarTodosPlanta();
@@ -115,6 +120,28 @@ public class BuscarOrdenPedidoController {
 			}
 		}
 	}
+	
+	private void cargarTablaRuta(List<String> listaRuta) {
+		if( listaRuta.isEmpty()) {
+			panel.addTablaInsumos(0);
+		}
+		else {
+			int cantRuta =  listaRuta.size();
+			if(cantRuta > 0){
+				panel.addTablaRuta(cantRuta);
+				for(int fila=0; fila<cantRuta; fila++) {
+
+					panel.setValoresTablaRuta(fila, listaRuta.get(fila));
+					
+				}
+			}
+			else {
+				panel.addTablaRuta(0);
+//				JOptionPane.showMessageDialog(panel, "No se han encontrado plantas que cumplan con ese criterio de búsqueda.", "Planta no encontrada", JOptionPane.INFORMATION_MESSAGE);	
+			}
+		}
+	}
+	
 	
 	private void cargarTablaInsumo(List<DetallesInsumoSolicitado> listaInsumo) {
 		if(listaInsumo.isEmpty()) {
@@ -177,7 +204,9 @@ public class BuscarOrdenPedidoController {
 	        	cargarTablaInsumo(pedidos.get(row).getItems());
 	        	insumosAgregados = pedidos.get(row).getItems();
 	    		pt = tieneStock(stock);
-	    		
+	//    		System.out.println(grafo.hayCamino(pt.get(0), pt.get(1)));
+	    		System.out.println(grafo.getVertices().indexOf(pt.get(0)));
+	    		p = pedidos.get(row).getDestino();
 	    		if(pt.isEmpty()) {
 	    			pedidos.get(row).setEstado(EstadoPedido.CANCELADA);
 	    			System.out.println(pedidos.get(row).getEstado());
@@ -191,13 +220,19 @@ public class BuscarOrdenPedidoController {
 	    			insumosAgregados.removeAll(insumosAgregados);
 	    			cargarTablaInsumo(insumosAgregados);
 	    		}
-	    		if(!pt.isEmpty()) {
-		    		for(int i = 0; i < pt.size();i++) {
-		    			if(!grafo.hayCamino(pt.get(i), pedidos.get(row).getDestino())) {
-		    				pt.remove(p);
-		    			}
-		    		}
-	    		}
+	    		List<Planta> auxiliar = pt;
+//	    		grafo.imprimirAristas();
+//	    		if(!pt.isEmpty()) {
+//		    		for(Planta ps:pt) {
+//		    			if(!grafo.hayCamino(ps, pedidos.get(row).getDestino())) {
+//		    				auxiliar.remove(p);
+//		    			}
+//		    		}
+//	    		}
+//	    		pt.removeAll(pt);
+//	    		pt.addAll(auxiliar);
+//	    		for(Planta x : auxiliar)
+//	    			System.out.println(x.getNombre());
 	    		panel.addPlantasDisponibles(pt);
 //	        	System.out.println(pedidos.get(seleccion).getItems());
 //	        	listaStock = insumoService.busquedaStockInsumos(p);
@@ -209,9 +244,90 @@ public class BuscarOrdenPedidoController {
 		@Override public void mouseEntered(MouseEvent e) {}
 		@Override public void mouseExited(MouseEvent e) {}
 	}
+	
+	private class ListenerTablaRuta implements MouseListener{			
+		@Override
+		public void mousePressed(MouseEvent e) {
+	        JTable table = (JTable) e.getSource();
+	        Point point = e.getPoint();
+	        int row = panel.getRowTablaPedidos(point);
+	        seleccion = row;
+	        click = point;
+	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+	        	panel.habilitarGuardar(true);
+	        	
+	        }
+		}
+		@Override public void mouseClicked(MouseEvent e) {} 
+		@Override public void mouseReleased(MouseEvent e) {}
+		@Override public void mouseEntered(MouseEvent e) {}
+		@Override public void mouseExited(MouseEvent e) {}
+	}
+	
+	
+	private class ListenerBtnCancelar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {	
+				panel.setVisible(false);
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerSeleccion implements MouseListener{
+		public void actionPerformed(ActionEvent e) {
+			try {	
+				List<Ruta> elegido;
+				if(panel.getSeleccion().equals("Ruta mas corta en Km")) {
+				//	elegido = grafo.caminoKm(pt.get(panel.getIndexOrigen()),p);
+				}
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
 
-//	public List<Planta> listarPlantas() {
-//		return plantaService.;
-//	}
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+	private class ListenerBtnGuardar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {	
+				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+
 
 }
