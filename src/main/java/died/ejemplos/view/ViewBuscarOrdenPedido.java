@@ -174,8 +174,12 @@ public class ViewBuscarOrdenPedido extends JPanel {
 	}
 	
 	
-	public void addListenerSeleccionKmhs(MouseListener listener) {
-		SeleccionHsKm.addMouseListener(listener);
+	public void addListenerSeleccionKmhs(ActionListener listener) {
+		SeleccionHsKm.addActionListener(listener);
+	}
+	
+	public void addListenerSeleccionPlanta(ActionListener listener) {
+		plantaDisponible.addActionListener(listener);
 	}
 	
 	public Integer getRowTablaPedidos(Point point) {
@@ -213,8 +217,8 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		
 		tablaPedidos.getColumnModel().getColumn(0).setPreferredWidth(20);
 		tablaPedidos.getColumnModel().getColumn(1).setPreferredWidth(20);
-		tablaPedidos.getColumnModel().getColumn(0).setPreferredWidth(20);
-		tablaPedidos.getColumnModel().getColumn(1).setPreferredWidth(20);
+		tablaPedidos.getColumnModel().getColumn(2).setPreferredWidth(20);
+		tablaPedidos.getColumnModel().getColumn(3).setPreferredWidth(20);
 		
 		tablaPedidos.getColumnModel().getColumn(0).setHeaderValue("ID");
 		tablaPedidos.getColumnModel().getColumn(1).setHeaderValue("Nombre planta destino");

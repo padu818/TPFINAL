@@ -34,6 +34,17 @@ public class GestorCamion {
 		return camiones;
 	}
 	
+	public List<Camion> buscarTodos(List<Planta> plantas) {
+		List<Camion>  camiones = camionDao.buscarTodos();
+		for(Planta p :plantas) {
+			for(Camion c :camiones) {
+				if(c.getPlanta().getIdPlanta() == p.getIdPlanta() )
+					c.setPlanta(p);
+			}
+		}
+		return camiones;
+	}
+	
 	
 	
 

@@ -12,6 +12,7 @@ public class Pedido {
 	 */
 	private Integer idPedido; //unique y secuencial, comenzando por el 1
 	private Planta destino;
+	private Planta origen;
 	private LocalDate fechaSolicitud;
 	private LocalDate fechaEntrega;
 	private EstadoPedido estado;
@@ -39,6 +40,14 @@ public class Pedido {
 	public void setDestino(Planta destino) {
 		this.destino = destino;
 	}
+	
+	public Planta getOrigen() {
+		return destino;
+	}
+	public void setOrigen(Planta destino) {
+		this.origen = destino;
+	}
+	
 	public LocalDate getFechaSolicitud() {
 		return fechaSolicitud;
 	}

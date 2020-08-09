@@ -14,6 +14,7 @@ public interface PedidoDao {
 	public List<Pedido> buscarTodos(List<Insumo> listaInsumos);
 	public List<DetallesInsumoSolicitado> buscarTodosInsumosSolicitados();
 	public List<Pedido> busqueda(String condicionesConsulta);
+	public List<Pedido> buscarTodoPedidoProcesado(List<Insumo> ins);
 
 
 }

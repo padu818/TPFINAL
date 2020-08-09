@@ -33,6 +33,9 @@ public class PedidoDaoMysql implements PedidoDao {
 	private static final String SELECT_ALL_PEDIDO_CREADO =
 			"SELECT IDPEDIDO,IDPLANTADESTINO,FECHA_SOLICITUD,FECHA_ENTREGA FROM PEDIDO WHERE ESTADO = 'CREADA'";
 	
+	private static final String SELECT_ALL_PEDIDO_PROCESADO =
+			"SELECT IDPEDIDO,IDPLANTAORIGEN,IDPLANTADESTINO,FECHA_SOLICITUD,FECHA_ENTREGA,IDCAMIONASIGNADO,COSTO FROM PEDIDO WHERE ESTADO = 'PROCESADA'";
+	
 	private static final String SELECT_ALL_DETALLEINSUMOSOLICITADO =
 			"SELECT IDINSUMO,IDPEDIDO,CANTIDAD,PRECIO FROM DETALLEINSUMOSOLICITADO";
 	
@@ -168,6 +171,76 @@ public class PedidoDaoMysql implements PedidoDao {
 	public List<Pedido> busqueda(String condicionesConsulta){
 		return null;
 		
+	}
+
+	@Override
+	public List<Pedido> buscarTodoPedidoProcesado(List<Insumo> ins) {
+		List<Pedido> pedidos = new ArrayList<Pedido>();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt= conn.prepareStatement(SELECT_ALL_PEDIDO_PROCESADO);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Pedido pedido = new Pedido();
+				Planta planta = new Planta();
+				Camion c = new Camion();
+				pedido.setIdPedido(rs.getInt("IDPEDIDO"));
+				planta.setIdPlanta(rs.getInt("IDPLANTADESTINO"));
+				pedido.setDestino(planta);
+				planta.setIdPlanta(rs.getInt("IDPLANTAORIGEN"));
+				pedido.setOrigen(planta);
+				pedido.setEstado(EstadoPedido.PROCESADA);
+				pedido.setFechaEntrega(rs.getDate("FECHA_ENTREGA").toLocalDate());
+				pedido.setFechaSolicitud(rs.getDate("FECHA_SOLICITUD").toLocalDate());
+				c.setId(rs.getInt("IDCAMIONASIGNADO"));
+				pedido.setCamionAsignado(c);
+				pedido.setCostoEnvio(rs.getDouble("COSTO"));
+				List<DetallesInsumoSolicitado>aux = new ArrayList<DetallesInsumoSolicitado>();
+				pedido.setItems(aux);
+				pedidos.add(pedido);
+			}
+			if(rs!=null) rs.close();
+			if(pstmt!=null) pstmt.close();
+			pstmt= conn.prepareStatement(SELECT_ALL_DETALLEINSUMOSOLICITADO);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				DetallesInsumoSolicitado d = new DetallesInsumoSolicitado();
+				Integer idInsumo = rs.getInt("IDINSUMO");
+				for (Insumo insumo : ins) {
+					if (idInsumo == insumo.getIdProduto()) {
+						d.setInsumo(insumo);
+						break;
+					}
+				}
+				d.setCantidad(rs.getInt("CANTIDAD"));
+				d.setPrecio(rs.getDouble("PRECIO"));
+				Integer idPedido = rs.getInt("IDPEDIDO");
+				for (Pedido pedido : pedidos) {
+					if (idPedido == pedido.getIdPedido()) {
+						d.setPedido(pedido);
+						pedido.getItems().add(d);
+						break;
+					}
+				}
+			//	pstmt.executeUpdate();
+			}
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return pedidos;
 	};
 
 }

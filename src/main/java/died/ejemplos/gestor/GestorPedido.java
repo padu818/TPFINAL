@@ -24,5 +24,10 @@ public class GestorPedido {
 		
 		return pedidos;
 	}
+
+	public List<Pedido> listarTodoPedidoProcesado(List<Insumo> ins) {
+		
+		return pedidoDao.buscarTodoPedidoProcesado(ins);
+	}
 	
 }

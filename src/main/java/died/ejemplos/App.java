@@ -35,6 +35,7 @@ import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewBuscarOrdenPedido;
 import died.ejemplos.view.ViewBuscarPuntoPedido;
 import died.ejemplos.view.ViewVisualizarInsumo;
+import died.ejemplos.view.viewBuscarOrdenPedidoProcesada;
 
 
 // extiende de una ventana en el S.O
@@ -60,6 +61,7 @@ public class App extends JFrame {
 	JMenu menuOrdenPedio;
 	JMenuItem menuItemAltaOrdenPedido;
 	JMenuItem menuItemBuscarOrdenPedido;
+	JMenuItem menuItemBuscarOrdenPedidoProcesada;
 	
 	private GrafoPlanta p;
 	private GestorPlanta gestor;
@@ -177,6 +179,15 @@ public class App extends JFrame {
 			this.repaint();
 		});
 		this.menuOrdenPedio.add(menuItemBuscarOrdenPedido);
+		
+		this.menuItemBuscarOrdenPedidoProcesada = new JMenuItem("Ordenes PROCESADAS");
+		this.menuItemBuscarOrdenPedidoProcesada.addActionListener(e -> {
+			this.setContentPane(new viewBuscarOrdenPedidoProcesada(this,p));
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuOrdenPedio.add(menuItemBuscarOrdenPedidoProcesada);
 
 		this.menuAyuda = new JMenu("Ayuda");
 		this.menuItemAyuda = new JMenuItem("Manual");

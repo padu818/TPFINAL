@@ -45,6 +45,7 @@ public class BuscarOrdenPedidoController {
 	private List<Insumo> insumos;
 	private List<Pedido> pedidos;
 	private List<StockInsumo> stock;
+	private List<List<Ruta>> ruts;
 	private GrafoPlanta grafo;
 	
 	private Pedido pedido;
@@ -68,6 +69,7 @@ public class BuscarOrdenPedidoController {
 		this.pt = new ArrayList<Planta>();
 		this.insumos= new ArrayList<Insumo>();
 		this.pedidos= new ArrayList<Pedido>();
+		this.ruts = new ArrayList<List<Ruta>>();
 		pedido = new Pedido();
 		this.insumosAgregados = new ArrayList<DetallesInsumoSolicitado>();
 //		this.listaStock = new ArrayList<StockInsumo>();
@@ -78,7 +80,8 @@ public class BuscarOrdenPedidoController {
 		panel.addListenerSeleccionKmhs(new ListenerSeleccion());
 
 		panel.addListenerTablaPedidos(new ListenerTablaPedidos());
-//		panel.addListenerTablaInsumos(new ListenerTablaInsumo());
+//		panel.addListenerTablaInsumo(new ListenerTablaInsumos());
+		panel.addListenerSeleccionPlanta(new ListenerSeleccionPlanta());
 		plantas = listarTodosPlanta();
 		grafo = p2;
 		insumos = listarTodoInsumo();
@@ -218,6 +221,7 @@ public class BuscarOrdenPedidoController {
 	    		if(pt.isEmpty()) {
 	    			JOptionPane.showMessageDialog(panel, "No se han encontrado plantas que tenga el stock disponible en todos los productos.", "Planta no encontrada", JOptionPane.INFORMATION_MESSAGE);	
 	    			insumosAgregados.removeAll(insumosAgregados);
+	    			panel.habilitarCampos(false);
 	    			cargarTablaInsumo(insumosAgregados);
 	    		}
 	    		List<Planta> auxiliar = new ArrayList<Planta>();
@@ -242,6 +246,7 @@ public class BuscarOrdenPedidoController {
 		    				}
 		    			}
 		    			System.out.println(grafo.hayCamino(grafo.getVertices().get(index), grafo.getVertices().get(index2)));
+		    			
 		    			if(grafo.hayCamino(grafo.getVertices().get(index), grafo.getVertices().get(index2))) {
 		    				auxiliar.add(ps);
 		    			//	auxiliar.remove(ps);
@@ -250,12 +255,12 @@ public class BuscarOrdenPedidoController {
 		    				
 		    		}
 	    		}
-	    		
+	    		pt.removeAll(pt);
+	    		pt.addAll(auxiliar);
 	    		if(auxiliar.isEmpty()) {
 	    			JOptionPane.showMessageDialog(panel, "No se han encontrado rutas que permitan transportar el stock hacia la planta destino.", "Planta no encontrada", JOptionPane.INFORMATION_MESSAGE);	
 	    		}
 	    		panel.addPlantasDisponibles(auxiliar);
-
 	        }
 		}
 		@Override public void mouseClicked(MouseEvent e) {} 
@@ -294,7 +299,7 @@ public class BuscarOrdenPedidoController {
 		}
 	}
 	
-	private class ListenerSeleccion implements MouseListener{
+	private class ListenerSeleccion implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
 				List<Ruta> elegido;
@@ -305,48 +310,51 @@ public class BuscarOrdenPedidoController {
 			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
 	}
 	
-	private class ListenerBtnGuardar implements ActionListener{
+	private class ListenerSeleccionPlanta implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
+				Planta elegida = pt.get(panel.getIndexOrigen());
+
+	    		Integer index = -1,index2 = -1;
+	    		for(Vertice<Planta> r :grafo.getVertices()) {
+	    			if(elegida.getIdPlanta() == r.getValor().getIdPlanta()) {
+	    				index = grafo.getVertices().indexOf(r);
+	    				break;
+	    			}
+	    		}
+	    		for(Vertice<Planta> r :grafo.getVertices()) {
+	    			if(pedidos.get(seleccion).getDestino().getIdPlanta() == r.getValor().getIdPlanta()) {
+	    				index2 = grafo.getVertices().indexOf(r);
+	    				break;
+	    			}
+	    		}
+	    		
+	    		
+	    		List<List<Vertice<Planta>>> p = grafo.caminos(grafo.getVertices().get(index), grafo.getVertices().get(index2));
+	    		System.out.println("hola");
+	    		for(List<Vertice<Planta>> lis : p) {
+	    			System.out.println(lis);
+	    		}			
 				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
+	private class ListenerBtnGuardar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {	
+				System.out.println("guardar");
+			}catch(Exception ex) {
+				JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+}
+	
 	
 
 
-}
+
