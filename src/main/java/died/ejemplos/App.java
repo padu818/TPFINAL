@@ -34,6 +34,7 @@ import died.ejemplos.view.ViewAltaPlanta;
 import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewBuscarOrdenPedido;
 import died.ejemplos.view.ViewBuscarPuntoPedido;
+import died.ejemplos.view.ViewInfo;
 import died.ejemplos.view.ViewVisualizarInsumo;
 import died.ejemplos.view.viewBuscarOrdenPedidoProcesada;
 
@@ -44,8 +45,8 @@ public class App extends JFrame {
 	JMenuBar menuBar;
 	JMenu menuArchivo;
 	JMenu menuEntidades;
-	JMenu menuAyuda;///
-	JMenuItem menuItemAyuda;//
+	JMenu menuInfo;
+	JMenuItem menuItemInfo;
 	JMenu menuCamion;
 	JMenu menuPlanta;
 	JMenuItem menuItemBuscarCamion;
@@ -189,21 +190,20 @@ public class App extends JFrame {
 		});
 		this.menuOrdenPedio.add(menuItemBuscarOrdenPedidoProcesada);
 
-		this.menuAyuda = new JMenu("Ayuda");
-		this.menuItemAyuda = new JMenuItem("Manual");
-		this.menuItemAyuda.setMnemonic(KeyEvent.VK_F1);
-		this.menuItemAyuda.addActionListener( e -> {
-			PanelAyuda panel = new PanelAyuda();
+		this.menuInfo = new JMenu("INFO");
+		this.menuItemInfo = new JMenuItem("Integrantes");
+		this.menuItemInfo.addActionListener( e -> {
+			ViewInfo panel = new ViewInfo();
 			panel.armarPanel();
 			this.setContentPane(panel);	
 			this.revalidate();
 			this.repaint();
 		}); 
-		this.menuAyuda.add(menuItemAyuda);
+		this.menuInfo.add(menuItemInfo);
 
 		menuBar.add(this.menuArchivo);
 		menuBar.add(this.menuEntidades );
-		menuBar.add(this.menuAyuda);
+		menuBar.add(this.menuInfo);
 		this.setJMenuBar(menuBar);
 		this.addWindowListener( new WindowAdapter() {
 			public void windowIconified(WindowEvent e) {
