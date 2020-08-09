@@ -17,8 +17,12 @@ public class GestorPlanta {
 	private PlantaDao plantaDao = new PlantaDaoSql();
 	
 	public GrafoPlanta armarGrafo(){
+		return plantaDao.armarGrafo();
+	}
+	
+	public GrafoPlanta armarGrafo(List<Planta> plantas){
 		GrafoPlanta gp = new GrafoPlanta();
-		for(Planta p : buscarTodos()) {
+		for(Planta p : plantas) {
 			gp.addNodo(p);
 		}
 		for(Ruta r : buscarTodaRuta()) {

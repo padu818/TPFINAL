@@ -11,6 +11,7 @@ import died.ejemplos.dao.utils.DB;
 import died.ejemplos.dominio.Camion;
 import died.ejemplos.dominio.Planta;
 import died.ejemplos.dominio.Ruta;
+import died.ejemplos.gui.ayuda.GrafoPlanta;
 
 public class PlantaDaoSql implements PlantaDao{
 	
@@ -118,6 +119,7 @@ public class PlantaDaoSql implements PlantaDao{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
+			
 			pstmt= conn.prepareStatement(SELECT_ALL_PLANTA);
 				
 				rs = pstmt.executeQuery();
@@ -126,7 +128,10 @@ public class PlantaDaoSql implements PlantaDao{
 					p.setIdPlanta(rs.getInt("IDPLANTA"));
 					p.setNombre(rs.getString("NOMBRE"));
 					lista.add(p);
-			}			
+			}
+				
+				
+				
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -140,7 +145,63 @@ public class PlantaDaoSql implements PlantaDao{
 		}	
 		return lista;
 	}
-
+	
+	
+	public GrafoPlanta armarGrafo() {
+		GrafoPlanta grafo = new GrafoPlanta();
+		List<Planta> lista = new ArrayList<Planta>();
+		List<Ruta> rut = new ArrayList<Ruta>();
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt= conn.prepareStatement(SELECT_ALL_RUTA);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				Ruta r = new Ruta();
+				r.setId(rs.getInt("IDRUTA"));
+				r.setOrigen(buscarPorId(rs.getInt("IDPLANTAORIGEN")));
+				r.setDestino(buscarPorId(rs.getInt("IDPLANTADESTINO")));
+				r.setDuracionHs(rs.getDouble("DURACIONHS"));
+				r.setDistanciaKM(rs.getDouble("DURACIONKM"));
+				r.setPesoMaxKg(rs.getDouble("CANTMAXATRANSPORTAR"));
+				rut.add(r);
+		}			
+			pstmt.close();
+			rs.close();
+			
+			pstmt= conn.prepareStatement(SELECT_ALL_PLANTA);
+				
+				rs = pstmt.executeQuery();
+				while(rs.next()) {
+					Planta p = new Planta();
+					p.setIdPlanta(rs.getInt("IDPLANTA"));
+					p.setNombre(rs.getString("NOMBRE"));
+					lista.add(p);
+			}
+			
+			for(Planta p : lista) {
+				grafo.addNodo(p);
+				}
+			for(Ruta r : rut) {
+				grafo.conectar(r.getOrigen(), r.getDestino(), r.getDuracionHs(), r.getDistanciaKM(), r.getPesoMaxKg());
+			}
+				
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return grafo;
+	}
+	
 	public Ruta saveOrUpdate(Ruta r) {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;

@@ -1,5 +1,6 @@
 package died.ejemplos.dominio;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,10 +12,10 @@ public class Pedido {
 	 */
 	private Integer idPedido; //unique y secuencial, comenzando por el 1
 	private Planta destino;
-	private LocalDateTime fechaSolicitud;
-	private LocalDateTime fechaEntrega;
+	private LocalDate fechaSolicitud;
+	private LocalDate fechaEntrega;
 	private EstadoPedido estado;
-	private List<Insumo> items; //detalles d elos items, una descripcion de los item o whts
+	private List<DetallesInsumoSolicitado> items; //detalles d elos items, una descripcion de los item o whts
 	private Camion camionAsignado;
 	private Ruta rutaAsignado;
 	private Double costoEnvio;
@@ -38,16 +39,16 @@ public class Pedido {
 	public void setDestino(Planta destino) {
 		this.destino = destino;
 	}
-	public LocalDateTime getFechaSolicitud() {
+	public LocalDate getFechaSolicitud() {
 		return fechaSolicitud;
 	}
-	public void setFechaSolicitud(LocalDateTime fechaSolicitud) {
-		this.fechaSolicitud = fechaSolicitud;
+	public void setFechaSolicitud(LocalDate localDate) {
+		this.fechaSolicitud = localDate;
 	}
-	public LocalDateTime getFechaEntrega() {
+	public LocalDate getFechaEntrega() {
 		return fechaEntrega;
 	}
-	public void setFechaEntrega(LocalDateTime fechaEntrega) {
+	public void setFechaEntrega(LocalDate fechaEntrega) {
 		this.fechaEntrega = fechaEntrega;
 	}
 	public EstadoPedido getEstado() {
@@ -56,10 +57,10 @@ public class Pedido {
 	public void setEstado(EstadoPedido estado) {
 		this.estado = estado;
 	}
-	public List<Insumo> getItems() {
+	public List<DetallesInsumoSolicitado> getItems() {
 		return items;
 	}
-	public void setItems(List<Insumo> items) {
+	public void setItems(List<DetallesInsumoSolicitado> items) {
 		this.items = items;
 	}
 	public Camion getCamionAsignado() {

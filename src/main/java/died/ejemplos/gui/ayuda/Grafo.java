@@ -212,7 +212,7 @@ existen un camino entre ambos vértices teniendo en cuenta:
 		menos de N saltos
      */
     
-
+ 
 
      public Boolean hayCamino(Vertice<T> v1,Vertice<T> v2) {
     	List<Vertice<T>> adyacentes = getAdyacentes(v1);

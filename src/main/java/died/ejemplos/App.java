@@ -22,7 +22,8 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
-
+import died.ejemplos.gestor.GestorPlanta;
+import died.ejemplos.gui.ayuda.GrafoPlanta;
 import died.ejemplos.gui.ayuda.PanelAyuda;
 import died.ejemplos.view.ViewActualizarStock;
 import died.ejemplos.view.ViewAgregarRuta;
@@ -31,6 +32,7 @@ import died.ejemplos.view.ViewAltaInsumo;
 import died.ejemplos.view.ViewAltaOrdenPedido;
 import died.ejemplos.view.ViewAltaPlanta;
 import died.ejemplos.view.ViewBuscarCamion;
+import died.ejemplos.view.ViewBuscarOrdenPedido;
 import died.ejemplos.view.ViewBuscarPuntoPedido;
 import died.ejemplos.view.ViewVisualizarInsumo;
 
@@ -57,13 +59,19 @@ public class App extends JFrame {
 	JMenuItem menuItemBuscarPuntoPedido;
 	JMenu menuOrdenPedio;
 	JMenuItem menuItemAltaOrdenPedido;
+	JMenuItem menuItemBuscarOrdenPedido;
+	
+	private GrafoPlanta p;
+	private GestorPlanta gestor;
 	
 	private App() {
 	}
 
 	private void armarApp() {
 		this.menuBar = new JMenuBar();
-
+		gestor = new GestorPlanta();
+		p = gestor.armarGrafo();
+		
 		this.menuArchivo = new JMenu("Archivo");
 		this.menuItemSalir = new JMenuItem("Salir");
 		this.menuItemSalir.addActionListener( e -> System.exit(0));
@@ -101,7 +109,7 @@ public class App extends JFrame {
 		});
 		this.menuItemAgregarRuta = new JMenuItem("Agregar ruta");
 		this.menuItemAgregarRuta.addActionListener( e -> {
-			this.setContentPane(new ViewAgregarRuta());
+			this.setContentPane(new ViewAgregarRuta(p));
 			//this.pack();
 			this.revalidate();
 			this.repaint();
@@ -161,6 +169,14 @@ public class App extends JFrame {
 		});
 		this.menuEntidades.add(menuOrdenPedio);
 		this.menuOrdenPedio.add(menuItemAltaOrdenPedido);
+		this.menuItemBuscarOrdenPedido = new JMenuItem("Ordenes CREADAS");
+		this.menuItemBuscarOrdenPedido.addActionListener(e -> {
+			this.setContentPane(new ViewBuscarOrdenPedido(this,p));
+			//this.pack();
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuOrdenPedio.add(menuItemBuscarOrdenPedido);
 
 		this.menuAyuda = new JMenu("Ayuda");
 		this.menuItemAyuda = new JMenuItem("Manual");

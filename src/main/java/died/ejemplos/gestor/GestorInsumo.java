@@ -1,6 +1,7 @@
 package died.ejemplos.gestor;
 
 
+import died.ejemplos.dominio.DetallesInsumoSolicitado;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Planta;
 import died.ejemplos.dominio.Ruta;
@@ -117,8 +118,46 @@ public class GestorInsumo {
 		insumoDao.borrar(idPlanta,idInsumo);
 		
 	}
+
+	public List<StockInsumo> buscarTodoStock(List<Insumo> insumos, List<Planta> plantas) {
+		List<StockInsumo> st = insumoDao.busquedaStock(insumos);
+		for(StockInsumo s :st) {
+			for(Planta p : plantas) {
+				if(p.getIdPlanta() ==s.getPlanta().getIdPlanta()) {
+					s.setPlanta(p);
+					break;
+				}
+					
+			}
+		}
+		return st;
+	}
 	
-	
+	public List<Planta> tieneStock(List<DetallesInsumoSolicitado> insumosSolicitado, List<Planta> planta){
+	//	System.out.println(insumosSolicitado);
+		String consulta = "";
+		List<Planta> resultado = new ArrayList<Planta>();
+		Integer i = 0;
+		Integer max = insumosSolicitado.size();
+		for(DetallesInsumoSolicitado d: insumosSolicitado) {
+			consulta += " select pl.IDPLANTA,pl.NOMBRE from planta pl,stockinsumo st where pl.idplanta = st.idplanta and " + 
+					"st.idinsumo = "+d.getInsumo().getIdProduto().toString()+
+					" and pl.idplanta <> "+d.getPedido().getDestino().getIdPlanta()+
+					" and st.stock >= "+ d.getCantidad()+" ";
+			i++;
+			if(i < max) {
+				consulta += " INTERSECT ";
+			}
+		}
+		consulta += " order by idplanta ";
+		//System.out.println(consulta);
+		resultado.addAll(insumoDao.obtener(consulta));
+		
+		
+		
+		return resultado;
+		
+	}
 	
 	
 }

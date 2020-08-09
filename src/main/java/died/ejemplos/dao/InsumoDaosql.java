@@ -411,4 +411,34 @@ public class InsumoDaosql implements InsumoDao {
 		
 	}
 
+	@Override
+	public List<Planta> obtener(String consulta) {
+		List<Planta> lista = new ArrayList<Planta>();
+		
+		Connection conn = DB.getConexion();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt= conn.prepareStatement(consulta);	
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+					Planta p = new Planta();
+					p.setIdPlanta(rs.getInt("IDPLANTA"));
+					p.setNombre(rs.getString("NOMBRE"));
+					lista.add(p);
+				}					
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				if(rs!=null) rs.close();
+				if(pstmt!=null) pstmt.close();
+				if(conn!=null) conn.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return lista;
+	}
+
 }

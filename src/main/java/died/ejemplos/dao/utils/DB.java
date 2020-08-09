@@ -50,7 +50,7 @@ public class DB {
 			+ "IDPLANTAORIGEN integer REFERENCES PLANTA(IDPLANTA) on delete cascade on update cascade,"
 			+ "IDPLANTADESTINO integer REFERENCES PLANTA(IDPLANTA) on delete cascade on update cascade,"
 			+ "IDCAMIONASIGNADO integer REFERENCES CAMION(ID) on delete cascade on update cascade, FECHA_SOLICITUD DATE not NULL,FECHA_ENTREGA DATE not NULL,"
-			+ "IDRUTA integer REFERENCES RUTA(IDRUTA), "
+			+ "IDRUTA integer REFERENCES RUTA(IDRUTA),ESTADO VARCHAR(45), "
 			+ "PRIMARY KEY(IDPEDIDO));";
 	
 	private static final String TABLA_CREATE_DETALLEINSUMOSOLICITADO = 

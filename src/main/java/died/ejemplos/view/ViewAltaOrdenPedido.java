@@ -178,13 +178,33 @@ public class ViewAltaOrdenPedido extends JPanel {
 	public void limpiarFormulario() {
 		
 		this.campoCantidadInsumo.setText("");
-		this.campoFechaMax.setText("");
+		this.campoFechaMax.setEnabled(false);
+//		this.campoFechaMax.setText("");
 //		this.setSeleccionInsumo();
 //		this.seleccionInsumo.setEnabled(true);
 //		this.campoTotalFilas.setText("");
 	
 	}
 	
+	
+	public void limpiarFormularioTodo() {
+		
+		this.campoCantidadInsumo.setText("");
+		this.campoFechaMax.setEnabled(false);
+		this.campoFechaMax.setText("");
+	//	this.setSeleccionInsumo();
+		this.seleccionInsumo.setEnabled(false);
+		this.setCampoIdPlanta("");
+		this.setCampoNombrePlanta("");
+		this.setCampoFecha("");
+		this.campoCantidadInsumo.setEnabled(false);
+	}
+	
+	private void setCampoFecha(String string) {
+		campoFechaMax.setText(string);
+		
+	}
+
 	public void mostrarError(String titulo,String detalle) {
 		JFrame padre= (JFrame) SwingUtilities.getWindowAncestor(this);
 		JOptionPane.showMessageDialog(padre,
@@ -205,7 +225,7 @@ public class ViewAltaOrdenPedido extends JPanel {
 	}
 	
 	public Integer getRowTablaInsumos(Point point) {
-		return tablaPlantas.rowAtPoint(point);
+		return tablaInsumos.rowAtPoint(point);
 	}
 	
 	public void addTablaPlantas(Integer tamanioTablaActual) {

@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.PseudoColumnUsage;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -16,10 +17,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
+import died.ejemplos.dominio.DetallesInsumoSolicitado;
+import died.ejemplos.dominio.EstadoPedido;
 import died.ejemplos.dominio.Insumo;
+import died.ejemplos.dominio.Pedido;
 import died.ejemplos.dominio.Planta;
 import died.ejemplos.dominio.StockInsumo;
 import died.ejemplos.gestor.GestorInsumo;
+import died.ejemplos.gestor.GestorPedido;
 import died.ejemplos.gestor.GestorPlanta;
 import died.ejemplos.gui.util.ControllerException;
 import died.ejemplos.gui.util.DatosObligatoriosException;
@@ -31,24 +36,27 @@ public class AltaOrdenPedidoController {
 	private AltaOrdenPedidoController instancia;
 	private GestorPlanta plantaService;
 	private GestorInsumo insumoService;
+	private GestorPedido pedidoService;
 	private List<Planta> plantas;
 	private List<Insumo> insumos;
-	private List<Insumo> insumosAgregados;
-//	private List<StockInsumo> listaStock;
+	private Pedido pedido;
+	private List<DetallesInsumoSolicitado> insumosAgregados;
 	private ViewAltaOrdenPedido panel;
 	private JFrame ventana;
 	private Point click;
 	private Planta p;
-	private Integer idInsumo;
+//	private Integer idInsumo;
 	
 	public AltaOrdenPedidoController(ViewAltaOrdenPedido view, JFrame v) {
 		
 		this.instancia = this;
 		this.plantaService = new GestorPlanta();
 		this.insumoService = new GestorInsumo();
+		this.pedidoService = new GestorPedido();
 		this.plantas = new ArrayList<Planta>();
 		this.insumos= new ArrayList<Insumo>();
-		this.insumosAgregados = new ArrayList<Insumo>();
+		pedido = new Pedido();
+		this.insumosAgregados = new ArrayList<DetallesInsumoSolicitado>();
 //		this.listaStock = new ArrayList<StockInsumo>();
 		this.ventana =v;
 		this.panel = view;
@@ -92,7 +100,7 @@ public class AltaOrdenPedidoController {
 	}
 	
 	//REVISAR!!!!!!!
-	private void cargarTablaInsumo(List<Insumo> listaInsumo) {
+	private void cargarTablaInsumo(List<DetallesInsumoSolicitado> listaInsumo) {
 		if(listaInsumo.isEmpty()) {
 			panel.addTablaInsumos(0);
 		}
@@ -103,7 +111,7 @@ public class AltaOrdenPedidoController {
 				for(int fila=0; fila<cantInsumo; fila++) {
 //					Insumo in = listaInsumo.get(fila);
 					//REVISAR!!!!!!!
-					panel.setValoresTablaInsumos(fila, listaInsumo.get(fila).getNombre(), Integer.parseInt(panel.getCantidadInsumo()), (Integer.parseInt(panel.getCantidadInsumo()))*(listaInsumo.get(fila).getCosto()));
+					panel.setValoresTablaInsumos(fila, insumosAgregados.get(fila).getInsumo().getNombre(), insumosAgregados.get(fila).getCantidad(), insumosAgregados.get(fila).getPrecio());
 					
 				}
 			}
@@ -127,6 +135,8 @@ public class AltaOrdenPedidoController {
 	}
 	
 	public Boolean verificarDatos() {
+
+		
 		String textoErrorFechaMax = "";
 		String textoErrorCantidad = "";
 		String textoErrorInsumo = "";
@@ -182,6 +192,23 @@ public class AltaOrdenPedidoController {
 		return true;
 	}
 	
+	
+	public Boolean guardar() throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
+			pedido.setItems(insumosAgregados);
+			pedido.setEstado(EstadoPedido.CREADA);
+			pedido.setFechaSolicitud(LocalDate.now());
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+			LocalDate aux = LocalDate.parse(this.panel.getFechaMax(),formatter);
+			pedido.setFechaEntrega(aux);
+			pedido.setDestino(p);
+			pedidoService.crearPedido(pedido);
+			return true;
+	}
+	
+	
+	
+	
+	
 	private class ListenerTablaPlantas implements MouseListener{			
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -233,12 +260,17 @@ public class AltaOrdenPedidoController {
 	//HACER!!!!!!!!
 	private class ListenerBtnGuardar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-//			try {
-//				if(guardar())
-//					panel.limpiarFormulario();
-//			} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
-//				panel.mostrarError("Error al guardar", e1.getMessage());
-//			}
+			try {
+				if(guardar()) {
+					panel.limpiarFormularioTodo();
+					insumosAgregados.removeAll(insumosAgregados);
+					cargarTablaPlanta(plantas);
+					cargarTablaInsumo(insumosAgregados);
+					panel.addInsumos(insumos);
+				}
+			} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
+				panel.mostrarError("Error al guardar", e1.getMessage());
+			}
 			
 		}
 	}
@@ -252,7 +284,7 @@ public class AltaOrdenPedidoController {
 	        int row = panel.getRowTablaInsumos(point);
 	        click = point;
 	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-	        	idInsumo = insumosAgregados.get(row).getIdProduto();
+//	        	idInsumo = insumosAgregados.get(row).getIdProduto();
 //	        	idPlanta = listaStock.get(row).getPlanta().getIdPlanta();
 	    		panel.habilitarEliminar(true);
 	        }
@@ -265,13 +297,13 @@ public class AltaOrdenPedidoController {
 	
 	private class ListenerBtnEliminar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-				if(idInsumo != -1 ) {
+//				if(idInsumo != -1 ) {
 					
 				    int row = panel.getRowTablaInsumos(click);
 					insumosAgregados.remove(row);
 					cargarTablaInsumo(insumosAgregados);
 					
-				}
+//				}
 				panel.habilitarEliminar(false);
 				if (insumosAgregados.isEmpty()) {
 					panel.habilitarGuardar(false);
@@ -298,7 +330,12 @@ public class AltaOrdenPedidoController {
 		if(this.verificarDatos()) {
 			for (Insumo insumo : insumos) {
 				if (insumo.getNombre().equals(panel.getSeleccionInsumo())) {
-					insumosAgregados.add(insumo);
+					DetallesInsumoSolicitado p = new DetallesInsumoSolicitado();
+					p.setCantidad(Integer.parseInt(panel.getCantidadInsumo()));
+					p.setPrecio(insumo.getCosto()*p.getCantidad());
+					p.setInsumo(insumo);
+					p.setPedido(pedido);
+					insumosAgregados.add(p);
 				}
 			}
 			cargarTablaInsumo(insumosAgregados);

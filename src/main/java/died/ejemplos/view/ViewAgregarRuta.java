@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import died.ejemplos.controller.AltaCamionController;
 import died.ejemplos.controller.AltaRutaController;
 import died.ejemplos.dominio.Planta;
+import died.ejemplos.gui.ayuda.GrafoPlanta;
 
 public class ViewAgregarRuta extends JPanel {
 
@@ -75,9 +76,9 @@ o Peso máximo en KG que se pueden transportar (asumimos que es el peso máximo 
 	private DefaultTableModel model;
 	private AltaRutaController controller;
 	
-	public ViewAgregarRuta(){
+	public ViewAgregarRuta(GrafoPlanta p){
 		super();
-		this.controller= new AltaRutaController(this);
+		this.controller= new AltaRutaController(this,p);
 		this.inicializarComponentes();
 		this.ubicarComponentes();
 		//addTablaRuta(0);

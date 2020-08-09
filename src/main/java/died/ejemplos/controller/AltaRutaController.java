@@ -42,7 +42,7 @@ public class AltaRutaController {
 	private AltaRutaController instancia;
 	private GrafoPlanta plantas;
 	
-	public AltaRutaController(ViewAgregarRuta p) {
+	public AltaRutaController(ViewAgregarRuta p, GrafoPlanta p2) {
 		this.plantaService = new GestorPlanta();
 		this.panel = p;
 		
@@ -59,7 +59,7 @@ public class AltaRutaController {
 		panel.addListenerCampoMaximo(new ListenerCampoMaximo());
 		auxi = plantaService.buscarTodos();
 		plantas = new GrafoPlanta();
-		plantas = plantaService.armarGrafo();
+		plantas = p2;
 		panel.addOrigen(auxi);
 		panel.addDestino(auxi);
 		cargarTabla(plantas);

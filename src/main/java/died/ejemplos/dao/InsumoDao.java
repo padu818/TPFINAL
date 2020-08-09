@@ -23,4 +23,5 @@ public interface InsumoDao {
 	public List<StockInsumo> busquedaStockInsumos(Planta p);
 	public void borrar(Integer idPlanta, Integer idInsumo);
 	public List<StockInsumo> busquedaStock( List<Insumo> insumos/*, List<Planta> plantas*/);
+	public List<Planta> obtener(String consulta);
 }
