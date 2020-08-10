@@ -19,6 +19,7 @@ import tpdied2020.view.ViewAltaCamion;
 import tpdied2020.view.ViewAltaInsumo;
 import tpdied2020.view.ViewAltaOrdenPedido;
 import tpdied2020.view.ViewAltaPlanta;
+import tpdied2020.view.ViewAnalisisCaminoMin;
 import tpdied2020.view.ViewAnalisisFlujoMax;
 import tpdied2020.view.ViewBuscarCamion;
 import tpdied2020.view.ViewBuscarOrdenPedido;
@@ -55,6 +56,7 @@ public class App extends JFrame {
 	JMenuItem menuItemBuscarOrdenPedidoProcesada;
 	JMenu menuAnalisis;
 	JMenuItem menuItemFlujoMaximo;
+	JMenuItem menuItemCaminoMin;
 	
 	private GrafoPlanta p;
 	private GestorPlanta gestor;
@@ -178,8 +180,16 @@ public class App extends JFrame {
 			this.revalidate();
 			this.repaint();
 		});
-		
+		this.menuItemCaminoMin = new JMenuItem("Matriz camino minimo");
+		this.menuAnalisis.add(menuItemCaminoMin);
+		this.menuItemCaminoMin.addActionListener( e -> {
+			this.setContentPane(new ViewAnalisisCaminoMin(p));
+			this.revalidate();
+			this.repaint();
+		});
 		this.menuAnalisis.add(menuItemFlujoMaximo);
+		this.menuAnalisis.add(menuItemCaminoMin);
+		
 		
 		this.menuInfo = new JMenu("INFO");
 		this.menuItemInfo = new JMenuItem("Integrantes");

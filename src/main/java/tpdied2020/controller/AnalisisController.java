@@ -1,3 +1,4 @@
+
 package tpdied2020.controller;
 
 
@@ -17,6 +18,8 @@ import tpdied2020.gui.auxiliar.Vertice;
 import tpdied2020.gui.util.ControllerException;
 import tpdied2020.gui.util.DatosObligatoriosException;
 import tpdied2020.gui.util.FormatoNumeroException;
+import tpdied2020.view.ViewAgregarRuta;
+import tpdied2020.view.ViewAnalisisCaminoMin;
 import tpdied2020.view.ViewAnalisisFlujoMax;
 
 public class AnalisisController {
@@ -26,6 +29,7 @@ public class AnalisisController {
 	private Integer origen;
 	private Integer destino;
 	private ViewAnalisisFlujoMax panel;
+	private ViewAnalisisCaminoMin caminoPanel;
 	private AnalisisController instancia;
 	private GrafoPlanta grafo;
 	private List<List<Ruta>> ruta;
@@ -34,14 +38,12 @@ public class AnalisisController {
 	public AnalisisController(ViewAnalisisFlujoMax p, GrafoPlanta p2) {
 		this.plantaService = new GestorPlanta();
 		this.panel = p;
-		
 		origen =-1;
 		destino =-1;
-
-		
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnAceptar(new ListenerBtnAceptar());
 		auxi = new ArrayList<Planta>();
+		//auxi = plantaService.buscarTodos();
 		grafo = new GrafoPlanta();
 		this.ruta = new ArrayList<List<Ruta>>();
 		grafo = p2;
@@ -50,7 +52,22 @@ public class AnalisisController {
 		}
 		panel.addOrigen(auxi);
 		panel.addDestino(auxi);
+	}
+	
+	public AnalisisController(ViewAnalisisCaminoMin p, GrafoPlanta p2) {
+		this.plantaService = new GestorPlanta();
+		this.caminoPanel = p;
 
+		caminoPanel.addListenerBtnCancelar(new ListenerBtnCancelar());
+		caminoPanel.addListenerBtnBuscar(new ListenerBtnBuscar());
+
+		grafo = new GrafoPlanta();
+		this.ruta = new ArrayList<List<Ruta>>();
+		grafo = p2;
+		auxi = new ArrayList<Planta>();
+		for(Vertice<Planta> pl :grafo.getVertices()) {
+			auxi.add(pl.getValor());
+		}
 	}
 	
 	public Boolean verificarDatos() {
@@ -84,6 +101,30 @@ public class AnalisisController {
 		String mensajeError = textoErrorOrigen+textoErrorDestino+textoErrorPlanta ;
 		
 		if( errorEnDestino||errorEnOrigen||errorPlanta) {
+			JOptionPane.showConfirmDialog(panel, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	public Boolean verificarDatosCamino() {
+		String textoErrorSeleccion = "";
+
+		Boolean errorEnSeleccion = false;
+
+		Integer errorNumero = 1;
+
+		if (caminoPanel.getTipo().equals("Seleccionar tipo")) {
+			errorEnSeleccion = true;
+			textoErrorSeleccion = errorNumero+") No se ha seleccionado un valor en el campo tipo de camino.\n";
+			errorNumero++;
+		}
+		
+		
+		
+		String mensajeError = textoErrorSeleccion;
+		
+		if( errorEnSeleccion) {
 			JOptionPane.showConfirmDialog(panel, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
@@ -141,6 +182,89 @@ public class AnalisisController {
 		return false;
 	}
 	
+	
+	
+	public Boolean buscar() throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
+		if(this.verificarDatosCamino()) {
+			
+			Integer opcion = caminoPanel.getIndexOfTipo();
+	
+			Boolean ay = false;
+			Boolean b = false;
+			Double[] resultado = new Double[auxi.size()];
+			Integer contador1 = 0;
+			Integer contador2 = 0;
+			for(Planta plan :auxi) {
+				Integer index = -1,index2 = -1;
+				contador2 =0;
+				for(Planta t :auxi) {
+					Planta or = plan;
+					Planta de= t;
+					
+					 for(Vertice<Planta> r :grafo.getVertices()) {
+						    if(or.getIdPlanta() == r.getValor().getIdPlanta()) {
+						    	index = grafo.getVertices().indexOf(r);
+						    	ay = true;
+						    }
+						    if(de.getIdPlanta() == r.getValor().getIdPlanta()) {
+					    		index2 = grafo.getVertices().indexOf(r);
+					    		b = true;
+						    }
+						    if(ay && b)
+						    	break;
+					 }
+					 List<List<Vertice<Planta>>> p = grafo.caminos(grafo.getVertices().get(index), grafo.getVertices().get(index2));
+				   		
+					 for(List<Vertice<Planta>> lis : p) {
+						 List<Ruta> una = new ArrayList<Ruta>();
+					   		for(int i = 0; i < lis.size()-1;i++) {
+							    for(Arista<Planta> a: grafo.getAristas()) {
+							    	if(a.getInicio().getValor().getIdPlanta() == lis.get(i).getValor().getIdPlanta() && 
+							    			a.getFin().getValor().getIdPlanta() == lis.get(i+1).getValor().getIdPlanta()) {
+							    			Ruta r = new Ruta();
+							    			r.setOrigen(a.getInicio().getValor());
+							    			r.setDestino(a.getFin().getValor());
+							    			r.setDistanciaKM(a.getKm());
+							    			r.setDuracionHs(a.getHs());
+							    			r.setPesoMaxKg(a.getMax());
+							    			una.add(r);
+							    			break;
+							    	}
+							    }
+					   		}
+					   		ruta.add(una); 
+					}
+					 List<List<Ruta>> elegido = new ArrayList<List<Ruta>>();
+				   	if(opcion == 0) {
+						elegido.addAll(plantaService.rutaMasCortaKm(ruta));
+					}
+					else if(opcion == 1) {
+						elegido.addAll(plantaService.rutaMasCortaHs(ruta));
+					}
+					
+					Double[] min = {0.0,0.0};
+					for(List<Ruta> l : elegido) {
+						for(int i = 0;i < l.size();i++) {
+							if(opcion == 0)
+								min[0] +=l.get(i).getDistanciaKM();
+							else if(opcion == 1)
+								min[1] +=l.get(i).getDuracionHs();
+						}
+					}
+					if(opcion == 0)
+						resultado[contador2] = min[0];
+					else if(opcion == 1)
+						resultado[contador2] = min[1];
+				}
+				caminoPanel.setValoresTablaCamino(contador1,resultado);
+				contador1++;
+				}
+			return true;
+				}
+		return false;
+	}
+	
+	
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
@@ -155,6 +279,24 @@ public class AnalisisController {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				if(aceptar()) {
+//					panel.limpiarFormulario();
+//					panel.addOrigen(auxi);
+//					panel.addDestino(auxi);
+				}
+			} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
+				panel.mostrarError("Error al guardar", e1.getMessage());
+			}
+			
+		}
+	}
+	
+	private class ListenerBtnBuscar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				if(buscar()) {
+//					panel.limpiarFormulario();
+//					panel.addOrigen(auxi);
+//					panel.addDestino(auxi);
 				}
 			} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
 				panel.mostrarError("Error al guardar", e1.getMessage());
