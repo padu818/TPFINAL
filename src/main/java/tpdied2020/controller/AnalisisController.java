@@ -177,7 +177,32 @@ public class AnalisisController {
 			    ruta.add(una);
 			   
 			 }
-			 Double maximo = plantaService.pesoMaximo(ruta);
+			 
+			 for(int i = 0;i<ruta.size();i++) {
+				 if(ruta.get(i).get(ruta.get(i).size()-1).getDestino().getIdPlanta() != de.getIdPlanta() || 
+						 ruta.get(i).get(0).getOrigen().getIdPlanta() != or.getIdPlanta() ) {
+					 ruta.remove(i);
+				 }
+			 }
+			 
+			 List<List<Ruta>> auxiliar = new ArrayList<List<Ruta>>();
+			 auxiliar.addAll(ruta);
+			 
+
+			 for(List<Ruta> s: ruta) {
+				 if(s.get(s.size()-1).getDestino().getIdPlanta() != de.getIdPlanta())
+					 auxiliar.remove(s);
+				 if(s.get(0).getOrigen().getIdPlanta() != or.getIdPlanta())
+					 	auxiliar.remove(s);
+			 }
+
+			 ruta.removeAll(ruta);
+			 ruta.addAll(auxiliar);
+
+			 
+			 
+			 
+			 Double maximo = plantaService.pesoMaximo(ruta, auxi);
 			 panel.setCampoMaximo(maximo.toString());
 			return true;
 				}

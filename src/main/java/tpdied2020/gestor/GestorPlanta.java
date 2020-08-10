@@ -2,7 +2,9 @@ package tpdied2020.gestor;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import tpdied2020.dao.PlantaDao;
 import tpdied2020.dao.PlantaDaoSql;
@@ -122,32 +124,37 @@ public class GestorPlanta {
 		return resultado;
 	}
 	
-	public Double pesoMaximo(List<List<Ruta>> ruts) {
+	public Double pesoMaximo(List<List<Ruta>> ruts, List<Planta> auxiliar) {
 		Double[] hora = new Double[ruts.size()];
 		for(Double s : hora) {
 			s = 0.0;
 		}
-		Double min =-1.0;
-		Integer con =0;
-		List<List<Ruta>> resultado = new ArrayList<List<Ruta>>();
-		for(List<Ruta> ruta :ruts) {
-			Double contador =0.0;
-			for(Ruta r:ruta) {
-				contador+=r.getDuracionHs();
-			}
-			if(min == -1.0)
-				min = contador;
-			if(min> contador)
-				min = contador;
-			hora[con] = contador;
-			con++;
+		Map<Integer, Double> caminos = new HashMap<Integer, Double>();
+		for(Planta p: auxiliar) {
+			caminos.put(p.getIdPlanta(), 0.0);
 		}
-		for(int i = 0;i< hora.length;i++) {
-			if(hora[i] == min) {
-				resultado.add(ruts.get(i));
+
+		for(List<Ruta> r: ruts) {
+			for(Ruta o:r) {
+				caminos.put(o.getOrigen().getIdPlanta(), o.getPesoMaxKg());
 			}
 		}
-		return 0.0;
+		Double resultado =0.0;
+		for(List<Ruta> r: ruts) {
+			for(Ruta o:r) {
+				if(caminos.get(o.getOrigen().getIdPlanta()) <= resultado) {
+					resultado += caminos.get(o.getOrigen().getIdPlanta());
+					caminos.put(o.getOrigen().getIdPlanta(), 0.0);
+					break;
+				}
+				if(o.getPesoMaxKg() > resultado)
+					caminos.put(o.getOrigen().getIdPlanta(), o.getPesoMaxKg()-resultado);
+				
+			}
+		}
+		
+		
+		return resultado;
 	}
 	
 }
