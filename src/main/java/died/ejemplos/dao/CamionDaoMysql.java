@@ -67,8 +67,8 @@ public class CamionDaoMysql implements CamionDao{
 				pstmt.setString(2, c.getMarca());
 				pstmt.setString(3, c.getModelo());
 				pstmt.setString(4, c.getKm());
-				pstmt.setDouble(5, c.getCostoPorHora());
 				pstmt.setDouble(6, c.getCostoKM());
+				pstmt.setDouble(5, c.getCostoPorHora());
 				pstmt.setDate(7,java.sql.Date.valueOf(c.getFechaCompra()));
 				if(c.getPlanta().getIdPlanta() != -1)
 					pstmt.setInt(8, c.getPlanta().getIdPlanta());

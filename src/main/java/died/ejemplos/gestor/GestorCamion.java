@@ -45,7 +45,11 @@ public class GestorCamion {
 		return camiones;
 	}
 	
+	public List<Camion> busqueda(String id){
+		String condicionesConsulta = "SELECT ID,PATENTE,MARCA,MODELO,KM,COSTO_KM,COSTO_HORA,FECHA_COMPRA,IDPLANTA FROM CAMION where IDPLANTA = "+id;
+		return camionDao.busqueda(condicionesConsulta);
 	
+	}
 	
 
 	public List<Camion> busqueda(String patente, String marca, String modelo, String kmr, String cosths, String costkm, String fecha) {

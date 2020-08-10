@@ -14,6 +14,11 @@ public class Camion {
 	public Double getCostoPorKM() {
 		return costoPorKM;
 	}
+	
+//	private int IntegerValueOf() {
+//		
+//	}
+	
 	public void setCostoPorKM(Double costoPorKM) {
 		this.costoPorKM = costoPorKM;
 	}
@@ -91,6 +96,79 @@ public class Camion {
 	
 	public void setPlanta(Planta p) {
 		plantaPerteneciente = p;
+	}
+	
+	public int getKmRecorridosA() {
+		String ks = kmRecorridos;
+
+		if(ks.equals("0 - 9.999")) {
+			return 9999;
+		}
+		if(ks.equals("10.000 - 19.999")) {
+			return 19999;
+		}
+		if(ks.equals("20.000 - 29.999")) {
+			return 29999;
+		}
+		if(ks.equals("30.000 - 39.999")) {
+			return 39999;
+		}
+		if(ks.equals("40.000 - 49.999")) {
+			return 49999;
+		}
+		
+		if(ks.equals("50.000 - 59.999")) {
+			return 59999;
+		}
+		if(ks.equals("60.000 - 69.999")) {
+			return 69999;
+		}
+		if(ks.equals("70.000 - 79.999")) {
+			return 79999;
+		}
+		if(ks.equals("80.000 - 89.999")) {
+			return 89999;
+		}
+		
+		/*
+		 * "0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
+						"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
+						"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
+						"150.000 - 159.999", "160.000 - 169.999", "170.000 - 179.999", "180.000 - 189.999", "190.000 - 199.999",
+						"200.000 - 209.999", "210.000 - 219.999", "220.000 - 229.999", "230.000 - 239.999", "240.000 - 249.999",
+						"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
+						"Más de 300.000 km"
+		 */
+		if(ks.equals("90.000 - 99.999")) {
+			return 99999;
+		}
+		if(ks.equals("100.00 - 109.999")) {
+			return 109000;
+		}
+		if(ks.equals("120.000 - 129.999")) {
+			return 129999;
+		}
+		if(ks.equals("130.000 - 139.999")) {
+			return 139999;
+		}
+		if(ks.equals("140.000 - 149.999")) {
+			return 149999;
+		}
+		if(ks.equals("150.000 - 159.999")) {
+			return 159999;
+		}
+		if(ks.equals("160.000 - 169.999")) {
+			return 169999;
+		}
+		if(ks.equals("170.000 - 179.999")) {
+			return 179999;
+		}
+		//de prueba para asignar camion con integer
+		
+		if(ks.equals("Más de 300.000 km")){
+			return 300000;
+		}
+		return Integer.valueOf(kmRecorridos);
 	}
 	
 	

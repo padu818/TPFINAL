@@ -5,18 +5,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
+import died.ejemplos.dominio.Camion;
 import died.ejemplos.dominio.DetallesInsumoSolicitado;
 import died.ejemplos.dominio.EstadoPedido;
 import died.ejemplos.dominio.Insumo;
@@ -24,9 +28,11 @@ import died.ejemplos.dominio.Pedido;
 import died.ejemplos.dominio.Planta;
 import died.ejemplos.dominio.Ruta;
 import died.ejemplos.dominio.StockInsumo;
+import died.ejemplos.gestor.GestorCamion;
 import died.ejemplos.gestor.GestorInsumo;
 import died.ejemplos.gestor.GestorPedido;
 import died.ejemplos.gestor.GestorPlanta;
+import died.ejemplos.gui.ayuda.Arista;
 import died.ejemplos.gui.ayuda.GrafoPlanta;
 import died.ejemplos.gui.ayuda.Vertice;
 import died.ejemplos.view.ViewAltaOrdenPedido;
@@ -39,6 +45,7 @@ public class BuscarOrdenPedidoController {
 	private GestorPlanta plantaService;
 	private GestorInsumo insumoService;
 	private GestorPedido pedidoService;
+	private GestorCamion camionService;
 
 	private List<Planta> plantas;
 	private List<Planta> pt;
@@ -57,6 +64,8 @@ public class BuscarOrdenPedidoController {
 	private Planta p;
 	private Planta p2;
 	private Integer seleccion;
+	private Integer cami;
+	private Double[] costos;
 	
 	public BuscarOrdenPedidoController(ViewBuscarOrdenPedido view, JFrame v, GrafoPlanta p2) {
 		
@@ -64,6 +73,7 @@ public class BuscarOrdenPedidoController {
 		this.plantaService = new GestorPlanta();
 		this.insumoService = new GestorInsumo();
 		this.pedidoService = new GestorPedido();
+		this.camionService = new GestorCamion();
 
 		this.plantas = new ArrayList<Planta>();
 		this.pt = new ArrayList<Planta>();
@@ -78,9 +88,8 @@ public class BuscarOrdenPedidoController {
 		panel.addListenerBtnGuardar(new ListenerBtnGuardar());
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerSeleccionKmhs(new ListenerSeleccion());
-
 		panel.addListenerTablaPedidos(new ListenerTablaPedidos());
-//		panel.addListenerTablaInsumo(new ListenerTablaInsumos());
+		panel.addListenerTablaRuta(new ListenerTablaRuta());
 		panel.addListenerSeleccionPlanta(new ListenerSeleccionPlanta());
 		plantas = listarTodosPlanta();
 		grafo = p2;
@@ -124,9 +133,9 @@ public class BuscarOrdenPedidoController {
 		}
 	}
 	
-	private void cargarTablaRuta(List<String> listaRuta) {
+	private void cargarTablaRuta(List<String> listaRuta, Double min) {
 		if( listaRuta.isEmpty()) {
-			panel.addTablaInsumos(0);
+			panel.addTablaRuta(0);
 		}
 		else {
 			int cantRuta =  listaRuta.size();
@@ -134,7 +143,7 @@ public class BuscarOrdenPedidoController {
 				panel.addTablaRuta(cantRuta);
 				for(int fila=0; fila<cantRuta; fila++) {
 
-					panel.setValoresTablaRuta(fila, listaRuta.get(fila));
+					panel.setValoresTablaRuta(fila, listaRuta.get(fila),min);
 					
 				}
 			}
@@ -197,6 +206,8 @@ public class BuscarOrdenPedidoController {
 	private class ListenerTablaPedidos implements MouseListener{			
 		@Override
 		public void mousePressed(MouseEvent e) {
+			List<String> n = new ArrayList<String>();
+		//	cargarTablaRuta(n, 0.0);
 	        JTable table = (JTable) e.getSource();
 	        Point point = e.getPoint();
 	        int row = panel.getRowTablaPedidos(point);
@@ -207,12 +218,10 @@ public class BuscarOrdenPedidoController {
 	        	cargarTablaInsumo(pedidos.get(row).getItems());
 	        	insumosAgregados = pedidos.get(row).getItems();
 	    		pt = tieneStock(stock);
-	//    		System.out.println(grafo.hayCamino(pt.get(0), pt.get(1)));
-	    		System.out.println(grafo.getVertices().indexOf(grafo.getVertices().get(1)));
+
 	    		p = pedidos.get(row).getDestino();
 	    		if(pt.isEmpty()) {
 	    			pedidos.get(row).setEstado(EstadoPedido.CANCELADA);
-	    			System.out.println(pedidos.get(row).getEstado());
 	    			pedidoService.crearPedido(pedidos.get(row));
 	    			pedidos.remove(row);
 	    			cargarTablaPedidos(pedidos);
@@ -224,6 +233,7 @@ public class BuscarOrdenPedidoController {
 	    			panel.habilitarCampos(false);
 	    			cargarTablaInsumo(insumosAgregados);
 	    		}
+	    		pedido = pedidos.get(row);
 	    		List<Planta> auxiliar = new ArrayList<Planta>();
 	    	//	auxiliar.addAll(pt);
 	    		Integer index2 = -1;
@@ -241,12 +251,9 @@ public class BuscarOrdenPedidoController {
 		    			for(Vertice<Planta> r :grafo.getVertices()) {
 		    				if(ps.getIdPlanta() == r.getValor().getIdPlanta()) {
 		    					index = grafo.getVertices().indexOf(r);
-		    					System.out.println(index+"    "+index2);
 		    					break;
 		    				}
-		    			}
-		    			System.out.println(grafo.hayCamino(grafo.getVertices().get(index), grafo.getVertices().get(index2)));
-		    			
+		    			}		    			
 		    			if(grafo.hayCamino(grafo.getVertices().get(index), grafo.getVertices().get(index2))) {
 		    				auxiliar.add(ps);
 		    			//	auxiliar.remove(ps);
@@ -274,8 +281,8 @@ public class BuscarOrdenPedidoController {
 		public void mousePressed(MouseEvent e) {
 	        JTable table = (JTable) e.getSource();
 	        Point point = e.getPoint();
-	        int row = panel.getRowTablaPedidos(point);
-	        seleccion = row;
+	        int row = panel.getRowTablaRuta(point);
+	        cami = row;
 	        click = point;
 	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
 	        	panel.habilitarGuardar(true);
@@ -302,10 +309,39 @@ public class BuscarOrdenPedidoController {
 	private class ListenerSeleccion implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
-				List<Ruta> elegido;
-				if(panel.getSeleccion().equals("Ruta mas corta en Km")) {
-				//	elegido = grafo.caminoKm(pt.get(panel.getIndexOrigen()),p);
+				if(!panel.getSeleccion().equals("Seleccione preferencia de ruta")){
+					List<List<Ruta>> elegido = new ArrayList<List<Ruta>>();
+					Boolean eligio = false;
+					if(panel.getSeleccion().equals("Ruta mas corta en Km")) {
+						elegido.addAll(plantaService.rutaMasCortaKm(ruts));
+						
+						eligio =true;
+					}
+					else if(panel.getSeleccion().equals("Ruta mas rapida en Hs")) {
+						elegido.addAll(plantaService.rutaMasCortaHs(ruts));
+						eligio =false;
+					}
+					
+					List<String> imprimir = new ArrayList<String>();
+					Double[] min = {0.0,0.0};
+					for(List<Ruta> l : elegido) {
+						String texto = "";
+						for(int i = 0;i < l.size();i++) {
+							min[0] +=l.get(i).getDistanciaKM();
+							min[1] +=l.get(i).getDuracionHs();
+							texto+= l.get(i).getOrigen().getNombre()+" --> ";
+							if(i == l.size()-1)
+								texto += l.get(i).getDestino().getNombre();
+						}
+						imprimir.add(texto);
+					}
+					costos = min;
+					if(panel.getSeleccion().equals("Ruta mas corta en Km"))
+						cargarTablaRuta(imprimir,min[0]);
+					else if(panel.getSeleccion().equals("Ruta mas rapida en Hs"))
+						cargarTablaRuta(imprimir, min[1]);
 				}
+
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -314,30 +350,53 @@ public class BuscarOrdenPedidoController {
 	
 	private class ListenerSeleccionPlanta implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {	
-				Planta elegida = pt.get(panel.getIndexOrigen());
-
-	    		Integer index = -1,index2 = -1;
-	    		for(Vertice<Planta> r :grafo.getVertices()) {
-	    			if(elegida.getIdPlanta() == r.getValor().getIdPlanta()) {
-	    				index = grafo.getVertices().indexOf(r);
-	    				break;
-	    			}
-	    		}
-	    		for(Vertice<Planta> r :grafo.getVertices()) {
-	    			if(pedidos.get(seleccion).getDestino().getIdPlanta() == r.getValor().getIdPlanta()) {
-	    				index2 = grafo.getVertices().indexOf(r);
-	    				break;
-	    			}
-	    		}
+			try {
+				if(panel.getIndexOrigen() != -1) {
+					Planta elegida = pt.get(panel.getIndexOrigen());
+	
+		    		Integer index = -1,index2 = -1;
+		    		for(Vertice<Planta> r :grafo.getVertices()) {
+		    			if(elegida.getIdPlanta() == r.getValor().getIdPlanta()) {
+		    				index = grafo.getVertices().indexOf(r);
+		    				break;
+		    			}
+		    		}
+		    		for(Vertice<Planta> r :grafo.getVertices()) {
+		    			if(pedidos.get(seleccion).getDestino().getIdPlanta() == r.getValor().getIdPlanta()) {
+		    				index2 = grafo.getVertices().indexOf(r);
+		    				break;
+		    			}
+		    		}
+	   		
+		    		List<List<Vertice<Planta>>> p = grafo.caminos(grafo.getVertices().get(index), grafo.getVertices().get(index2));
+	
+		    		
+		    		for(List<Vertice<Planta>> lis : p) {
+		    			List<Ruta> una = new ArrayList<Ruta>();
+		    			for(int i = 0; i < lis.size()-1;i++) {
+			    			for(Arista<Planta> a: grafo.getAristas()) {
+			    				if(a.getInicio().getValor().getIdPlanta() == lis.get(i).getValor().getIdPlanta() && 
+			    						a.getFin().getValor().getIdPlanta() == lis.get(i+1).getValor().getIdPlanta()) {
+			    					Ruta r = new Ruta();
+			    					r.setOrigen(a.getInicio().getValor());
+			    					r.setDestino(a.getFin().getValor());
+			    					r.setDistanciaKM(a.getKm());
+			    					System.out.println(a.getKm());
+			    					System.out.println("Hola "+a.getHs());
+			    					r.setDuracionHs(a.getHs());
+			    					r.setPesoMaxKg(a.getMax());
+			    					una.add(r);
+			    					break;
+			    				}
+			    			}
+		    			}
+		    			ruts.add(una);
+		    		}
+		    		List<String> x = new ArrayList<String>();
+		    		panel.addCampos();
+		    		cargarTablaRuta(x, 0.0);
+				}
 	    		
-	    		
-	    		List<List<Vertice<Planta>>> p = grafo.caminos(grafo.getVertices().get(index), grafo.getVertices().get(index2));
-	    		System.out.println("hola");
-	    		for(List<Vertice<Planta>> lis : p) {
-	    			System.out.println(lis);
-	    		}			
-				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -345,8 +404,43 @@ public class BuscarOrdenPedidoController {
 	}
 	private class ListenerBtnGuardar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {	
-				System.out.println("guardar");
+			try {
+				pedido = pedidos.get(seleccion);
+				pedido.setEstado(EstadoPedido.PROCESADA);
+				pedido.setOrigen(ruts.get(cami).get(0).getOrigen());
+				List<Pedido> procesados = pedidoService.listarTodoPedidoProcesado(insumos);
+				PriorityQueue<Camion> auxilia =
+						ruts.get(cami).get(0).getOrigen().getCamionesDisponibles();
+				auxilia.addAll(camionService.busqueda(ruts.get(cami).get(0).getOrigen().getIdPlanta().toString()));
+			
+				Camion o = auxilia.poll();
+				for(Pedido ps :procesados) {
+					if(o.getId() == ps.getCamionAsignado().getId()) {
+						o = auxilia.poll();
+						break;
+					}
+				}
+				Integer km =o.getKmRecorridosA();
+				String csr = costos[0].toString();
+				Integer a = costos[0].intValue();
+				km += a;
+				o.setKmRecorridos(km.toString());
+				Double costo = 0.0;
+				pedido.setCamionAsignado(o);
+				if(panel.getSeleccion().equals("Ruta mas corta en Km")) {
+					costo+= o.getCostoKM()*costos[0];
+				}
+				else if(panel.getSeleccion().equals("Ruta mas rapida en Hs"))
+					costo+= o.getCostoHora()*costos[1];;
+				pedido.setCostoEnvio(costo);
+				pedidoService.crearPedido(pedido);
+				pedidos.remove(pedido);
+				insumosAgregados.removeAll(insumosAgregados);
+				ruts.removeAll(ruts);
+				List<String> pr = new ArrayList<String>();
+				cargarTablaRuta(pr, 0.0);
+				cargarTablaPedidos(pedidos);
+				cargarTablaInsumo(insumosAgregados);
 			}catch(Exception ex) {
 				JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

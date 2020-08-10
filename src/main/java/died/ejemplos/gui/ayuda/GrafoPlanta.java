@@ -19,19 +19,6 @@ public class GrafoPlanta extends Grafo<Planta>{
 	    	return camino(p1, p2);
 	   }
 	   
-	    public Boolean hayCamino(Planta v1,Planta v2) {
-	    	System.out.println(v2.getNombre());
-	    	List<Vertice<Planta>> adyacentes = this.getAdyacentes(new Vertice<Planta>(v1));
-	    	for(Vertice<Planta> vAdy : adyacentes) {
-	    		Vertice<Planta> other = new Vertice<Planta>(v2);
-	    		if(vAdy.getValor().getIdPlanta().equals(v2.getIdPlanta())) {
-	    			return true;
-	    		} else {
-	    			return hayCamino(vAdy.getValor(), v2);
-	    		}
-	    	}
-	    	return false;
-	    }
 	    
 	     public Boolean hayCamino(Vertice<Planta> v1,Vertice<Planta> v2) {
 	     	List<Vertice<Planta>> adyacentes = getAdyacentes(v1);
@@ -51,40 +38,46 @@ public class GrafoPlanta extends Grafo<Planta>{
 	     }
 	   
 	     public List<List<Vertice<Planta>>> caminos(Vertice<Planta> v1,Vertice<Planta> v2) {
-	        	List<Planta> nuevo = new LinkedList<Planta>();
-	     //   	nuevo.add(v1);
+	        	List<Vertice<Planta>> nuevo = new LinkedList<Vertice<Planta>>();
+	        	nuevo.add(v1);
 	        	return caminos(v1,v2,nuevo);
 	        }
 	        
-	     public List<List<Vertice<Planta>>> caminos(Vertice<Planta> v1,Vertice<Planta> v2, List<Planta> lista) {
+	     public List<List<Vertice<Planta>>> caminos(Vertice<Planta> v1,Vertice<Planta> v2, List<Vertice<Planta>> lista) {
 
 	       	List<List<Vertice<Planta>>> salida = new ArrayList<List<Vertice<Planta>>>();
 			
 			List<Vertice<Planta>> resultado = new ArrayList<Vertice<Planta>>();
-			//estructuras auxiliares
-			Queue<Vertice<Planta>> pendientes = new LinkedList<Vertice<Planta>>();
-		//	Queue<Planta> camino = new LinkedList<Planta>();
-		//	marcados.add(v1);
-			pendientes.add(v1);
-			
-			while(!pendientes.isEmpty()){
-				resultado.add(v1);
-				Vertice<Planta> actual = pendientes.poll();
-				List<Vertice<Planta>> adyacentes = this.getAdyacentes(actual);
+			if(!lista.isEmpty())
+				resultado.addAll(lista);
+			List<Vertice<Planta>> guardado = new ArrayList<Vertice<Planta>>();
+			for(Vertice<Planta> actual : this.getAdyacentes(v1)){
+				Boolean tiene = false;
 				if(actual.getValor().getIdPlanta().equals(v2.getValor().getIdPlanta())) {
 					resultado.add(actual);
-					salida.add(resultado);
+					if(!guardado.isEmpty()) guardado.removeAll(guardado);
+					guardado.addAll(resultado);
+					salida.add(guardado);
 					resultado.remove(actual);
-				//	resultado.remove(actual.getValor());
 				}
-				else if(adyacentes.size() != 0) {
-					for(Vertice<Planta> v : adyacentes){
-							pendientes.add(v);
+				else if(this.getAdyacentes(actual).size() != 0) {
+					resultado.add(actual);
+							List<List<Vertice<Planta>>> auxi = caminos(actual, v2, resultado);
+							if(auxi.isEmpty()) resultado.remove(actual);
+
+							else {
+								for(List<Vertice<Planta>> t : auxi) {
+
+									salida.add(t);
+								}
+								tiene = true;
 						}
+					if(!tiene) {
+						
 					}
-				else if(adyacentes.size() == 0 ) {
-					resultado.removeAll(resultado);
 				}
+				resultado.removeAll(resultado);
+				resultado.addAll(lista);
 	        }
 	       	return salida;
 	       }

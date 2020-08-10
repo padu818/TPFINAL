@@ -1,6 +1,7 @@
 package died.ejemplos.dominio;
 
 import java.util.List;
+import java.util.PriorityQueue;
 
 import died.ejemplos.gui.ayuda.Grafo;
 
@@ -9,16 +10,25 @@ public class Planta{//ver
 	private Integer idPlanta;
 	private String nombre;
 	private List<Insumo> productos;
-	private List<Camion> camionesDisponibles;
+	private PriorityQueue<Camion> camionesDisponibles = new PriorityQueue<Camion>((a,b) -> a.getKmRecorridosA() - b.getKmRecorridosA());
 	
 	
 	
 	
 	
 	
+	public PriorityQueue<Camion> getCamionesDisponibles() {
+		return camionesDisponibles;
+	}
+
+	public void setCamionesDisponibles(PriorityQueue<Camion> camionesDisponibles) {
+		this.camionesDisponibles = camionesDisponibles;
+	}
+
 	public Integer getIdPlanta() {
 		return idPlanta;
 	}
+
 	public void setIdPlanta(Integer idPlanta) {
 		this.idPlanta = idPlanta;
 	}
@@ -61,5 +71,6 @@ public class Planta{//ver
 		return true;
 	}
 	
+
 	
 }

@@ -46,7 +46,7 @@ public class ViewBuscarOrdenPedido extends JPanel {
 	
 	private JTable tablaRuta = new JTable();
 	private JScrollPane tablaRutaScroll = new JScrollPane(tablaRuta);
-	private Object[][] datosTablaRuta = {{""}};
+	private Object[][] datosTablaRuta = {{""},{""}};
 	
 	private JButton btnGuardar = new JButton("GUARDAR");
 	private JButton btnCancelar = new JButton("CANCELAR");
@@ -92,7 +92,7 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		tablaPedidosScroll.setVisible(true);
 		tablaInsumosScroll.setPreferredSize(new Dimension(400, 200));
 		tablaInsumosScroll.setVisible(true);
-		tablaRutaScroll.setPreferredSize(new Dimension(400, 200));
+		tablaRutaScroll.setPreferredSize(new Dimension(600, 200));
 		tablaRutaScroll.setVisible(true);
 	}
 	
@@ -166,7 +166,7 @@ public class ViewBuscarOrdenPedido extends JPanel {
 	}
 	
 	public void addListenerTablaRuta(MouseListener listener) {
-		tablaPedidos.addMouseListener(listener);
+		tablaRuta.addMouseListener(listener);
 	}
 	
 	public void addListenerTablaInsumos(MouseListener listener) {
@@ -256,10 +256,13 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		centrado.setHorizontalAlignment( JLabel.CENTER );
 		
 		tablaRuta.getColumnModel().getColumn(0).setCellRenderer(centrado);
+		tablaRuta.getColumnModel().getColumn(1).setCellRenderer(centrado);
 		
-		tablaRuta.getColumnModel().getColumn(0).setPreferredWidth(20);
+		tablaRuta.getColumnModel().getColumn(0).setPreferredWidth(30);
+		tablaRuta.getColumnModel().getColumn(1).setPreferredWidth(10);
 		
 		tablaRuta.getColumnModel().getColumn(0).setHeaderValue("Ruta");
+		tablaRuta.getColumnModel().getColumn(1).setHeaderValue("Distancia");
 		
 		
 		if(tamanioTablaActual > 0) {	
@@ -304,7 +307,7 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		
 		if(tamanioTablaActual > 0) {	
 //			tablaInsumos.setToolTipText("Doble click para seleccionar un insumo");
-			tablaInsumos.setEnabled(true);
+//			tablaInsumos.setEnabled(true);
 //			campoTotalFilas.setText(String.valueOf(tamanioTablaActual));
 		}
 		else {
@@ -321,8 +324,9 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		model.setValueAt(fechaEntrega, fila, 3);
 	}
 	
-	public void setValoresTablaRuta( Integer fila, String camino) {
+	public void setValoresTablaRuta( Integer fila, String camino, Double min) {
 		model.setValueAt(camino, fila, 0);
+		model.setValueAt(min, fila, 1);
 
 	}
 	
@@ -355,9 +359,10 @@ public class ViewBuscarOrdenPedido extends JPanel {
 	}
 	
 	public void addCampos() {
-		String[] a = new String[2];
-		a[0] = "Ruta mas corta en Km";
-		a[1] = "Ruta mas rapida en Hs";
+		String[] a = new String[3];
+		a[0] = "Seleccione preferencia de ruta";
+		a[1] = "Ruta mas corta en Km";
+		a[2] = "Ruta mas rapida en Hs";
 		SeleccionHsKm.setModel(new DefaultComboBoxModel<String>(a));
 	}
 
@@ -365,6 +370,7 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		plantaDisponible.setEnabled(b);
 		SeleccionHsKm.setEnabled(b);
 		tablaRuta.setEnabled(true);
+		btnGuardar.setEnabled(false);
 	}
 	public void habilitarGuardar(boolean b) {
 		btnGuardar.setEnabled(b);
@@ -381,4 +387,9 @@ public class ViewBuscarOrdenPedido extends JPanel {
 		else
 			return plantaDisponible.getSelectedIndex()-1;
 	}
+
+	public JTable getTablaRuta() {
+		return tablaRuta;
+	}
+	
 }

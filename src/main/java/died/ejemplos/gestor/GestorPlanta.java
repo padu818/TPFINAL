@@ -59,5 +59,61 @@ public class GestorPlanta {
 		planta.add(p);
 		return planta;
 	}
+
+	public List<List<Ruta>> rutaMasCortaHs(List<List<Ruta>> ruts) {
+		Double[] hora = new Double[ruts.size()];
+		for(Double s : hora) {
+			s = 0.0;
+		}
+		Double min =-1.0;
+		Integer con =0;
+		List<List<Ruta>> resultado = new ArrayList<List<Ruta>>();
+		for(List<Ruta> ruta :ruts) {
+			Double contador =0.0;
+			for(Ruta r:ruta) {
+				contador+=r.getDuracionHs();
+			}
+			if(min == -1.0)
+				min = contador;
+			if(min> contador)
+				min = contador;
+			hora[con] = contador;
+			con++;
+		}
+		for(int i = 0;i< hora.length;i++) {
+			if(hora[i] == min) {
+				resultado.add(ruts.get(i));
+			}
+		}
+		return resultado;
+	}
+
+	public List<List<Ruta>> rutaMasCortaKm(List<List<Ruta>> ruts) {
+		Double[] kmetros = new Double[ruts.size()];
+		for(Double s : kmetros) {
+			s = 0.0;
+		}
+		Double min =-1.0;
+		Integer con =0;
+		List<List<Ruta>> resultado = new ArrayList<List<Ruta>>();
+		for(List<Ruta> ruta :ruts) {
+			Double contador =0.0;
+			for(Ruta r:ruta) {
+				contador+=r.getDistanciaKM();
+			}
+			if(min == -1.0)
+				min = contador;
+			else if(min> contador)
+				min = contador;
+			kmetros[con] = contador;
+			con++;
+		}
+		for(int i = 0;i< kmetros.length;i++) {
+			if(kmetros[i] == min) {
+				resultado.add(ruts.get(i));
+			}
+		}
+		return resultado;
+	}
 	
 }

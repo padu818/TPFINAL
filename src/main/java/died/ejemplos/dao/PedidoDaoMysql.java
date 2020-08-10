@@ -22,7 +22,8 @@ public class PedidoDaoMysql implements PedidoDao {
 			"INSERT INTO PEDIDO (IDPLANTADESTINO,FECHA_SOLICITUD,FECHA_ENTREGA,ESTADO) VALUES (?,?,?,?)";
 	
 	private static final String UPDATE_PEDIDO =
-			" UPDATE PEDIDO SET IDPLANTADESTINO = ?, FECHA_SOLICITUD = ? ,FECHA_ENTREGA = ? , ESTADO = ?  WHERE IDPEDIDO = ?";
+			" UPDATE PEDIDO SET IDPLANTADESTINO = ?, FECHA_SOLICITUD = ? ,FECHA_ENTREGA = ? , ESTADO = ?, IDCAMIONASIGNADO = ?,"
+			+ "IDPLANTAORIGEN =? , COSTO =?  WHERE IDPEDIDO = ?";
 	
 	private static final String INSERT_DETALLEINSUMOSSOLICITADO =
 			"INSERT INTO DETALLEINSUMOSOLICITADO (IDINSUMO,IDPEDIDO,CANTIDAD,PRECIO) VALUES (?,?,?,?)";
@@ -52,8 +53,10 @@ public class PedidoDaoMysql implements PedidoDao {
 				pstmt.setDate(2,  java.sql.Date.valueOf(p.getFechaSolicitud().toString()));
 				pstmt.setDate(3,  java.sql.Date.valueOf(p.getFechaEntrega().toString()));
 				pstmt.setString(4, p.getEstado().toString());
-			//	System.out.println(p.getEstado());
-				pstmt.setInt(5, p.getIdPedido());
+				pstmt.setInt(5, p.getCamionAsignado().getId());
+				pstmt.setInt(6, p.getOrigen().getIdPlanta());
+				pstmt.setDouble(7, p.getCostoEnvio());
+				pstmt.setInt(8, p.getIdPedido());
 				pstmt.executeUpdate();
 			}else {
 

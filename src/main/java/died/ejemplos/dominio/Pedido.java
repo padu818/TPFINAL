@@ -42,10 +42,10 @@ public class Pedido {
 	}
 	
 	public Planta getOrigen() {
-		return destino;
+		return origen;
 	}
-	public void setOrigen(Planta destino) {
-		this.origen = destino;
+	public void setOrigen(Planta destin) {
+		this.origen = destin;
 	}
 	
 	public LocalDate getFechaSolicitud() {
