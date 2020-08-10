@@ -5,7 +5,7 @@
 -- Dumped from database version 11.5
 -- Dumped by pg_dump version 11.5
 
--- Started on 2020-08-09 15:27:32
+-- Started on 2020-08-09 22:15:15
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -34,7 +34,6 @@ CREATE TABLE public.pedido (
     idcamionasignado integer,
     fecha_solicitud date NOT NULL,
     fecha_entrega date NOT NULL,
-    idruta integer,
     estado character varying(45),
     costo numeric(12,2)
 );
@@ -58,23 +57,21 @@ ALTER TABLE public.pedido ALTER COLUMN idpedido ADD GENERATED ALWAYS AS IDENTITY
 
 
 --
--- TOC entry 2842 (class 0 OID 19986)
+-- TOC entry 2844 (class 0 OID 19986)
 -- Dependencies: 208
 -- Data for Name: pedido; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, idruta, estado, costo) FROM stdin;
-8	\N	3	\N	2020-08-07	2020-09-07	\N	CREADA	\N
-6	\N	4	\N	2020-08-07	2020-09-07	\N	CREADA	\N
-7	\N	5	\N	2020-08-07	2020-09-07	\N	CREADA	\N
-9	\N	2	\N	2020-08-08	2020-08-18	\N	CREADA	\N
-10	\N	6	\N	2020-08-08	2020-11-20	\N	CANCELADA	\N
-11	6	6	1	2020-08-09	2020-08-18	\N	PROCESADA	\N
-\.
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (7, NULL, 5, NULL, '2020-08-07', '2020-09-07', 'CREADA', NULL);
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (10, NULL, 6, NULL, '2020-08-08', '2020-11-20', 'CANCELADA', NULL);
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (8, 1, 3, 4, '2020-08-07', '2020-09-07', 'PROCESADA', 15600.00);
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (6, 1, 4, 4, '2020-08-07', '2020-09-07', 'PROCESADA', 36000.00);
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (9, 1, 2, 3, '2020-08-08', '2020-08-18', 'PROCESADA', 17500.00);
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (11, 6, 6, 1, '2020-08-09', '2020-08-18', 'ENTREGADA', 0.00);
 
 
 --
--- TOC entry 2848 (class 0 OID 0)
+-- TOC entry 2850 (class 0 OID 0)
 -- Dependencies: 207
 -- Name: pedido_idpedido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -83,7 +80,7 @@ SELECT pg_catalog.setval('public.pedido_idpedido_seq', 11, true);
 
 
 --
--- TOC entry 2715 (class 2606 OID 19990)
+-- TOC entry 2718 (class 2606 OID 19990)
 -- Name: pedido pedido_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -92,7 +89,7 @@ ALTER TABLE ONLY public.pedido
 
 
 --
--- TOC entry 2718 (class 2606 OID 20001)
+-- TOC entry 2721 (class 2606 OID 20001)
 -- Name: pedido pedido_idcamionasignado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -101,7 +98,7 @@ ALTER TABLE ONLY public.pedido
 
 
 --
--- TOC entry 2717 (class 2606 OID 19996)
+-- TOC entry 2720 (class 2606 OID 19996)
 -- Name: pedido pedido_idplantadestino_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -110,7 +107,7 @@ ALTER TABLE ONLY public.pedido
 
 
 --
--- TOC entry 2716 (class 2606 OID 19991)
+-- TOC entry 2719 (class 2606 OID 19991)
 -- Name: pedido pedido_idplantaorigen_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -118,16 +115,7 @@ ALTER TABLE ONLY public.pedido
     ADD CONSTRAINT pedido_idplantaorigen_fkey FOREIGN KEY (idplantaorigen) REFERENCES public.planta(idplanta) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
---
--- TOC entry 2719 (class 2606 OID 20006)
--- Name: pedido pedido_idruta_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.pedido
-    ADD CONSTRAINT pedido_idruta_fkey FOREIGN KEY (idruta) REFERENCES public.ruta(idruta);
-
-
--- Completed on 2020-08-09 15:27:33
+-- Completed on 2020-08-09 22:15:15
 
 --
 -- PostgreSQL database dump complete
