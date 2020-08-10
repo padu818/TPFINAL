@@ -21,6 +21,7 @@ import tpdied2020.view.ViewAltaOrdenPedido;
 import tpdied2020.view.ViewAltaPlanta;
 import tpdied2020.view.ViewAnalisisCaminoMin;
 import tpdied2020.view.ViewAnalisisFlujoMax;
+import tpdied2020.view.ViewAnalisisPageRank;
 import tpdied2020.view.ViewBuscarCamion;
 import tpdied2020.view.ViewBuscarOrdenPedido;
 import tpdied2020.view.ViewBuscarPuntoPedido;
@@ -38,6 +39,7 @@ public class App extends JFrame {
 	JMenu menuEntidades;
 	JMenu menuInfo;
 	JMenuItem menuItemInfo;
+	JMenuItem menuItemInfo2;
 	JMenu menuCamion;
 	JMenu menuPlanta;
 	JMenuItem menuItemBuscarCamion;
@@ -57,6 +59,7 @@ public class App extends JFrame {
 	JMenu menuAnalisis;
 	JMenuItem menuItemFlujoMaximo;
 	JMenuItem menuItemCaminoMin;
+	JMenuItem menuItemPageRank;
 	
 	private GrafoPlanta p;
 	private GestorPlanta gestor;
@@ -189,7 +192,13 @@ public class App extends JFrame {
 		});
 		this.menuAnalisis.add(menuItemFlujoMaximo);
 		this.menuAnalisis.add(menuItemCaminoMin);
-		
+		this.menuItemPageRank = new JMenuItem("PageRank");
+		this.menuItemPageRank.addActionListener( e -> {
+			this.setContentPane(new ViewAnalisisPageRank(this));
+			this.revalidate();
+			this.repaint();
+		});
+		this.menuAnalisis.add(menuItemPageRank);
 		
 		this.menuInfo = new JMenu("INFO");
 		this.menuItemInfo = new JMenuItem("Integrantes");
@@ -201,6 +210,16 @@ public class App extends JFrame {
 			this.repaint();
 		}); 
 		this.menuInfo.add(menuItemInfo);
+		
+		this.menuItemInfo2 = new JMenuItem("Ayuda para el TP");
+		this.menuItemInfo2.addActionListener( e -> {
+			ViewInfo panel = new ViewInfo();
+			panel.armarPanel2();
+			this.setContentPane(panel);	
+			this.revalidate();
+			this.repaint();
+		}); 
+		this.menuInfo.add(menuItemInfo2);
 		
 		menuBar.add(this.menuArchivo);
 		menuBar.add(this.menuEntidades );
