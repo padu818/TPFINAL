@@ -187,6 +187,8 @@ public class BuscarOrdenPedidoController {
 	private class ListenerTablaPedidos implements MouseListener{			
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if(!ruts.isEmpty())
+				ruts.removeAll(ruts);
 			List<String> n = new ArrayList<String>();
 	        JTable table = (JTable) e.getSource();
 	        Point point = e.getPoint();
