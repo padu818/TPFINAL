@@ -126,8 +126,8 @@ public class GestorPlanta {
 	
 	public Double pesoMaximo(List<List<Ruta>> ruts, List<Planta> auxiliar) {
 		Double[] hora = new Double[ruts.size()];
-		for(Double s : hora) {
-			s = 0.0;
+		for(int i =0; i < ruts.size();i++) {
+			hora[i] = 0.0;
 		}
 		Map<Integer, Double> caminos = new HashMap<Integer, Double>();
 		for(Planta p: auxiliar) {
@@ -140,19 +140,29 @@ public class GestorPlanta {
 			}
 		}
 		Double resultado =0.0;
+		Integer i = 0;
 		for(List<Ruta> r: ruts) {
+			resultado =0.0;
 			for(Ruta o:r) {
-				if(caminos.get(o.getOrigen().getIdPlanta()) <= resultado) {
+				if(caminos.get(o.getOrigen().getIdPlanta()) == 0.0) {
+					resultado =0.0;
+				}
+				else if(caminos.get(o.getOrigen().getIdPlanta()) < resultado && caminos.get(o.getOrigen().getIdPlanta()) != 0.0) {
 					resultado += caminos.get(o.getOrigen().getIdPlanta());
 					caminos.put(o.getOrigen().getIdPlanta(), 0.0);
 					break;
-				}
+				}	
 				if(o.getPesoMaxKg() > resultado)
 					caminos.put(o.getOrigen().getIdPlanta(), o.getPesoMaxKg()-resultado);
 				
+				
 			}
+			hora[i] = resultado;
+			i++;
 		}
-		
+		resultado =0.0;
+		for(int j = 0;j< ruts.size();j++)
+			resultado+= hora[j];
 		
 		return resultado;
 	}

@@ -5,7 +5,7 @@
 -- Dumped from database version 11.5
 -- Dumped by pg_dump version 11.5
 
--- Started on 2020-08-10 11:10:52
+-- Started on 2020-08-10 19:22:52
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -303,6 +303,8 @@ INSERT INTO public.detalleinsumosolicitado (idinsumo, idpedido, cantidad, precio
 INSERT INTO public.detalleinsumosolicitado (idinsumo, idpedido, cantidad, precio) VALUES (1, 18, 80, 1600);
 INSERT INTO public.detalleinsumosolicitado (idinsumo, idpedido, cantidad, precio) VALUES (1, 19, 80, 1600);
 INSERT INTO public.detalleinsumosolicitado (idinsumo, idpedido, cantidad, precio) VALUES (1, 20, 80, 1600);
+INSERT INTO public.detalleinsumosolicitado (idinsumo, idpedido, cantidad, precio) VALUES (2, 21, 50, 25000);
+INSERT INTO public.detalleinsumosolicitado (idinsumo, idpedido, cantidad, precio) VALUES (1, 22, 100, 2000);
 
 
 --
@@ -322,6 +324,8 @@ INSERT INTO public.insumo (idinsumo, nombre, descripcion, unidad_medida, costo, 
 -- Data for Name: pedido; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (21, NULL, 2, NULL, '2020-08-10', '2020-08-18', 'CREADA', NULL);
+INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (22, NULL, 5, NULL, '2020-08-10', '2020-08-18', 'CREADA', NULL);
 INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (7, NULL, 5, NULL, '2020-08-07', '2020-09-07', 'CREADA', NULL);
 INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (10, NULL, 6, NULL, '2020-08-08', '2020-11-20', 'CANCELADA', NULL);
 INSERT INTO public.pedido (idpedido, idplantaorigen, idplantadestino, idcamionasignado, fecha_solicitud, fecha_entrega, estado, costo) OVERRIDING SYSTEM VALUE VALUES (6, 1, 4, 4, '2020-08-07', '2020-09-07', 'PROCESADA', 36000.00);
@@ -361,14 +365,14 @@ INSERT INTO public.planta (idplanta, nombre) OVERRIDING SYSTEM VALUE VALUES (7, 
 --
 
 INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (1, 3.00, 300.00, 10000.00, 1, 2);
-INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (2, 2.00, 200.00, 5000.00, 1, 3);
 INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (3, 2.00, 200.00, 7000.00, 3, 4);
 INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (4, 6.00, 600.00, 8000.00, 3, 6);
-INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (5, 5.00, 500.00, 10000.00, 2, 5);
 INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (6, 4.00, 400.00, 2000.00, 5, 6);
 INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (7, 2.00, 200.00, 8000.00, 5, 7);
 INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (8, 2.00, 200.00, 8000.00, 6, 7);
 INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (14, 3.00, 300.00, 5000.00, 4, 5);
+INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (15, 6.00, 200.00, 5000.00, 1, 3);
+INSERT INTO public.ruta (idruta, duracionhs, duracionkm, cantmaxatransportar, idplantaorigen, idplantadestino) OVERRIDING SYSTEM VALUE VALUES (16, 6.00, 400.00, 5000.00, 2, 5);
 
 
 --
@@ -450,7 +454,7 @@ SELECT pg_catalog.setval('public.insumo_seq', 0, false);
 -- Name: pedido_idpedido_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.pedido_idpedido_seq', 20, true);
+SELECT pg_catalog.setval('public.pedido_idpedido_seq', 22, true);
 
 
 --
@@ -468,7 +472,7 @@ SELECT pg_catalog.setval('public.planta_idplanta_seq', 7, true);
 -- Name: ruta_idruta_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.ruta_idruta_seq', 14, true);
+SELECT pg_catalog.setval('public.ruta_idruta_seq', 16, true);
 
 
 --
@@ -651,7 +655,7 @@ ALTER TABLE ONLY public.stockinsumo
     ADD CONSTRAINT stockinsumo_idplanta_fkey FOREIGN KEY (idplanta) REFERENCES public.planta(idplanta) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2020-08-10 11:10:52
+-- Completed on 2020-08-10 19:22:52
 
 --
 -- PostgreSQL database dump complete
