@@ -9,7 +9,16 @@ import tpdied2020.dominio.Planta;
 
 public class GestorCamion {
 	
-	private GestorPlanta plantaService = new GestorPlanta();
+	private static GestorCamion instanciaGestor = null;
+	
+	public static  GestorCamion get() {
+        if (instanciaGestor == null){
+        	instanciaGestor = new GestorCamion();
+        }    
+        return instanciaGestor;
+    }
+	
+	private GestorPlanta plantaService = GestorPlanta.get();
 	private CamionDao camionDao = new CamionDaoMysql();
 
 	public Camion crearCamion(Camion c) {

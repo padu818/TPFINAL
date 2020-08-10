@@ -36,7 +36,7 @@ public class AnalisisController {
 	private List<Planta> auxi;
 	
 	public AnalisisController(ViewAnalisisFlujoMax p, GrafoPlanta p2) {
-		this.plantaService = new GestorPlanta();
+		this.plantaService = GestorPlanta.get();
 		this.panel = p;
 		origen =-1;
 		destino =-1;
@@ -137,7 +137,7 @@ public class AnalisisController {
 		if(this.verificarDatos()) {
 			origen = panel.getIndexOrigen();
 			destino = panel.getIndexDestino();
-			Planta or = auxi.get(origen);;
+			Planta or = auxi.get(origen);
 			Planta de= auxi.get(destino);
 			Integer index = -1,index2 = -1;
 			Boolean ay = false;

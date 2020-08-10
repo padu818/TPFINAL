@@ -29,7 +29,7 @@ public class AltaCamionController {
 	private List<Planta> plantasAsociadas;
 	
 	public AltaCamionController(ViewAltaCamion p) {
-		this.camionService = new GestorCamion();
+		this.camionService = GestorCamion.get();
 		this.panel = p;
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnGuardar(new ListenerBtnGuardar());

@@ -220,21 +220,6 @@ public class Grafo<T> {
     	return false;
     }
      
-     public Boolean hayCaminoMenor(Vertice<T> v1,Vertice<T> v2, Integer n) {
-    	List<Vertice<T>> adyacentes = getAdyacentes(v1);
-    	for(Vertice<T> vAdy : adyacentes) {
-    		Integer auxiliar = n;
-    		if(vAdy.equals(v2) && auxiliar > 1) {
-    				return true;
-    		} 
-    		else if(auxiliar > 1){
-    			auxiliar--;
-    			if(hayCaminoMenor(vAdy, v2,auxiliar))
-    				return true;
-    		}
-    	}
-    	return false;
-    }
      
      public List<Vertice<T>> camino(Vertice<T> v1,Vertice<T> v2) {
      	List<Vertice<T>> nuevo = new ArrayList<Vertice<T>>();

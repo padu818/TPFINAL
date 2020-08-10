@@ -33,7 +33,7 @@ public class AltaInsumoController {
 	private JPanel panelEditar;
 	
 	public AltaInsumoController(ViewAltaInsumo p, JFrame v) {
-		this.insumoService = new GestorInsumo();
+		this.insumoService = GestorInsumo.get();
 		this.ventana =v;
 		this.panel = p;
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());

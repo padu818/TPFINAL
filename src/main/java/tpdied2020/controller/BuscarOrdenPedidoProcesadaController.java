@@ -45,10 +45,10 @@ public BuscarOrdenPedidoProcesadaController(viewBuscarOrdenPedidoProcesada view,
 		
 		this.panel = view;
 		panel.setVisible(true);
-		this.plantaService = new GestorPlanta();
-		this.insumoService = new GestorInsumo();
-		this.pedidoService = new GestorPedido();
-		this.camionService = new GestorCamion();
+		this.plantaService =GestorPlanta.get();
+		this.insumoService = GestorInsumo.get();
+		this.pedidoService = GestorPedido.get();
+		this.camionService = GestorCamion.get();
 		this.insumos= new ArrayList<Insumo>();
 		this.pedidos= new ArrayList<Pedido>();
 		this.stocks = new ArrayList<StockInsumo>();

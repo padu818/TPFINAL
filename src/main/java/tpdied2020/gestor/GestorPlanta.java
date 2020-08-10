@@ -12,6 +12,14 @@ import tpdied2020.gui.auxiliar.GrafoPlanta;
 
 public class GestorPlanta {
 	
+	private static GestorPlanta instanciaGestor = null;
+	
+	public static  GestorPlanta get() {
+        if (instanciaGestor == null){
+        	instanciaGestor = new GestorPlanta();
+        }    
+        return instanciaGestor;
+    }
 	
 	private PlantaDao plantaDao = new PlantaDaoSql();
 	

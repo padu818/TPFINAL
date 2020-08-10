@@ -21,7 +21,7 @@ public class AltaPlantaController {
 	private AltaPlantaController instancia;
 	
 	public AltaPlantaController(ViewAltaPlanta p) {
-		this.plantaService = new GestorPlanta();
+		this.plantaService = GestorPlanta.get();
 		this.panel = p;
 		panel.addListenerBtnCancelar(new ListenerBtnCancelar());
 		panel.addListenerBtnGuardar(new ListenerBtnGuardar());

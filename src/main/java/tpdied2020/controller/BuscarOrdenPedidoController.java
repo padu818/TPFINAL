@@ -62,10 +62,10 @@ public class BuscarOrdenPedidoController {
 	public BuscarOrdenPedidoController(ViewBuscarOrdenPedido view, JFrame v, GrafoPlanta p2) {
 		
 		this.instancia = this;
-		this.plantaService = new GestorPlanta();
-		this.insumoService = new GestorInsumo();
-		this.pedidoService = new GestorPedido();
-		this.camionService = new GestorCamion();
+		this.plantaService = GestorPlanta.get();
+		this.insumoService = GestorInsumo.get();
+		this.pedidoService = GestorPedido.get();
+		this.camionService = GestorCamion.get();
 
 		this.plantas = new ArrayList<Planta>();
 		this.pt = new ArrayList<Planta>();

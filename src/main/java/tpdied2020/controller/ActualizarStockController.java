@@ -41,8 +41,8 @@ public class ActualizarStockController {
 	
 	public ActualizarStockController(ViewActualizarStock view, JFrame v){
 		this.instancia = this;
-		this.plantaService = new GestorPlanta();
-		this.insumoService = new GestorInsumo();
+		this.plantaService = GestorPlanta.get();
+		this.insumoService = GestorInsumo.get();
 		this.lista = new ArrayList<Planta>();
 		this.insumos= new ArrayList<Insumo>();
 		this.listaStock = new ArrayList<StockInsumo>();

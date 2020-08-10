@@ -12,9 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GestorInsumo {
-
+	
+private static GestorInsumo instanciaGestor = null;
+	
+	public static  GestorInsumo get() {
+        if (instanciaGestor == null){
+        	instanciaGestor = new GestorInsumo();
+        }    
+        return instanciaGestor;
+    }
+	
+	
 	private InsumoDao insumoDao = new InsumoDaosql();
-	private GestorPlanta plantaService = new GestorPlanta();
+	private GestorPlanta plantaService = GestorPlanta.get();
 	
 	public Insumo crearInsumo(Insumo i) {
 		return this.insumoDao.saveOrUpdate(i);

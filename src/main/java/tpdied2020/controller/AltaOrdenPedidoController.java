@@ -47,9 +47,9 @@ public class AltaOrdenPedidoController {
 	public AltaOrdenPedidoController(ViewAltaOrdenPedido view, JFrame v) {
 		
 		this.instancia = this;
-		this.plantaService = new GestorPlanta();
-		this.insumoService = new GestorInsumo();
-		this.pedidoService = new GestorPedido();
+		this.plantaService = GestorPlanta.get();
+		this.insumoService = GestorInsumo.get();
+		this.pedidoService = GestorPedido.get();
 		this.plantas = new ArrayList<Planta>();
 		this.insumos= new ArrayList<Insumo>();
 		pedido = new Pedido();

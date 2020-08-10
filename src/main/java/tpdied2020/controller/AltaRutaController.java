@@ -36,7 +36,7 @@ public class AltaRutaController {
 	private GrafoPlanta plantas;
 	
 	public AltaRutaController(ViewAgregarRuta p, GrafoPlanta p2) {
-		this.plantaService = new GestorPlanta();
+		this.plantaService = GestorPlanta.get();
 		this.panel = p;
 		
 		origen =-1;

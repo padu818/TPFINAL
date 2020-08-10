@@ -10,6 +10,16 @@ import tpdied2020.dominio.Pedido;
 
 public class GestorPedido {
 	
+private static GestorPedido instanciaGestor = null;
+	
+	public static  GestorPedido get() {
+        if (instanciaGestor == null){
+        	instanciaGestor = new GestorPedido();
+        }    
+        return instanciaGestor;
+    }
+	
+	
 	private PedidoDao pedidoDao = new PedidoDaoMysql();
 
 	public Pedido crearPedido(Pedido c) {

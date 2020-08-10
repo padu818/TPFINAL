@@ -36,7 +36,7 @@ public class BuscarCamionController{
 	
 	public BuscarCamionController(ViewBuscarCamion viewBuscarCamion, JFrame v){
 		this.instancia = this;
-		this.camionService = new GestorCamion();
+		this.camionService = GestorCamion.get();
 		this.lista = new ArrayList<Camion>();
 		this.ventana =v;
 		this.panel = viewBuscarCamion;

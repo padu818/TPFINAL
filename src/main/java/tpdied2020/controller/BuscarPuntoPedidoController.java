@@ -29,8 +29,8 @@ public class BuscarPuntoPedidoController {
 	
 	public BuscarPuntoPedidoController(ViewBuscarPuntoPedido viewBuscarPuntoPedido){
 		this.instancia = this;
-		this.plantaService = new GestorPlanta();
-		this.insumoService = new GestorInsumo();
+		this.plantaService = GestorPlanta.get();
+		this.insumoService = GestorInsumo.get();
 		this.plantas = new ArrayList<Planta>();
 		this.insumos= new ArrayList<Insumo>();
 		this.stocks = new ArrayList<StockInsumo>();

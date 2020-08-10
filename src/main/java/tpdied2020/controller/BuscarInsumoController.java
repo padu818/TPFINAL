@@ -33,7 +33,7 @@ private static final long serialVersionUID = 1L;
 	
 	public BuscarInsumoController(ViewVisualizarInsumo viewBuscarInsumo, JFrame v){
 		this.instancia = this;
-		this.insumoService = new GestorInsumo();
+		this.insumoService = GestorInsumo.get();
 		this.lista = new ArrayList<Insumo>();
 		this.ventana =v;
 		this.panel = viewBuscarInsumo;

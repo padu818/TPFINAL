@@ -38,7 +38,7 @@ public class BuscarCamionController2{
 	private List<Planta> plantasAsociada;
 		
 	public BuscarCamionController2(ViewCamion v , Camion c, JFrame k) {
-		this.camionService = new GestorCamion();
+		this.camionService = GestorCamion.get();
 		this.camion = c;
 		this.panel = v;
 		this.panelEditar = v;
