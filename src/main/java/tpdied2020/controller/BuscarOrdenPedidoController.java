@@ -368,6 +368,27 @@ public class BuscarOrdenPedidoController {
 		    			}
 		    			ruts.add(una);
 		    		}
+					 for(int i = 0;i<ruts.size();i++) {
+						 if(ruts.get(i).get(ruts.get(i).size()-1).getDestino().getIdPlanta() != pedidos.get(seleccion).getDestino().getIdPlanta() || 
+								 ruts.get(i).get(0).getOrigen().getIdPlanta() != elegida.getIdPlanta() ) {
+							 ruts.remove(i);
+						 }
+					 }
+					 
+					 List<List<Ruta>> auxiliar = new ArrayList<List<Ruta>>();
+					 auxiliar.addAll(ruts);
+					 
+
+					 for(List<Ruta> s: ruts) {
+						 if(s.get(s.size()-1).getDestino().getIdPlanta() != pedidos.get(seleccion).getDestino().getIdPlanta())
+							 auxiliar.remove(s);
+						 if(s.get(0).getOrigen().getIdPlanta() != elegida.getIdPlanta())
+							 	auxiliar.remove(s);
+					 }
+
+					 ruts.removeAll(ruts);
+					 ruts.addAll(auxiliar);
+
 		    		List<String> x = new ArrayList<String>();
 		    		panel.addCampos();
 		    		cargarTablaRuta(x, 0.0);

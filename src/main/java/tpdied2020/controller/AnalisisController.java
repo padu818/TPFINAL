@@ -68,6 +68,8 @@ public class AnalisisController {
 		for(Vertice<Planta> pl :grafo.getVertices()) {
 			auxi.add(pl.getValor());
 		}
+//		auxi = plantaService.buscarTodos();
+		caminoPanel.addPlantas(auxi);
 	}
 	
 	public Boolean verificarDatos() {
@@ -114,7 +116,7 @@ public class AnalisisController {
 
 		Integer errorNumero = 1;
 
-		if (caminoPanel.getTipo().equals("Seleccionar tipo")) {
+		if (caminoPanel.getTipo().equals("-")) {
 			errorEnSeleccion = true;
 			textoErrorSeleccion = errorNumero+") No se ha seleccionado un valor en el campo tipo de camino.\n";
 			errorNumero++;
@@ -186,40 +188,50 @@ public class AnalisisController {
 	
 	public Boolean buscar() throws DatosObligatoriosException, FormatoNumeroException, ControllerException {
 		if(this.verificarDatosCamino()) {
-			
 			Integer opcion = caminoPanel.getIndexOfTipo();
-	
-			Boolean ay = false;
-			Boolean b = false;
+			caminoPanel.addtablaCamino(auxi.size());
+
 			Double[] resultado = new Double[auxi.size()];
+			for(int i = 0; i< resultado.length;i++) {
+				resultado[i] =0.0;
+			}
+			List<Planta> ai = auxi;
 			Integer contador1 = 0;
 			Integer contador2 = 0;
 			for(Planta plan :auxi) {
-				Integer index = -1,index2 = -1;
+				Integer index = -1;
+				Integer index2 = -1;
 				contador2 =0;
-				for(Planta t :auxi) {
-					Planta or = plan;
-					Planta de= t;
-					
+				Boolean ay = false;
+				for(Planta t :ai) {
+					index2 = -1;
+					Boolean b = false;
 					 for(Vertice<Planta> r :grafo.getVertices()) {
-						    if(or.getIdPlanta() == r.getValor().getIdPlanta()) {
+
+						    if(plan.getIdPlanta() == r.getValor().getIdPlanta() && ay == false) {
 						    	index = grafo.getVertices().indexOf(r);
 						    	ay = true;
 						    }
-						    if(de.getIdPlanta() == r.getValor().getIdPlanta()) {
+						    if(t.getIdPlanta() == r.getValor().getIdPlanta()) {
 					    		index2 = grafo.getVertices().indexOf(r);
 					    		b = true;
 						    }
-						    if(ay && b)
+						    if(ay == true && b == true)
 						    	break;
 					 }
 					 List<List<Vertice<Planta>>> p = grafo.caminos(grafo.getVertices().get(index), grafo.getVertices().get(index2));
-				   		
+					 if(contador1 == 1 && contador2 == 5) {
+						for(List<Vertice<Planta>> r:p) {
+							System.out.println("Camino");
+							for(Vertice<Planta> z : r)
+								System.out.println(z.getValor().getNombre());
+						}
+					 }
 					 for(List<Vertice<Planta>> lis : p) {
 						 List<Ruta> una = new ArrayList<Ruta>();
 					   		for(int i = 0; i < lis.size()-1;i++) {
 							    for(Arista<Planta> a: grafo.getAristas()) {
-							    	if(a.getInicio().getValor().getIdPlanta() == lis.get(i).getValor().getIdPlanta() && 
+							    		if(a.getInicio().getValor().getIdPlanta() == lis.get(i).getValor().getIdPlanta() && 
 							    			a.getFin().getValor().getIdPlanta() == lis.get(i+1).getValor().getIdPlanta()) {
 							    			Ruta r = new Ruta();
 							    			r.setOrigen(a.getInicio().getValor());
@@ -229,20 +241,42 @@ public class AnalisisController {
 							    			r.setPesoMaxKg(a.getMax());
 							    			una.add(r);
 							    			break;
+							    		}
 							    	}
-							    }
 					   		}
 					   		ruta.add(una); 
 					}
+					 for(int i = 0;i<ruta.size();i++) {
+						 if(ruta.get(i).get(ruta.get(i).size()-1).getDestino().getIdPlanta() != t.getIdPlanta() || 
+								 ruta.get(i).get(0).getOrigen().getIdPlanta() != plan.getIdPlanta() ) {
+							 ruta.remove(i);
+						 }
+					 }
+					 
+					 List<List<Ruta>> auxiliar = new ArrayList<List<Ruta>>();
+					 auxiliar.addAll(ruta);
+					 
+
+					 for(List<Ruta> s: ruta) {
+						 if(s.get(s.size()-1).getDestino().getIdPlanta() != t.getIdPlanta())
+							 auxiliar.remove(s);
+						 if(s.get(0).getOrigen().getIdPlanta() != plan.getIdPlanta())
+							 	auxiliar.remove(s);
+					 }
+	
+					 ruta.removeAll(ruta);
+					 ruta.addAll(auxiliar);
+
+					 
 					 List<List<Ruta>> elegido = new ArrayList<List<Ruta>>();
-				   	if(opcion == 0) {
+				   	if(opcion == 0 && ruta.size() > 0) {
 						elegido.addAll(plantaService.rutaMasCortaKm(ruta));
 					}
-					else if(opcion == 1) {
+					else if(opcion == 1 && ruta.size() > 0) {
 						elegido.addAll(plantaService.rutaMasCortaHs(ruta));
-					}
-					
+					}			 
 					Double[] min = {0.0,0.0};
+	
 					for(List<Ruta> l : elegido) {
 						for(int i = 0;i < l.size();i++) {
 							if(opcion == 0)
@@ -255,8 +289,10 @@ public class AnalisisController {
 						resultado[contador2] = min[0];
 					else if(opcion == 1)
 						resultado[contador2] = min[1];
+					contador2++;
 				}
 				caminoPanel.setValoresTablaCamino(contador1,resultado);
+				ruta.removeAll(ruta);
 				contador1++;
 				}
 			return true;
@@ -268,9 +304,9 @@ public class AnalisisController {
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
-				panel.setVisible(false);
+				caminoPanel.setVisible(false);
 			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(panel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			    JOptionPane.showMessageDialog(caminoPanel, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -284,7 +320,7 @@ public class AnalisisController {
 //					panel.addDestino(auxi);
 				}
 			} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
-				panel.mostrarError("Error al guardar", e1.getMessage());
+				panel.mostrarError("Error al aceptar", e1.getMessage());
 			}
 			
 		}
@@ -299,7 +335,7 @@ public class AnalisisController {
 //					panel.addDestino(auxi);
 				}
 			} catch (DatosObligatoriosException | FormatoNumeroException | ControllerException e1) {
-				panel.mostrarError("Error al guardar", e1.getMessage());
+				panel.mostrarError("Error al buscar", e1.getMessage());
 			}
 			
 		}

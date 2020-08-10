@@ -19,12 +19,16 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import tpdied2020.controller.AnalisisController;
-import tpdied2020.controller.BuscarCamionController;
+
 import tpdied2020.dominio.Planta;
 import tpdied2020.gui.auxiliar.GrafoPlanta;
 
 public class ViewAnalisisCaminoMin extends JPanel {
 		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JLabel ltipo= new JLabel("Tipo:");
 	private JComboBox<String> seleccionTipo = new JComboBox<String>();
 	
@@ -33,7 +37,7 @@ public class ViewAnalisisCaminoMin extends JPanel {
 	
 	private JTable tablaCamino = new JTable();
 	private JScrollPane tablaCaminoScroll = new JScrollPane(tablaCamino);
-	private Object[][] datosTabla;
+	private Object[] datosTabla;
 	private DefaultTableModel model;
 	private AnalisisController controller;
 	
@@ -55,7 +59,8 @@ public class ViewAnalisisCaminoMin extends JPanel {
 		btnBuscar.setEnabled(true);
 		btnCancelar.setEnabled(true);
 		tablaCaminoScroll.setPreferredSize(new Dimension(680, 500));	
-
+		
+		
 	}
 	
 	private void ubicarComponentes() {
@@ -131,7 +136,8 @@ public class ViewAnalisisCaminoMin extends JPanel {
 		for(int i = 0; i< tamanioActual;i++) {
 			tablaCamino.getColumnModel().getColumn(i).setCellRenderer(centrado);
 			tablaCamino.getColumnModel().getColumn(i).setPreferredWidth(120);
-			tablaCamino.getColumnModel().getColumn(i).setHeaderValue(datosTabla[i][0]);
+			tablaCamino.getColumnModel().getColumn(i).setHeaderValue(datosTabla[i]);
+
 		}
 		
 		
@@ -154,15 +160,16 @@ public class ViewAnalisisCaminoMin extends JPanel {
 	
 	public void addTipo() {
 		seleccionTipo.setModel(new DefaultComboBoxModel<String>(new String[] {"Seleccionar tipo",
-				"duracion", "distancia"
+				"Distancia", "Duracion"
 		}));
 	}
 	
 	public void addPlantas(List<Planta> plant) {
-		datosTabla = new Object[plant.size()][];
+		datosTabla = new Object[plant.size()];
 		Integer i = 0;
 		for(Planta p: plant) {
-			datosTabla[i][0] = p.getNombre();
+			datosTabla[i] = p.getNombre();
+			i++;
 		}
 	}
 }
