@@ -66,8 +66,25 @@ public class Liquido extends Insumo {
 
 	@Override
 	public Double pesoPorUnidad() {
-		// TODO Auto-generated method stub
-		return null;
+		//KILO, PIEZA, GRAMO, METRO, LITRO, M3, M2;
+		switch (this.getUnidadMedida()) {
+		case "KILO":
+			return this.getDensidad();
+		case "PIEZA":
+			return this.getDensidad();
+		case "GRAMO":
+			return this.getDensidad();
+		case "METRO":
+			return this.getDensidad();
+		case "LITRO":
+			return 1000*this.getDensidad();
+		case "M3":
+			return 1*this.getDensidad();
+		case "M2":
+			return this.getDensidad();
+		default:
+			return this.getDensidad();
+		}
 	}
 
 	@Override

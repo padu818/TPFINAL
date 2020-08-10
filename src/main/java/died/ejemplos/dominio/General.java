@@ -68,8 +68,25 @@ public class General extends Insumo {
 
 	@Override
 	public Double pesoPorUnidad() {
-		// TODO Auto-generated method stub
-		return null;
+		//KILO, PIEZA, GRAMO, METRO, LITRO, M3, M2;
+				switch (this.getUnidadMedida()) {
+				case "KILO":
+					return this.getPeso();
+				case "PIEZA":
+					return this.getPeso();
+				case "GRAMO":
+					return 1000*this.getPeso();
+				case "METRO":
+					return this.getPeso();
+				case "LITRO":
+					return this.getPeso();
+				case "M3":
+					return this.getPeso();
+				case "M2":
+					return this.getPeso();
+				default:
+					return this.getPeso();
+				}
 	}
 	
 	
