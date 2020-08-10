@@ -136,7 +136,7 @@ private BuscarOrdenPedidoProcesadaController controller;
 		tablaPedidos.getColumnModel().getColumn(2).setHeaderValue("Nombre planta destino");
 		tablaPedidos.getColumnModel().getColumn(3).setHeaderValue("Fecha solicitud");
 		tablaPedidos.getColumnModel().getColumn(4).setHeaderValue("Fecha entrega");
-		tablaPedidos.getColumnModel().getColumn(5).setHeaderValue("Id camion");
+		tablaPedidos.getColumnModel().getColumn(5).setHeaderValue("Patente");
 		tablaPedidos.getColumnModel().getColumn(6).setHeaderValue("Costo envio");
 		
 		

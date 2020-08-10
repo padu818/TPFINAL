@@ -38,6 +38,9 @@ public class InsumoDaosql implements InsumoDao {
 			+ " WHERE IDINSUMO = ?";
 	private static final String DELETE_INSUMO = "DELETE FROM INSUMO WHERE NOMBRE = ?";
 	
+	private static final String UPDATE_STOCKINSUMO=
+			" UPDATE STOCKINSUMO SET STOCK = ? WHERE IDINSUMO = ? AND IDPLANTA = ?";
+	
 	private static final String INSERT_STOCKINSUMO=
 			"INSERT INTO STOCKINSUMO (IDPLANTA,IDINSUMO,STOCK,PUNTOREPOSICION) VALUES (?,?,?,?)";
 	
@@ -315,12 +318,13 @@ public class InsumoDaosql implements InsumoDao {
 		Connection conn = DB.getConexion();
 		PreparedStatement pstmt = null;
 		try {
-//			if(c.getId()!=null && c.getId()>0) {
-//				System.out.println("EJECUTA UPDATE");
-//				pstmt= conn.prepareStatement(UPDATE_);
-//				pstmt.setString(1, i.getNombre());
-//
-//			}else {
+			if(s.getIDRegistro()!=null) {
+				pstmt= conn.prepareStatement(UPDATE_STOCKINSUMO);
+				pstmt.setInt(1, s.getStock());
+				pstmt.setInt(2, s.getInsumo().getIdProduto());
+				pstmt.setInt(3, s.getPlanta().getIdPlanta());
+
+			}else {
 //				System.out.println("EJECUTA INSERT");
 				pstmt= conn.prepareStatement(INSERT_STOCKINSUMO);
 				pstmt.setInt(1, s.getPlanta().getIdPlanta());
@@ -328,7 +332,7 @@ public class InsumoDaosql implements InsumoDao {
 				pstmt.setDouble(3, s.getStock());
 				pstmt.setDouble(4, s.getPuntoReposicion());
 				
-//			}
+			}
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

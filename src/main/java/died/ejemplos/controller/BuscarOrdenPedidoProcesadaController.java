@@ -18,6 +18,7 @@ import died.ejemplos.dominio.EstadoPedido;
 import died.ejemplos.dominio.Insumo;
 import died.ejemplos.dominio.Pedido;
 import died.ejemplos.dominio.Planta;
+import died.ejemplos.dominio.StockInsumo;
 import died.ejemplos.gestor.GestorCamion;
 import died.ejemplos.gestor.GestorInsumo;
 import died.ejemplos.gestor.GestorPedido;
@@ -34,6 +35,7 @@ public class BuscarOrdenPedidoProcesadaController {
 	private GestorPedido pedidoService;
 	private List<Pedido> pedidos;
 	private List<Insumo> insumos;
+	private List<StockInsumo> stocks;
 	private List<Planta> plantas;
 	private GrafoPlanta grafo;
 	private Pedido pedido;
@@ -51,6 +53,7 @@ public BuscarOrdenPedidoProcesadaController(viewBuscarOrdenPedidoProcesada view,
 		this.camionService = new GestorCamion();
 		this.insumos= new ArrayList<Insumo>();
 		this.pedidos= new ArrayList<Pedido>();
+		this.stocks = new ArrayList<StockInsumo>();
 		List<Camion> camiones=  new ArrayList<Camion>();
 		pedido = new Pedido();
 		this.insumosAgregados = new ArrayList<DetallesInsumoSolicitado>();
@@ -66,18 +69,19 @@ public BuscarOrdenPedidoProcesadaController(viewBuscarOrdenPedidoProcesada view,
 		camiones.addAll(camionService.buscarTodos(plantas));
 		insumos = listarTodoInsumo();
 		pedidos = pedidoService.listarTodoPedidoProcesado(insumos);
-		Boolean bandera1 = false;
-		Boolean bandera2 = false;
+		stocks = insumoService.buscarTodoStock(insumos, plantas);
 		for(Pedido s:pedidos) {
+			Boolean bandera1 = false;
+			Boolean bandera2 = false;
 			
 			for(Planta r:plantas) {
-				if(s.getDestino().getIdPlanta() == r.getIdPlanta()) {
-					s.setDestino(r);
-					bandera1 = true;
-				}
 				if(s.getOrigen().getIdPlanta() == r.getIdPlanta()) {
 					s.setOrigen(r);
 					bandera2 = true;
+				}
+				else if(s.getDestino().getIdPlanta() == r.getIdPlanta()) {
+					s.setDestino(r);
+					bandera1 = true;
 				}
 				if(bandera1 && bandera2)
 					break;
@@ -194,7 +198,20 @@ public BuscarOrdenPedidoProcesadaController(viewBuscarOrdenPedidoProcesada view,
 	
 	private class ListenerBtnGuardar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {	
+			try {
+				StockInsumo guardado;
+				for(DetallesInsumoSolicitado q:insumosAgregados) {
+					for(StockInsumo r:stocks) {
+						if(q.getInsumo().getIdProduto() == r.getInsumo().getIdProduto() && q.getPedido().getDestino().getIdPlanta() == r.getPlanta().getIdPlanta()) {
+							r.setStock(r.getStock()+ q.getCantidad());
+							System.out.println(r.getStock()+ q.getCantidad());
+							r.setIDRegistro(1);
+							guardado = r;
+							insumoService.crearSockInsumo(guardado);
+							break;
+						}
+					}
+				}
 				pedido.setEstado(EstadoPedido.ENTREGADA);
 				pedidoService.crearPedido(pedido);
 				pedidos.remove(pedido);

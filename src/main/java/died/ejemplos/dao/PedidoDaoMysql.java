@@ -189,12 +189,13 @@ public class PedidoDaoMysql implements PedidoDao {
 			while(rs.next()) {
 				Pedido pedido = new Pedido();
 				Planta planta = new Planta();
+				Planta p2 = new Planta();
 				Camion c = new Camion();
 				pedido.setIdPedido(rs.getInt("IDPEDIDO"));
-				planta.setIdPlanta(rs.getInt("IDPLANTADESTINO"));
-				pedido.setDestino(planta);
 				planta.setIdPlanta(rs.getInt("IDPLANTAORIGEN"));
 				pedido.setOrigen(planta);
+				p2.setIdPlanta(rs.getInt("IDPLANTADESTINO"));
+				pedido.setDestino(p2);
 				pedido.setEstado(EstadoPedido.PROCESADA);
 				pedido.setFechaEntrega(rs.getDate("FECHA_ENTREGA").toLocalDate());
 				pedido.setFechaSolicitud(rs.getDate("FECHA_SOLICITUD").toLocalDate());

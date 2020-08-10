@@ -381,8 +381,6 @@ public class BuscarOrdenPedidoController {
 			    					r.setOrigen(a.getInicio().getValor());
 			    					r.setDestino(a.getFin().getValor());
 			    					r.setDistanciaKM(a.getKm());
-			    					System.out.println(a.getKm());
-			    					System.out.println("Hola "+a.getHs());
 			    					r.setDuracionHs(a.getHs());
 			    					r.setPesoMaxKg(a.getMax());
 			    					una.add(r);
@@ -421,7 +419,6 @@ public class BuscarOrdenPedidoController {
 					}
 				}
 				Integer km =o.getKmRecorridosA();
-				String csr = costos[0].toString();
 				Integer a = costos[0].intValue();
 				km += a;
 				o.setKmRecorridos(km.toString());
