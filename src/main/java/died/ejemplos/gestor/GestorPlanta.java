@@ -116,4 +116,32 @@ public class GestorPlanta {
 		return resultado;
 	}
 	
+	public Double pesoMaximo(List<List<Ruta>> ruts) {
+		Double[] hora = new Double[ruts.size()];
+		for(Double s : hora) {
+			s = 0.0;
+		}
+		Double min =-1.0;
+		Integer con =0;
+		List<List<Ruta>> resultado = new ArrayList<List<Ruta>>();
+		for(List<Ruta> ruta :ruts) {
+			Double contador =0.0;
+			for(Ruta r:ruta) {
+				contador+=r.getDuracionHs();
+			}
+			if(min == -1.0)
+				min = contador;
+			if(min> contador)
+				min = contador;
+			hora[con] = contador;
+			con++;
+		}
+		for(int i = 0;i< hora.length;i++) {
+			if(hora[i] == min) {
+				resultado.add(ruts.get(i));
+			}
+		}
+		return 0.0;
+	}
+	
 }

@@ -31,6 +31,7 @@ import died.ejemplos.view.ViewAltaCamion;
 import died.ejemplos.view.ViewAltaInsumo;
 import died.ejemplos.view.ViewAltaOrdenPedido;
 import died.ejemplos.view.ViewAltaPlanta;
+import died.ejemplos.view.ViewAnalisisFlujoMax;
 import died.ejemplos.view.ViewBuscarCamion;
 import died.ejemplos.view.ViewBuscarOrdenPedido;
 import died.ejemplos.view.ViewBuscarPuntoPedido;
@@ -63,6 +64,8 @@ public class App extends JFrame {
 	JMenuItem menuItemAltaOrdenPedido;
 	JMenuItem menuItemBuscarOrdenPedido;
 	JMenuItem menuItemBuscarOrdenPedidoProcesada;
+	JMenu menuAnalisis;
+	JMenuItem menuItemFlujoMaximo;
 	
 	private GrafoPlanta p;
 	private GestorPlanta gestor;
@@ -189,7 +192,17 @@ public class App extends JFrame {
 			this.repaint();
 		});
 		this.menuOrdenPedio.add(menuItemBuscarOrdenPedidoProcesada);
-
+		
+		this.menuAnalisis = new JMenu("Analisis");
+		this.menuItemFlujoMaximo = new JMenuItem("Flujo maximo");
+		this.menuItemFlujoMaximo.addActionListener( e -> {
+			this.setContentPane(new ViewAnalisisFlujoMax(p));
+			this.revalidate();
+			this.repaint();
+		});
+		
+		this.menuAnalisis.add(menuItemFlujoMaximo);
+		
 		this.menuInfo = new JMenu("INFO");
 		this.menuItemInfo = new JMenuItem("Integrantes");
 		this.menuItemInfo.addActionListener( e -> {
@@ -199,10 +212,10 @@ public class App extends JFrame {
 			this.revalidate();
 			this.repaint();
 		}); 
-		this.menuInfo.add(menuItemInfo);
-
+		
 		menuBar.add(this.menuArchivo);
 		menuBar.add(this.menuEntidades );
+		menuBar.add(menuAnalisis);
 		menuBar.add(this.menuInfo);
 		this.setJMenuBar(menuBar);
 		this.addWindowListener( new WindowAdapter() {
@@ -210,59 +223,7 @@ public class App extends JFrame {
 				//System.out.println("AHORA SI");
 			};
 		});
-		this.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				//System.out.println("mouseReleased en "+e.getPoint());
 
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				//System.out.println("mousePressed en "+e.getPoint());
-
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent en) {
-				//
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-//				System.out.println("Click en "+e.getPoint());
-			}
-		});
-//		JLabel etiquetaBievneido = new JLabel(" EJEMPLO DIED");
-//		etiquetaBievneido.setSize(200, 100);
-//		this.add(etiquetaBievneido);
-//		JTextField texto = new JTextField(500);
-//		texto.addFocusListener(new FocusListener() {
-//			
-//			@Override
-//			public void focusLost(FocusEvent e) {
-//				// TODO Auto-generated method stub
-//				System.out.println("estoy perdiendo el foco");
-//			}
-//			
-//			@Override
-//			public void focusGained(FocusEvent e) {
-//				// TODO Auto-generated method stub
-//				System.out.println("estoy ganando el foco");
-				
-//			}
-//		});
-//		this.add(texto);
 	}
 
 	public static void main(String[] args) {
