@@ -130,37 +130,69 @@ public class GestorPlanta {
 			hora[i] = 0.0;
 		}
 		Map<Integer, Double> caminos = new HashMap<Integer, Double>();
+		Map<Integer, Double> plant = new HashMap<Integer, Double>();
 		for(Planta p: auxiliar) {
-			caminos.put(p.getIdPlanta(), 0.0);
+			plant.put(p.getIdPlanta(), 0.0);
 		}
-
 		for(List<Ruta> r: ruts) {
 			for(Ruta o:r) {
-				caminos.put(o.getOrigen().getIdPlanta(), o.getPesoMaxKg());
+				caminos.put(o.getId(), o.getPesoMaxKg());
+				System.out.println("Ruta"+o.getOrigen().getNombre()+"    "+o.getDestino().getNombre()+ "   "+o.getPesoMaxKg());
 			}
 		}
-		Double resultado =0.0;
+		for(List<Ruta> r: ruts) {
+			for(Ruta o:r) {
+				plant.put(o.getDestino().getIdPlanta(),plant.get(o.getDestino().getIdPlanta())+ o.getPesoMaxKg());
+	
+			}
+		}
+
+		Double resultado =-1.0;
 		Integer i = 0;
 		for(List<Ruta> r: ruts) {
-			resultado =0.0;
+			Ruta destino = r.get(r.size()-1);
 			for(Ruta o:r) {
-				if(caminos.get(o.getOrigen().getIdPlanta()) == 0.0) {
-					resultado =0.0;
-				}
-				else if(caminos.get(o.getOrigen().getIdPlanta()) < resultado && caminos.get(o.getOrigen().getIdPlanta()) != 0.0) {
-					resultado += caminos.get(o.getOrigen().getIdPlanta());
-					caminos.put(o.getOrigen().getIdPlanta(), 0.0);
+				if(resultado == -1.0 && caminos.get(o.getId()) > 0.0)
+					resultado = o.getPesoMaxKg();
+				System.out.println(o.getPesoMaxKg());
+				System.out.println(o.getOrigen().getNombre()+" "+caminos.get(o.getId())+"  "+o.getDestino().getNombre());
+				if(caminos.get(o.getId()) <= 0.0 || plant.get(o.getDestino().getIdPlanta()) <= 0.0 ) {
+					if(destino.getDestino().getIdPlanta() != o.getDestino().getIdPlanta())
+						resultado =0.0;
 					break;
+				}
+				else if(caminos.get(o.getId()) <= resultado && plant.get(o.getDestino().getIdPlanta()) <= resultado  ) {
+					if(caminos.get(o.getId()) > plant.get(o.getDestino().getIdPlanta())) {
+						resultado = plant.get(o.getDestino().getIdPlanta());
+						caminos.put(o.getId(),caminos.get(o.getId())-plant.get(o.getDestino().getIdPlanta()) );
+						plant.put(o.getDestino().getIdPlanta(), 0.0);
+					}
+					else {
+						resultado = caminos.get(o.getId());
+						plant.put(o.getDestino().getIdPlanta(),plant.get(o.getDestino().getIdPlanta())-caminos.get(o.getId()) );
+						caminos.put(o.getId(), 0.0);
+					}
 				}	
-				if(o.getPesoMaxKg() > resultado)
-					caminos.put(o.getOrigen().getIdPlanta(), o.getPesoMaxKg()-resultado);
-				
+				else if( caminos.get(o.getId()) > resultado && plant.get(o.getDestino().getIdPlanta()) > resultado) {
+						caminos.put(o.getId(), caminos.get(o.getId())-resultado);
+						plant.put(o.getDestino().getIdPlanta(), caminos.get(o.getId())-resultado);
+				}
+				else if( caminos.get(o.getId()) <= resultado && plant.get(o.getDestino().getIdPlanta()) > resultado) {
+					resultado = caminos.get(o.getId());
+					plant.put(o.getDestino().getIdPlanta(),plant.get(o.getDestino().getIdPlanta())-caminos.get(o.getId()) );
+					caminos.put(o.getId(), 0.0);
+				}
+				else if( caminos.get(o.getId()) > resultado && plant.get(o.getDestino().getIdPlanta()) <= resultado) {
+					resultado = plant.get(o.getDestino().getIdPlanta());
+					caminos.put(o.getId(),caminos.get(o.getId())-plant.get(o.getDestino().getIdPlanta()) );
+					plant.put(o.getDestino().getIdPlanta(), 0.0);
+				}
 				
 			}
 			hora[i] = resultado;
 			i++;
+			resultado =0.0;
 		}
-		resultado =0.0;
 		for(int j = 0;j< ruts.size();j++)
 			resultado+= hora[j];
 		

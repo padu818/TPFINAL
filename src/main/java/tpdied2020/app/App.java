@@ -194,7 +194,7 @@ public class App extends JFrame {
 		this.menuAnalisis.add(menuItemCaminoMin);
 		this.menuItemPageRank = new JMenuItem("PageRank");
 		this.menuItemPageRank.addActionListener( e -> {
-			this.setContentPane(new ViewAnalisisPageRank(this));
+			this.setContentPane(new ViewAnalisisPageRank(p));
 			this.revalidate();
 			this.repaint();
 		});

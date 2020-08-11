@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import tpdied2020.controller.AnalisisController;
+import tpdied2020.gui.auxiliar.GrafoPlanta;
 
 public class ViewAnalisisPageRank extends JPanel {
 	
@@ -27,9 +28,9 @@ public class ViewAnalisisPageRank extends JPanel {
 	private AnalisisController controller;
 	
 	
-	public ViewAnalisisPageRank(JFrame v) {
+	public ViewAnalisisPageRank(GrafoPlanta p) {
 		super();
-//		this.controller= new AnalisisController(this, v);
+	//	this.controller= new AnalisisController(this,p );
 		inicializarComponentes();
 		ubicarComponentes();	
 	}
@@ -38,7 +39,7 @@ public class ViewAnalisisPageRank extends JPanel {
 		btnCancelar.setPreferredSize(new Dimension(160, 25));
 		tablaPlantas.setEnabled(true);
 		tablaPlantas.setVisible(true);
-		btnCancelar.setEnabled(true);
+		btnCancelar.setEnabled(false);
 		tablaPlantasScroll.setPreferredSize(new Dimension(880, 500));
 		tablaPlantasScroll.setVisible(true);
 	}

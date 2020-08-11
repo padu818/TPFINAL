@@ -54,6 +54,8 @@ public class AnalisisController {
 		panel.addDestino(auxi);
 	}
 	
+	
+	
 	public AnalisisController(ViewAnalisisCaminoMin p, GrafoPlanta p2) {
 		this.plantaService = new GestorPlanta();
 		this.caminoPanel = p;
@@ -93,7 +95,7 @@ public class AnalisisController {
 			errorNumero++;
 		}
 		
-		if(panel.getPlantaDestino().equals(panel.getPlantaOrigen())) {
+		if(panel.getPlantaDestino().equals(panel.getPlantaOrigen()) && !errorEnOrigen) {
 			errorPlanta = true;
 			textoErrorPlanta = errorNumero+") La planta origen y la planta destino no pueden ser la misma. \n";
 			errorNumero++;
